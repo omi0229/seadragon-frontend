@@ -1,16 +1,16 @@
 <template>
-
-  <Header></Header>
-
+  <div id="header">
+    <div class="top">
+      <img src="/S__111558660.jpg"/>
+    </div>
+    <div class="nav">12345</div>
+  </div>
 </template>
-
-<script>
-export default {}
-</script>
 
 <style scoped lang="scss">
 
 #header {
+
   .top {
     height: 25vmin;
     text-align: center;
