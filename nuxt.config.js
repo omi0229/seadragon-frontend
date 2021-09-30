@@ -12,12 +12,18 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: '/plugins/uikit-3.7.4/css/uikit.min.css' },
+    ],
+    script: [
+      { src: '/plugins/uikit-3.7.4/js/uikit.min.js' },
+      { src: '/plugins/uikit-3.7.4/js/uikit-icons.min.js' }
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+      '~/static/plugins/uikit-3.7.4/css/uikit.min.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -35,6 +41,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
+    '@nuxtjs/axios',
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -47,5 +54,9 @@ export default {
         implementation: require('sass'),
       },
     },
+  },
+
+  axios: {
+    // proxyHeaders: false
   }
 }
