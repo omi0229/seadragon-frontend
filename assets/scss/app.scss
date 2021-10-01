@@ -1,0 +1,7 @@
+.uk-breadcrumb > * > * {
+  font-size: 1.1rem;
+}
+
+.uk-breadcrumb > :nth-child(n+2):not(.uk-first-column)::before {
+  font-size: 1.1rem;
+}

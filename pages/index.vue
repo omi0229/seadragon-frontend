@@ -26,15 +26,15 @@
             }
         },
         asyncData({$axios}) {
-            const api = 'http://localhost:82/api/testtest';
-            return $axios.get(api).then(respons => {
-                return {
-                    data: respons.data,
-                };
-            })
+            // const api = 'http://localhost:82/api/testtest';
+            // return $axios.get(api).then(respons => {
+            //     return {
+            //         data: respons.data,
+            //     };
+            // })
         },
         mounted() {
-
+            console.log(this.$store.state.testtest);
         },
     }
 </script>

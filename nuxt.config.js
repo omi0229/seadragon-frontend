@@ -35,6 +35,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxtjs/style-resources'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -58,5 +59,14 @@ export default {
 
   axios: {
     // proxyHeaders: false
-  }
+  },
+
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+    apiUrl: process.env.API_URL || 'http://localhost:85',
+  },
+
+  styleResources: {
+    scss: ['~assets/scss/*.scss']
+  },
 }

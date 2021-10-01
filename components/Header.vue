@@ -18,7 +18,13 @@
 </template>
 
 <script>
-    export default {}
+  export default {
+    mounted() {
+      console.log(this.$store.state.news_types_list);
+      this.$store.commit('increment');
+      console.log(this.$store.state.news_types_list);
+    },
+  }
 </script>
 
 <style scoped lang="scss">
@@ -43,7 +49,7 @@
             display: flex;
             align-items: center;
             font-weight: bold;
-            font-size: 2.8vmin;
+            font-size: 2.5vmin;
 
             .nav-item {
                 padding: 0 35px;
