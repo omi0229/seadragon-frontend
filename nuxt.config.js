@@ -1,9 +1,9 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'seadragon-frontend',
+    title: '海龍王',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'zh-TW'
     },
     meta: [
       { charset: 'utf-8' },
@@ -19,6 +19,9 @@ export default {
       { src: '/plugins/uikit-3.7.4/js/uikit.min.js' },
       { src: '/plugins/uikit-3.7.4/js/uikit-icons.min.js' }
     ],
+    bodyAttrs: {
+      style: 'overflow-y: hidden;'
+    },
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -28,6 +31,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+      '~/plugins/app.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -63,7 +67,7 @@ export default {
 
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000',
-    apiUrl: process.env.API_URL || 'http://localhost:85',
+    apiUrl: process.env.API_URL || 'http://localhost:82',
   },
 
   styleResources: {

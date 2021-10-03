@@ -1,30 +1,40 @@
 <template>
     <div id="header">
         <div class="top">
-            <nuxt-link to="/"><img src="/S__111558660.jpg"/></nuxt-link>
+            <a href="/"><img src="/S__111558660.jpg"/></a>
         </div>
-        <div class="nav">
+        <div class="nav" uk-navbar>
             <div class="nav-item">
-                <nuxt-link to="/news">最新消息</nuxt-link>
+                <a href="#">最新消息</a>
+                <div class="uk-navbar-dropdown">
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                        <!-- v-for -->
+                        <li v-for="item in $store.state.news_types_list">
+                            <a :href="'/news/' + item.id">{{item.name}}</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="nav-item">
-                <nuxt-link to="#">烹飪教學</nuxt-link>
+                <a href="#">烹飪教學</a>
             </div>
             <div class="nav-item">
-                <nuxt-link to="#">線上購物</nuxt-link>
+                <a href="#">線上購物</a>
+                <div class="uk-navbar-dropdown">
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                        <!-- v-for -->
+                        <li v-for="item in $store.state.directory_list">
+                            <a :href="'/directory/' + item.id">{{item.name}}</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-  export default {
-    mounted() {
-      console.log(this.$store.state.news_types_list);
-      this.$store.commit('increment');
-      console.log(this.$store.state.news_types_list);
-    },
-  }
+  export default {}
 </script>
 
 <style scoped lang="scss">
@@ -63,6 +73,10 @@
                     color: rgb(255, 221, 0);
                 }
             }
+        }
+
+        .uk-navbar-dropdown {
+            padding: 5px 10px !important;
         }
     }
 

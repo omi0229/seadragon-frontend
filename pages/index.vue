@@ -18,23 +18,23 @@
 </template>
 
 <script>
+    import { init } from '~/plugins/app.js';
+
     export default {
         layout: 'default',
         data() {
             return {
-                data: '12345',
+                data: '',
             }
         },
         asyncData({$axios}) {
-            // const api = 'http://localhost:82/api/testtest';
-            // return $axios.get(api).then(respons => {
-            //     return {
-            //         data: respons.data,
-            //     };
-            // })
+
+        },
+        async fetch ({ $axios, store, params }) {
+            await init($axios, store);
         },
         mounted() {
-            console.log(this.$store.state.testtest);
+            this.$store.commit('disabledLoading');
         },
     }
 </script>
