@@ -5,3 +5,8 @@
 .uk-breadcrumb > :nth-child(n+2):not(.uk-first-column)::before {
   font-size: 1.1rem;
 }
+
+.padding-x-15px {
+  padding-left: 15px;
+  padding-right: 15px;
+}

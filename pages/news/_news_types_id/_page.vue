@@ -2,8 +2,8 @@
 
     <div class="container">
       <ul class="uk-breadcrumb">
-        <li><nuxt-link to="/">Home</nuxt-link></li>
-        <li><nuxt-link to="/news">最新消息</nuxt-link></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/news">最新消息</a></li>
       </ul>
 
       <div>
@@ -75,7 +75,7 @@
                     list: res.data.list,
                     all_count: res.data.all_count,
                     page_count: res.data.page_count,
-                    page_item_count: res.data.page_item_count,
+                    page_item_count: Number(res.data.page_item_count),
                 };
             })
         },

@@ -7,9 +7,9 @@
 
     export default {
         async fetch ({ $axios, store, params, redirect }) {
-            await $axios.get(process.env.apiUrl + '/api/news-type/list/all').then(res => {
+            await $axios.get(process.env.apiUrl + '/api/directory/list/all').then(res => {
                 let data = head(res.data);
-                data ? redirect('/news/' + data.id) : redirect('/');
+                data ? redirect('/directory/' + data.id) : redirect('/');
             });
         },
 

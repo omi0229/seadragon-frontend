@@ -2,12 +2,8 @@
 
     <div class="container">
         <ul class="uk-breadcrumb">
-            <li>
-                <nuxt-link to="/">Home</nuxt-link>
-            </li>
-            <li>
-                <nuxt-link to="/news">最新消息</nuxt-link>
-            </li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/news">最新消息</a></li>
         </ul>
 
         <div>
@@ -15,7 +11,7 @@
             <div class="uk-text-small uk-text-muted"> 發布時間：{{ dateFormat(item.start_date) }}</div>
             <hr/>
             <div>
-                <img :src="item.web_img_path" style="height: 100%; width: auto;"/>
+                <img :src="item.web_img_path" />
             </div>
             <div v-html="item.description"></div>
         </div>
@@ -76,17 +72,7 @@
             this.$store.commit('disabledLoading');
         },
         methods: {
-            getData(page) {
-                // this.$store.commit('enabledLoading');
-                // history.pushState(null, null, '/news/' + this.news_types_id + '/' + page);
-                // this.$axios.get(process.env.apiUrl + '/api/news/' + this.news_types_id + '/' + page).then(res => {
-                //     this.$store.commit('disabledLoading');
-                //     this.list = res.data.list;
-                //     this.all_count = res.data.all_count;
-                //     this.page_count = res.data.page_count;
-                //     UIkit.scroll('#footer').scrollTo('#header');
-                // });
-            },
+
         }
     }
 </script>
@@ -95,6 +81,11 @@
 
     .container {
         padding: 25px 4vmin;
+    }
+
+    img {
+        height: 100%;
+        width: auto;
     }
 
 </style>

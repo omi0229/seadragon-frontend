@@ -2,8 +2,8 @@
 
     <div class="container">
       <ul class="uk-breadcrumb">
-        <li><nuxt-link to="/">Home</nuxt-link></li>
-        <li><nuxt-link to="/product">線上購物</nuxt-link></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/product">線上購物</a></li>
       </ul>
 
           <ul class="uk-subnav uk-subnav-divider" uk-margin>
@@ -16,11 +16,11 @@
               <!-- v-for -->
               <div v-for="item in list">
                   <div class="uk-card uk-card-default uk-card-body">
-                      <a :href="'/product/' + item.id" class="uk-text-decoration-none">
-                          <img :src="item.web_img_path"/>
+                      <a :href="'/product-info/' + item.id" class="uk-text-decoration-none">
+                          <img :src="item.product.web_img_path" style="height: 30vmin; width: 100%; object-fit: cover;" />
                       </a>
-                      <div>
-                          {{item.product.title}}
+                      <div class="uk-margin-small uk-text-emphasis uk-text-large">
+                          <a :href="'/product-info/' + item.id" class="uk-link-heading uk-text-decoration-none">{{item.product.title}}</a>
                       </div>
                   </div>
               </div>
@@ -68,7 +68,7 @@
                     list: res.data.list,
                     all_count: res.data.all_count,
                     page_count: res.data.page_count,
-                    page_item_count: res.data.page_item_count,
+                    page_item_count: Number(res.data.page_item_count),
                     origin_api: origin_api,
                 };
             })
@@ -118,6 +118,10 @@
             height: $img-height;
             object-fit: cover;
         }
+    }
+
+    .uk-card-body {
+        padding: 20px;
     }
 
 </style>
