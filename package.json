@@ -7,14 +7,18 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "test": "jest"
+    "test": "jest",
+    "home": "cross-env BASE=home nuxt",
+    "company": "cross-env BASE=company nuxt"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/style-resources": "^1.2.1",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.15.1",
+    "cross-env": "^7.0.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "nuxt": "^2.15.7"

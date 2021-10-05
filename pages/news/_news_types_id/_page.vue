@@ -65,7 +65,7 @@
                 news_types_id = news_type ? news_type.id : '';
             }
 
-            let api = process.env.apiUrl + '/api/news/' + news_types_id;
+            let api = process.env.API_URL + '/api/news/' + news_types_id;
 
             api += route.params.page ? '/' + route.params.page : '';
 
@@ -97,7 +97,7 @@
             getData(page) {
                 this.$store.commit('enabledLoading');
                 history.pushState(null, null, '/news/' + this.news_types_id + '/' + page);
-                this.$axios.get(process.env.apiUrl + '/api/news/' + this.news_types_id + '/' + page).then(res => {
+                this.$axios.get(process.env.API_URL + '/api/news/' + this.news_types_id + '/' + page).then(res => {
                     this.$store.commit('disabledLoading');
                     this.list = res.data.list;
                     this.all_count = res.data.all_count;

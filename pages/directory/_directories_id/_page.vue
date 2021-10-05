@@ -59,7 +59,7 @@
                 directories_id = directory ? directory.id : '';
             }
 
-            let origin_api = process.env.apiUrl + '/api/product/' + directories_id;
+            let origin_api = process.env.API_URL + '/api/product/' + directories_id;
             let api = route.params.page ? origin_api + '/' + route.params.page : origin_api;
 
             return $axios.get(api).then(res => {

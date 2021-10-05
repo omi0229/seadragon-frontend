@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="uk-margin-bottom">
-                        <button class="uk-button uk-button-secondary uk-button-large uk-border-rounded uk-flex uk-flex-middle">
+                        <button class="uk-button uk-button-secondary uk-button-large uk-border-rounded uk-flex uk-flex-middle" @click="addCart">
                             <span class="uk-margin-small-right" uk-icon="icon: cart; ratio: 2"></span> 加入購物車
                         </button>
                     </div>
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-    import {head, join} from 'lodash';
     import moment from 'moment';
     import { init } from '~/plugins/app.js';
 
@@ -75,7 +74,7 @@
                 redirect('/directory');
             }
 
-            return $axios.get(process.env.apiUrl + '/api/product-info/' + id).then(res => {
+            return $axios.get(process.env.API_URL + '/api/product-info/' + id).then(res => {
                 app.head.title = '線上購物：' + res.data.product.title;
                 app.head.meta = [{
                     charset: 'utf-8'
@@ -110,6 +109,19 @@
             addCount(num) {
                 if (num > 0 || (num < 0 && this.value.count > 0)) {
                     this.value.count += num;
+                }
+            },
+            addCart() {
+                this.$store.commit('enabledLoading');
+                if (localStorage.getItem('cart_id')) {
+                    let data = {
+                        'cart_id': localStorage.getItem('cart_id'),
+                        'specifications_id': this.value.specification,
+                        'count': this.value.count,
+                    };
+                    this.$axios.post(process.env.API_URL + '/api/cart/addCart', data).then(res => {
+                        this.$store.commit('disabledLoading');
+                    });
                 }
             },
         }

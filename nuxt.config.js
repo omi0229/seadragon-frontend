@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -47,6 +49,7 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
+    ['@nuxtjs/dotenv', { filename: process.env.BASE ? `.env.${process.env.BASE}` : '.env' }],
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -65,10 +68,10 @@ export default {
     // proxyHeaders: false
   },
 
-  env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
-    apiUrl: process.env.API_URL || 'http://localhost:82',
-  },
+  // env: {
+  //   baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+  //   apiUrl: process.env.API_URL,
+  // },
 
   styleResources: {
     scss: ['~assets/scss/*.scss']

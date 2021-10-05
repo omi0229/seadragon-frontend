@@ -1,7 +1,13 @@
 <template>
     <div id="header">
-        <div class="top">
+        <div class="top uk-flex uk-flex-between">
+            <div class="uk-flex-1 uk-padding-small"></div>
             <a href="/"><img src="/S__111558660.jpg"/></a>
+            <div class="uk-flex-1 uk-flex uk-flex-right uk-height-1-1 cart-padding">
+                <div class="cursor uk-flex" @click="showCart">
+                    <span uk-icon="icon: cart; ratio: 1" :class="{ 'cart-icon-margin': $store.state.cart_count <= 0 }"></span><span class="uk-badge" v-show="$store.state.cart_count > 0">{{ $store.state.cart_count }}</span>購物車
+                </div>
+            </div>
         </div>
         <div class="nav" uk-navbar>
             <div class="nav-item">
@@ -34,7 +40,24 @@
 </template>
 
 <script>
-  export default {}
+  export default {
+    mounted() {
+      if (!localStorage.getItem('cart_id')) {
+        this.$axios(process.env.API_URL + '/api/cart/getCartId').then(res => {
+          localStorage.setItem('cart_id', res.data);
+        });
+      }
+
+      this.$axios.post(process.env.API_URL + '/api/cart/getCartCount', {cart_id: localStorage.getItem('cart_id')}).then(res => {
+        this.$store.commit('setCartCount', res.data);
+      });
+    },
+    methods: {
+      showCart() {
+
+      },
+    }
+  }
 </script>
 
 <style scoped lang="scss">
@@ -77,6 +100,19 @@
 
         .uk-navbar-dropdown {
             padding: 5px 10px !important;
+        }
+
+        .uk-badge {
+            margin-top: 3px;
+            background: red !important;
+        }
+
+        .cart-padding {
+            padding: 1.5vmin;
+        }
+
+        .cart-icon-margin {
+            margin-right: 1.2vmin;
         }
     }
 

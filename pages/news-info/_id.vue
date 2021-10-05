@@ -40,7 +40,7 @@
                 redirect('/news');
             }
 
-            return $axios.get(process.env.apiUrl + '/api/news-info/' + id).then(res => {
+            return $axios.get(process.env.API_URL + '/api/news-info/' + id).then(res => {
                 app.head.title = '最新消息：' + res.data.title;
                 app.head.meta = [{
                     charset: 'utf-8'
