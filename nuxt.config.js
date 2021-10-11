@@ -28,7 +28,8 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-      '~/static/plugins/uikit-3.7.4/css/uikit.min.css'
+      '~/static/plugins/uikit-3.7.4/css/uikit.min.css',
+      '~/assets/scss/app.scss'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins

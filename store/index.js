@@ -3,6 +3,7 @@ export const state = () => ({
   to_top: false,
   cart_count: 0,
   news_types_list: [],
+  cooking_types_list: [],
   directory_list: [],
 });
 
@@ -26,6 +27,9 @@ export const mutations = {
   },
   setNewsTypesList(state, result) {
     state.news_types_list = result;
+  },
+  setCookingTypesList(state, result) {
+    state.cooking_types_list = result;
   },
   setDirectoryList(state, result) {
     state.directory_list = result;

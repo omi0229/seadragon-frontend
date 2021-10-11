@@ -12,12 +12,12 @@
               </li>
           </ul>
 
-          <div class="uk-grid-column-small uk-grid-row-large uk-child-width-1-3@s" uk-grid>
+          <div class="uk-flex uk-flex-wrap">
               <!-- v-for -->
-              <div v-for="item in list">
-                  <div class="uk-card uk-card-default uk-card-body">
+              <div class="uk-width-1-3 uk-margin-small-top" v-for="item in list">
+                  <div class="uk-card uk-card-default uk-card-body item-img">
                       <a :href="'/product-info/' + item.id" class="uk-text-decoration-none">
-                          <img :src="item.product.web_img_path" style="height: 30vmin; width: 100%; object-fit: cover;" />
+                          <img :src="item.product.web_img_path" />
                       </a>
                       <div class="uk-margin-small uk-text-emphasis uk-text-large">
                           <a :href="'/product-info/' + item.id" class="uk-link-heading uk-text-decoration-none">{{item.product.title}}</a>
@@ -109,13 +109,11 @@
         padding: 25px 4vmin;
     }
 
-    $img-height: 270px;
 
-    .news-img {
-        height: $img-height;
-
+    .item-img {
         img {
-            height: $img-height;
+            height: 30vmin;
+            width: 100%;
             object-fit: cover;
         }
     }

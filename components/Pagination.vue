@@ -1,6 +1,6 @@
 <template>
 
-        <div id="pagination" class="col-12 clearfix">
+        <div id="pagination" class="col-12 clearfix uk-margin-small-top">
             <!-- v-show -->
             <ul class="uk-pagination uk-flex-center" uk-margin v-show="setPages > 1">
                 <li :class="{'uk-disabled': page === 1}" @click.prevent="selectPage(1)">
@@ -36,6 +36,7 @@
 <script>
     export default {
         props: {
+            directory_id: Number,
             all_count: Number,
             page_count: Number,
             page_item_count: Number,
@@ -77,11 +78,13 @@
         },
         methods: {
             selectPage(page) {
+
+                let directory_id = this.directory_id ? this.directory_id : null;
+
                 // loading.show = true;
                 if (page >= 1 && page <= this.pages) {
                     this.page = page;
-                    this.$emit('get-data', page);
-                    // this.$emit('set-page', page);
+                    this.$emit('get-data', page, directory_id);
                 }
             },
             setPage(page) {
