@@ -110,7 +110,7 @@
             };
         },
         async fetch ({ $axios, store, params }) {
-            await init($axios, store);
+            await init(store);
         },
         mounted() {
             this.$store.commit('disabledLoading');

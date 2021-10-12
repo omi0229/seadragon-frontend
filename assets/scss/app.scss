@@ -6,6 +6,18 @@
   font-size: 1.1rem;
 }
 
+.uk-notification-message {
+  > div {
+    font-weight: bold;
+    display: flex !important;
+    align-items: center !important;
+
+    > span {
+      margin-right: .5rem;
+    }
+  }
+}
+
 .padding-x-15px {
   padding-left: 15px;
   padding-right: 15px;

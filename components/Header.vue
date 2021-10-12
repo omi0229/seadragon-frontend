@@ -8,6 +8,16 @@
             </div>
             <a href="/"><img src="/S__111558660.jpg"/></a>
             <div class="uk-flex-1 uk-flex uk-flex-right uk-height-1-1 header-padding">
+                <div class="uk-margin-small-right">
+                    <a href="#modal-example" class="uk-flex uk-link-reset" uk-toggle>
+                        <span uk-icon="icon: sign-in"></span>登入
+                    </a>
+                </div>
+                <div class="uk-margin-small-right">
+                    <a href="#modal-example" class="uk-flex uk-link-reset" uk-toggle>
+                        <span uk-icon="icon: user"></span>註冊
+                    </a>
+                </div>
                 <div class="cursor uk-flex" @click="showCart">
                     <span uk-icon="icon: cart; ratio: 1" :class="{ 'cart-icon-margin': $store.state.cart_count <= 0 }"></span><span class="uk-badge" v-show="$store.state.cart_count > 0">{{ $store.state.cart_count }}</span>購物車
                 </div>
@@ -48,10 +58,31 @@
                 </div>
             </div>
         </div>
+
+        <!-- This is the modal -->
+        <div id="modal-example" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">會員註冊</h2>
+                <div>
+                  行動電話
+                  密碼
+                  確認密碼
+                  姓名
+                  市內電話
+                  通訊地址
+                </div>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                    <button class="uk-button uk-button-primary" type="button">Save</button>
+                </p>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+  import { getCartCount } from '~/plugins/app.js';
+
   export default {
     mounted() {
       if (!localStorage.getItem('cart_id')) {
@@ -60,9 +91,10 @@
         });
       }
 
-      this.$axios.post(process.env.API_URL + '/api/cart/getCartCount', {cart_id: localStorage.getItem('cart_id')}).then(res => {
-        this.$store.commit('setCartCount', res.data);
-      });
+      getCartCount(this.$store, localStorage.getItem('cart_id'));
+      // this.$axios.post(process.env.API_URL + '/api/cart/getCartCount', {cart_id: localStorage.getItem('cart_id')}).then(res => {
+      //   this.$store.commit('setCartCount', res.data);
+      // });
     },
     methods: {
       showCart() {

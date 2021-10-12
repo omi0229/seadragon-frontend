@@ -32,7 +32,7 @@
             }
         },
         async fetch({$axios, store, params}) {
-            await init($axios, store);
+            await init(store);
         },
         asyncData({app, $axios, store, route, redirect}) {
             let id = route.params.id;

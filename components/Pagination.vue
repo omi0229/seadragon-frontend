@@ -36,7 +36,7 @@
 <script>
     export default {
         props: {
-            directory_id: Number,
+            directory_id: String,
             all_count: Number,
             page_count: Number,
             page_item_count: Number,

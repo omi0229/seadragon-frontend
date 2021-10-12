@@ -69,7 +69,7 @@
             }
         },
         async fetch ({ $axios, store, params }) {
-            await init($axios, store);
+            await init(store);
         },
         asyncData({$axios, store, route}) {
             let cooking_types_id = route.params.cooking_types_id;

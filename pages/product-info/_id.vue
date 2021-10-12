@@ -52,7 +52,7 @@
 
 <script>
     import moment from 'moment';
-    import { init } from '~/plugins/app.js';
+    import { init, getCartCount } from '~/plugins/app.js';
 
     export default {
         layout: 'default',
@@ -66,7 +66,7 @@
             }
         },
         async fetch({$axios, store, params}) {
-            await init($axios, store);
+            await init(store);
         },
         asyncData({app, $axios, store, route, redirect}) {
             let id = route.params.id;
@@ -112,6 +112,18 @@
                 }
             },
             addCart() {
+                UIkit.notification.closeAll()
+
+                if (!this.value.specification) {
+                    UIkit.notification({message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> 請選擇規格！', status: 'danger', timeout: 500})
+                    return false;
+                }
+
+                if (!this.value.count) {
+                    UIkit.notification({message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> 請選擇數量！', status: 'danger', timeout: 500})
+                    return false;
+                }
+
                 this.$store.commit('enabledLoading');
                 if (localStorage.getItem('cart_id')) {
                     let data = {
@@ -120,6 +132,8 @@
                         'count': this.value.count,
                     };
                     this.$axios.post(process.env.API_URL + '/api/cart/addCart', data).then(res => {
+                        getCartCount(this.$store, localStorage.getItem('cart_id'));
+                        UIkit.notification({message: '<span uk-icon=\'icon: check;ratio: 1.5\'></span> 成功加入購物車！', status: 'success', timeout: 1000})
                         this.$store.commit('disabledLoading');
                     });
                 }
