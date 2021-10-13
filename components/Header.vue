@@ -9,12 +9,12 @@
             <a href="/"><img src="/S__111558660.jpg"/></a>
             <div class="uk-flex-1 uk-flex uk-flex-right uk-height-1-1 header-padding">
                 <div class="uk-margin-small-right">
-                    <a href="#modal-example" class="uk-flex uk-link-reset" uk-toggle>
+                    <a href="#modal-register" class="uk-flex uk-link-reset" uk-toggle>
                         <span uk-icon="icon: sign-in"></span>登入
                     </a>
                 </div>
                 <div class="uk-margin-small-right">
-                    <a href="#modal-example" class="uk-flex uk-link-reset" uk-toggle>
+                    <a href="#modal-register" class="uk-flex uk-link-reset" uk-toggle>
                         <span uk-icon="icon: user"></span>註冊
                     </a>
                 </div>
@@ -60,20 +60,42 @@
         </div>
 
         <!-- This is the modal -->
-        <div id="modal-example" uk-modal>
+        <div id="modal-register" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title">會員註冊</h2>
                 <div>
-                  行動電話
-                  密碼
-                  確認密碼
-                  姓名
-                  市內電話
-                  通訊地址
+                    <div class="uk-margin uk-flex uk-flex-middle">
+                        <label class="uk-text-small uk-width-1-4" for="register_phone">行動電話 <span class="uk-text-bold uk-text-danger">*</span></label>
+                        <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入行動電話">
+                    </div>
+                    <div class="uk-margin uk-flex uk-flex-middle">
+                        <label class="uk-text-small uk-width-1-4" for="register_password">密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
+                        <input type="password" id="register_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入密碼">
+                    </div>
+                    <div class="uk-margin uk-flex uk-flex-middle">
+                        <label class="uk-text-small uk-width-1-4" for="register_return_password">確認密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
+                        <input type="password" id="register_return_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請確認密碼">
+                    </div>
+                    <div class="uk-margin uk-flex uk-flex-middle">
+                        <label class="uk-text-small uk-width-1-4" for="register_name">姓名 <span class="uk-text-bold uk-text-danger">*</span></label>
+                        <input type="text" id="register_name" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入姓名">
+                    </div>
+                    <div class="uk-margin uk-flex uk-flex-middle">
+                        <label class="uk-text-small uk-width-1-4" for="register_email">電子信箱</label>
+                        <input type="text" id="register_email" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入電子信箱">
+                    </div>
+                    <div class="uk-margin uk-flex uk-flex-middle">
+                        <label class="uk-text-small uk-width-1-4" for="register_telephone">市內電話</label>
+                        <input type="text" id="register_telephone" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入市內電話">
+                    </div>
+                    <div class="uk-margin uk-flex uk-flex-middle">
+                        <label class="uk-text-small uk-width-1-4" for="register_address">通訊地址</label>
+                        <input type="text" id="register_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入通訊地址">
+                    </div>
                 </div>
                 <p class="uk-text-right">
-                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                    <button class="uk-button uk-button-primary" type="button">Save</button>
+                    <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
+                    <button class="uk-button uk-button-small uk-button-primary" type="button">註冊</button>
                 </p>
             </div>
         </div>
@@ -92,9 +114,6 @@
       }
 
       getCartCount(this.$store, localStorage.getItem('cart_id'));
-      // this.$axios.post(process.env.API_URL + '/api/cart/getCartCount', {cart_id: localStorage.getItem('cart_id')}).then(res => {
-      //   this.$store.commit('setCartCount', res.data);
-      // });
     },
     methods: {
       showCart() {
@@ -175,6 +194,13 @@
         .cart-icon-margin {
             margin-right: 1.2vmin;
         }
+
+    }
+
+    #modal-register {
+      label {
+        margin-bottom: 0 !important;
+      }
     }
 
 </style>
