@@ -66,36 +66,36 @@
                 <div>
                     <div class="uk-margin uk-flex uk-flex-middle">
                         <label class="uk-text-small uk-width-1-4" for="register_phone">行動電話 <span class="uk-text-bold uk-text-danger">*</span></label>
-                        <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入行動電話">
+                        <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入行動電話" v-model="form.cellphone">
                     </div>
                     <div class="uk-margin uk-flex uk-flex-middle">
                         <label class="uk-text-small uk-width-1-4" for="register_password">密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
-                        <input type="password" id="register_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入密碼">
+                        <input type="password" id="register_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入密碼" v-model="form.password">
                     </div>
                     <div class="uk-margin uk-flex uk-flex-middle">
                         <label class="uk-text-small uk-width-1-4" for="register_return_password">確認密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
-                        <input type="password" id="register_return_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請確認密碼">
+                        <input type="password" id="register_return_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請確認密碼" v-model="form.return_password">
                     </div>
                     <div class="uk-margin uk-flex uk-flex-middle">
                         <label class="uk-text-small uk-width-1-4" for="register_name">姓名 <span class="uk-text-bold uk-text-danger">*</span></label>
-                        <input type="text" id="register_name" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入姓名">
+                        <input type="text" id="register_name" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入姓名" v-model="form.name">
                     </div>
                     <div class="uk-margin uk-flex uk-flex-middle">
                         <label class="uk-text-small uk-width-1-4" for="register_email">電子信箱</label>
-                        <input type="text" id="register_email" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入電子信箱">
+                        <input type="text" id="register_email" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入電子信箱" v-model="form.email">
                     </div>
                     <div class="uk-margin uk-flex uk-flex-middle">
                         <label class="uk-text-small uk-width-1-4" for="register_telephone">市內電話</label>
-                        <input type="text" id="register_telephone" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入市內電話">
+                        <input type="text" id="register_telephone" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入市內電話" v-model="form.telephone">
                     </div>
                     <div class="uk-margin uk-flex uk-flex-middle">
                         <label class="uk-text-small uk-width-1-4" for="register_address">通訊地址</label>
-                        <input type="text" id="register_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入通訊地址">
+                        <input type="text" id="register_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入通訊地址" v-model="form.address">
                     </div>
                 </div>
                 <p class="uk-text-right">
                     <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
-                    <button class="uk-button uk-button-small uk-button-primary" type="button">註冊</button>
+                    <button class="uk-button uk-button-small uk-button-primary" type="button" @click="register">註冊</button>
                 </p>
             </div>
         </div>
@@ -106,6 +106,19 @@
   import { getCartCount } from '~/plugins/app.js';
 
   export default {
+    data() {
+      return {
+        form: {
+          cellphone: '',
+          password: '',
+          return_password: '',
+          name: '',
+          email: '',
+          telephone: '',
+          address: '',
+        },
+      }
+    },
     mounted() {
       if (!localStorage.getItem('cart_id')) {
         this.$axios(process.env.API_URL + '/api/cart/getCartId').then(res => {
@@ -118,6 +131,9 @@
     methods: {
       showCart() {
 
+      },
+      register() {
+        console.log(this.form);
       },
     }
   }

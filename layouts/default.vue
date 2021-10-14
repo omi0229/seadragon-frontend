@@ -4,7 +4,7 @@
             <div uk-spinner="ratio: 1.8"></div>
         </div>
         <Header></Header>
-        <Nuxt/>
+        <Nuxt class="default-content" />
         <Footer></Footer>
         <a href="#" uk-totop uk-scroll class="to-top" :class="$store.state.to_top ? 'opacity-1' : 'opacity-0'"></a>
     </div>
@@ -63,6 +63,10 @@
         &.opacity-1 {
             opacity: 1;
         }
+    }
+
+    .default-content {
+      min-height: calc(100vh - 33vmin - 350px);
     }
 
 </style>
