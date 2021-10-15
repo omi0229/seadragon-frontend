@@ -14,7 +14,7 @@
                     </a>
                 </div>
                 <div class="uk-margin-small-right">
-                    <a href="#modal-register" class="uk-flex uk-link-reset" uk-toggle>
+                    <a href="#modal-register" class="uk-flex uk-link-reset" @click="showRegister" uk-toggle>
                         <span uk-icon="icon: user"></span>註冊
                     </a>
                 </div>
@@ -60,8 +60,9 @@
         </div>
 
         <!-- This is the modal -->
-        <div id="modal-register" uk-modal>
+        <div id="modal-register" uk-modal="bg-close: false">
             <div class="uk-modal-dialog uk-modal-body">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
                 <h2 class="uk-modal-title">會員註冊</h2>
                 <div>
                     <div class="uk-margin uk-flex uk-flex-middle">
@@ -92,6 +93,17 @@
                         <label class="uk-text-small uk-width-1-4" for="register_address">通訊地址</label>
                         <input type="text" id="register_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入通訊地址" v-model="form.address">
                     </div>
+                    <div class="uk-margin uk-flex uk-flex-middle">
+                        <div class="uk-width-1-4">
+                            <label class="uk-text-small" for="register_captcha">驗證碼</label>
+                        </div>
+                        <div class="uk-width-1-4">
+                            <img :src="captcha.image" class="uk-width-1-1" style="height: 30px; padding-right: 10px; box-sizing: border-box;" title="點選圖片重新獲取驗證碼" v-show="captcha.show" @click="showRegister">
+                        </div>
+                        <div class="uk-width-1-2">
+                            <input type="text"  id="register_captcha" maxlength="5" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1" placeholder="請輸入驗證碼" v-model="form.captcha">
+                        </div>
+                    </div>
                 </div>
                 <p class="uk-text-right">
                     <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
@@ -116,7 +128,13 @@
           email: '',
           telephone: '',
           address: '',
+          captcha: '',
         },
+        captcha: {
+          show: false,
+          image: '',
+          answers: '',
+        }
       }
     },
     mounted() {
@@ -132,8 +150,18 @@
       showCart() {
 
       },
+      showRegister() {
+        this.captcha.show = false;
+        this.captcha.image = this.captcha.answers = '';
+        this.$axios.get(process.env.API_URL + '/api/auth/get-captcha').then(res => {
+          this.captcha.show = true;
+          this.captcha.image = res.data.image;
+          this.captcha.answers = res.data.answers;
+        });
+      },
       register() {
         console.log(this.form);
+        this.input.captcha === this.captcha.answers ? alert('驗證碼正確') : alert('驗證碼錯誤');
       },
     }
   }
