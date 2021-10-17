@@ -131,7 +131,7 @@
                         'specifications_id': this.value.specification,
                         'count': this.value.count,
                     };
-                    this.$axios.post(process.env.API_URL + '/api/cart/addCart', data).then(res => {
+                    this.$axios.post(process.env.API_URL + '/api/cart/add-cart', data).then(res => {
                         getCartCount(this.$store, localStorage.getItem('cart_id'));
                         UIkit.notification({message: '<span uk-icon=\'icon: check;ratio: 1.5\'></span> 成功加入購物車！', status: 'success', timeout: 1000})
                         this.$store.commit('disabledLoading');

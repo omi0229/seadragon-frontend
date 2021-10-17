@@ -14,7 +14,7 @@
                     </a>
                 </div>
                 <div class="uk-margin-small-right">
-                    <a href="#modal-register" class="uk-flex uk-link-reset" @click="showRegister" uk-toggle>
+                    <a href="/register" class="uk-flex uk-link-reset">
                         <span uk-icon="icon: user"></span>註冊
                     </a>
                 </div>
@@ -58,59 +58,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- This is the modal -->
-        <div id="modal-register" uk-modal="bg-close: false">
-            <div class="uk-modal-dialog uk-modal-body">
-                <button class="uk-modal-close-default" type="button" uk-close></button>
-                <h2 class="uk-modal-title">會員註冊</h2>
-                <div>
-                    <div class="uk-margin uk-flex uk-flex-middle">
-                        <label class="uk-text-small uk-width-1-4" for="register_phone">行動電話 <span class="uk-text-bold uk-text-danger">*</span></label>
-                        <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入行動電話" v-model="form.cellphone">
-                    </div>
-                    <div class="uk-margin uk-flex uk-flex-middle">
-                        <label class="uk-text-small uk-width-1-4" for="register_password">密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
-                        <input type="password" id="register_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入密碼" v-model="form.password">
-                    </div>
-                    <div class="uk-margin uk-flex uk-flex-middle">
-                        <label class="uk-text-small uk-width-1-4" for="register_return_password">確認密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
-                        <input type="password" id="register_return_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請確認密碼" v-model="form.return_password">
-                    </div>
-                    <div class="uk-margin uk-flex uk-flex-middle">
-                        <label class="uk-text-small uk-width-1-4" for="register_name">姓名 <span class="uk-text-bold uk-text-danger">*</span></label>
-                        <input type="text" id="register_name" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入姓名" v-model="form.name">
-                    </div>
-                    <div class="uk-margin uk-flex uk-flex-middle">
-                        <label class="uk-text-small uk-width-1-4" for="register_email">電子信箱</label>
-                        <input type="text" id="register_email" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入電子信箱" v-model="form.email">
-                    </div>
-                    <div class="uk-margin uk-flex uk-flex-middle">
-                        <label class="uk-text-small uk-width-1-4" for="register_telephone">市內電話</label>
-                        <input type="text" id="register_telephone" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入市內電話" v-model="form.telephone">
-                    </div>
-                    <div class="uk-margin uk-flex uk-flex-middle">
-                        <label class="uk-text-small uk-width-1-4" for="register_address">通訊地址</label>
-                        <input type="text" id="register_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入通訊地址" v-model="form.address">
-                    </div>
-                    <div class="uk-margin uk-flex uk-flex-middle">
-                        <div class="uk-width-1-4">
-                            <label class="uk-text-small" for="register_captcha">驗證碼</label>
-                        </div>
-                        <div class="uk-width-1-4">
-                            <img :src="captcha.image" class="uk-width-1-1" style="height: 30px; padding-right: 10px; box-sizing: border-box;" title="點選圖片重新獲取驗證碼" v-show="captcha.show" @click="showRegister">
-                        </div>
-                        <div class="uk-width-1-2">
-                            <input type="text"  id="register_captcha" maxlength="5" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1" placeholder="請輸入驗證碼" v-model="form.captcha">
-                        </div>
-                    </div>
-                </div>
-                <p class="uk-text-right">
-                    <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
-                    <button class="uk-button uk-button-small uk-button-primary" type="button" @click="register">註冊</button>
-                </p>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -120,26 +67,12 @@
   export default {
     data() {
       return {
-        form: {
-          cellphone: '',
-          password: '',
-          return_password: '',
-          name: '',
-          email: '',
-          telephone: '',
-          address: '',
-          captcha: '',
-        },
-        captcha: {
-          show: false,
-          image: '',
-          answers: '',
-        }
+
       }
     },
     mounted() {
       if (!localStorage.getItem('cart_id')) {
-        this.$axios(process.env.API_URL + '/api/cart/getCartId').then(res => {
+        this.$axios(process.env.API_URL + '/api/cart/get-cart-id').then(res => {
           localStorage.setItem('cart_id', res.data);
         });
       }
@@ -149,19 +82,6 @@
     methods: {
       showCart() {
 
-      },
-      showRegister() {
-        this.captcha.show = false;
-        this.captcha.image = this.captcha.answers = '';
-        this.$axios.get(process.env.API_URL + '/api/auth/get-captcha').then(res => {
-          this.captcha.show = true;
-          this.captcha.image = res.data.image;
-          this.captcha.answers = res.data.answers;
-        });
-      },
-      register() {
-        console.log(this.form);
-        this.input.captcha === this.captcha.answers ? alert('驗證碼正確') : alert('驗證碼錯誤');
       },
     }
   }

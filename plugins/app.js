@@ -19,8 +19,27 @@ export const init = store => {
 };
 
 export const getCartCount = (store, cart_id) => {
-    axios.post(process.env.API_URL + '/api/cart/getCartCount', {cart_id: cart_id}).then(res => {
-        console.log(res.data);
+    axios.post(process.env.API_URL + '/api/cart/get-cart-count', {cart_id: cart_id}).then(res => {
         store.commit('setCartCount', res.data);
     });
+}
+
+// 密碼規則(8碼以上數字+英文)
+export const passwordRule = password => {
+    let rules = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    if (!rules.test(password)) {
+        return false
+    }
+
+    return true;
+}
+
+// 電子郵件規則
+export const emailRule = email => {
+    let rules = /^([\w]+)(.[\w]+)*@([\w]+)(.[\w]{2,3}){1,2}$/;
+    if (!rules.test(email)) {
+        return false
+    }
+
+    return true;
 }

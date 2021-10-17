@@ -1,0 +1,411 @@
+<template>
+    <div class="uk-flex">
+        <div class="menu">
+            <div>
+              <a href="#" class="uk-link-text uk-text-decoration-none">會員註冊</a>
+            </div>
+            <div>
+              <a href="#" class="uk-link-text uk-text-decoration-none">忘記密碼</a>
+            </div>
+        </div>
+        <div class="container">
+          <ul class="uk-breadcrumb">
+              <li><a href="/">Home</a></li>
+              <li><a href="#">會員中心</a></li>
+              <li><a href="/register">會員註冊</a></li>
+          </ul>
+
+          <div class="form-content uk-flex uk-flex-column uk-margin-auto">
+              <div>
+                  <h2 class="uk-modal-title uk-margin-top">會員註冊</h2>
+              </div>
+              <div>
+                  <div class="uk-margin uk-flex uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-4" for="register_phone">行動電話 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入行動電話 ( 帳號 )" v-model="form.cellphone">
+                  </div>
+                  <div class="uk-margin uk-flex uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-4" for="register_password">密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="password" id="register_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入密碼" v-model="form.password">
+                  </div>
+                  <div class="uk-margin uk-flex uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-4" for="register_return_password">確認密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="password" id="register_return_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請確認密碼" v-model="form.return_password">
+                  </div>
+                  <div class="uk-margin uk-flex uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-4" for="register_name">姓名 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="text" id="register_name" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入姓名" v-model="form.name">
+                  </div>
+                  <div class="uk-margin uk-flex uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-4" for="register_email">電子信箱</label>
+                      <input type="text" id="register_email" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入電子信箱" v-model="form.email">
+                  </div>
+                  <div class="uk-margin uk-flex uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-4" for="register_telephone">市內電話</label>
+                      <input type="text" id="register_telephone" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入市內電話" v-model="form.telephone">
+                  </div>
+                  <div class="uk-margin uk-flex uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-4" for="register_address">郵遞區號</label>
+                      <div class="uk-width-1-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
+                          <select class="uk-select uk-form-small" v-model="form.country" @change="selectCountry">
+                              <option value="">請選擇城市</option>
+                              <!-- v-for -->
+                              <option :value="item.id" v-for="item in select.counties">{{ item.name }}</option>
+                          </select>
+                      </div>
+                      <div class="uk-width-1-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
+                          <select class="uk-select uk-form-small" v-model="form.city" @change="selectCity">
+                              <option value="">請選擇地區</option>
+                              <!-- v-for -->
+                              <option :value="item.city" v-for="item in select.cities">{{ item.city }}</option>
+                          </select>
+                      </div>
+                      <div class="uk-width-1-4 ">
+                          <input class="uk-input uk-form-small" type="text" placeholder="郵遞區號" v-model="form.zipcode" disabled>
+                      </div>
+                  </div>
+                  <div class="uk-margin uk-flex uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-4" for="register_address">通訊地址</label>
+                      <input type="text" id="register_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入通訊地址" v-model="form.address">
+                  </div>
+                  <div class="uk-margin uk-flex uk-flex-middle">
+                      <div class="uk-width-1-4">
+                          <label class="uk-text-small" for="register_captcha">驗證碼</label>
+                      </div>
+                      <div class="uk-width-3-4 uk-flex uk-flex-middle">
+                          <div class="uk-width-1-4" @click="refreshCode">
+                              <Captcha :identifyCode="captcha.answers" :contentHeight="30" :contentWidth="120"></Captcha>
+                          </div>
+                          <div class="uk-width-3-4">
+                              <input type="text" id="register_captcha" maxlength="5" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1" placeholder="請輸入驗證碼" v-model="input.captcha">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="uk-flex uk-flex-middle">
+                      <div class="uk-width-1-4"></div>
+                      <div class="uk-width-3-4 uk-flex uk-flex-middle uk-text-danger">
+                          (驗證碼看不清時,請重新點擊驗證碼圖片)
+                      </div>
+                  </div>
+              </div>
+              <div class="uk-text-right">
+                  <button class="uk-button uk-button-small uk-button-primary uk-padding uk-padding-remove-vertical" type="button" @click="register">註冊</button>
+              </div>
+          </div>
+
+        </div>
+
+        <div id="modal-confirm" uk-modal="bg-close: false">
+            <div class="uk-modal-dialog">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-body">
+                    <div class="uk-text-center uk-text-warning"><span uk-icon="icon: warning; ratio: 3.5"></span></div>
+                    <div class="uk-text-center uk-margin-top"><h3>確定送出？</h3></div>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
+                    <button class="uk-button uk-button-small uk-button-primary" type="button" @click="setSmsCode">確定</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-sms" uk-modal="bg-close: false">
+            <div class="uk-modal-dialog">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-body">
+                    <div class="uk-text-center uk-margin-top"><h3>請輸入簡訊驗證碼</h3>　(測試：{{ test_code }}) </div>
+                    <div class="uk-text-center uk-margin-top">
+                        <input class="uk-input uk-form-small uk-form-width-small uk-text-center" maxlength="5" v-model="sms_code" />
+                    </div>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
+                    <button class="uk-button uk-button-small uk-button-primary" type="button" :disabled="seconds !== 0" @click="returnCode">重新發送驗證碼 ({{ seconds }}) </button>
+                    <button class="uk-button uk-button-small uk-button-primary" type="button" @click="authSmsCode">確定</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-success" uk-modal>
+            <div class="uk-modal-dialog">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-body">
+                    <div class="uk-text-center uk-text-success"><span uk-icon="icon: check; ratio: 3.5"></span></div>
+                    <div class="uk-text-center uk-margin-top"><h3>{{ message }}</h3></div>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-button uk-button-small uk-button-primary uk-modal-close" type="button">確定</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</template>
+
+<script>
+    import { filter, find } from 'lodash';
+    import { init, passwordRule, emailRule } from '~/plugins/app.js';
+    import twzipcode from 'twzipcode-data'
+    import Captcha from '~/components/Captcha';
+
+    export default {
+        layout: 'default',
+        components: { Captcha },
+        data() {
+
+            let origin_zipcode = twzipcode();
+
+            return {
+                form: {
+                  cellphone: '',
+                  password: '',
+                  return_password: '',
+                  name: '',
+                  email: '',
+                  telephone: '',
+                  country: '',
+                  city: '',
+                  zipcode: '',
+                  address: '',
+                },
+                input: {
+                  captcha: '',
+                },
+                select: {
+                  counties: [],
+                  cities: [],
+                },
+                captcha: {
+                  answers: '',
+                },
+                origin_seconds: 60,
+                seconds: 60,
+                sms_code: '',
+                set_interval: null,
+                origin_zipcode,
+
+                message: '註冊成功',
+
+                test_code: '',
+            }
+        },
+        async asyncData({$axios, store, route}) {
+            return {
+
+            };
+        },
+        async fetch ({ $axios, store, params }) {
+            await init(store);
+        },
+        mounted() {
+            this.refreshCode();
+            this.$store.commit('disabledLoading');
+            this.select.counties = this.origin_zipcode.counties;
+        },
+        methods: {
+          getData(page, directory_id) {
+            this.$store.commit('enabledLoading');
+          },
+          selectCountry() {
+            this.form.city = '';
+            this.form.zipcode = '';
+            this.select.cities = filter(this.origin_zipcode.zipcodes, v => { return v.county === this.form.country });
+          },
+          selectCity() {
+            this.form.zipcode = '';
+            if (this.form.city) {
+              this.form.zipcode = find(this.select.cities, ['city', this.form.city]).zipcode;
+            }
+          },
+          randomNum(min, max) {
+            return Math.floor(Math.random() * (max - min) + min)
+          },
+          refreshCode() {
+            this.captcha.answers = '';
+            this.makeCode(this.captcha.answers, 5);
+          },
+          makeCode(o, l) {
+            for (let i = 0; i < l; i++) {
+              this.captcha.answers += this.randomNum(0, 9);
+            }
+          },
+          auth() {
+            if (!this.form.cellphone) {
+              return {'status': false, 'message': '請輸入行動電話'}
+            }
+
+            if (this.form.cellphone.length !== 10) {
+              return {'status': false, 'message': '行動電話長度須為10碼'}
+            }
+
+            if (this.form.cellphone.substr(0, 2) !== '09') {
+              return {'status': false, 'message': '行動電話格式錯誤'}
+            }
+
+            if (!this.form.password) {
+              return {'status': false, 'message': '請輸入密碼'}
+            }
+
+            if (!passwordRule(this.form.password)) {
+              return {'status': false, 'message': '密碼規則須為8碼以上數字+英文'}
+            }
+
+            if (this.form.password !== this.form.return_password) {
+              return {'status': false, 'message': '密碼與確認欄位需相同'}
+            }
+
+            if (!this.form.name) {
+              return {'status': false, 'message': '請輸入姓名'}
+            }
+
+            if (this.form.email && !emailRule(this.form.email)) {
+              return {'status': false, 'message': '電子信箱格式錯誤'}
+            }
+
+            if (this.input.captcha !== this.captcha.answers) {
+              return {'status': false, 'message': '驗證碼錯誤'}
+            }
+
+            return { 'status': true }
+          },
+          register() {
+            UIkit.notification.closeAll();
+
+            if (!this.auth().status) {
+              UIkit.notification({
+                message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> ' + this.auth().message + '',
+                status: 'danger',
+                timeout: 1000
+              })
+
+              return false;
+            }
+
+            UIkit.modal('#modal-confirm').show();
+          },
+          setSmsCode() {
+              clearInterval(this.set_interval);
+              this.set_interval = null;
+              this.seconds = this.origin_seconds;
+              this.$store.commit('enabledLoading');
+              UIkit.modal('#modal-confirm').hide();
+
+              this.__setSmsCode();
+          },
+          returnCode() {
+              UIkit.modal('#modal-sms').hide();
+
+              clearInterval(this.set_interval);
+              this.set_interval = null;
+              this.seconds = this.origin_seconds;
+              this.$store.commit('enabledLoading');
+
+              this.__setSmsCode();
+          },
+          __setSmsCode() {
+            this.$axios.post(process.env.API_URL + '/api/auth/set-sms-code', {cellphone: this.form.cellphone}).then(res => {
+
+              // test
+              this.test_code = res.data.message;
+
+              this.set_interval = setInterval(() => {
+                this.seconds -= 1;
+                if (this.seconds === 0) {
+                  clearInterval(this.set_interval);
+                  this.set_interval = null;
+                }
+              }, 1000);
+              this.$store.commit('disabledLoading');
+              UIkit.modal('#modal-sms').show();
+            });
+          },
+          authSmsCode() {
+              if (!this.sms_code) {
+                  UIkit.notification.closeAll();
+                  UIkit.notification({
+                      message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> 請輸入驗證碼',
+                      status: 'danger',
+                      timeout: 1000
+                  });
+                  return false;
+              }
+
+              this.$store.commit('enabledLoading');
+              this.$axios.post(process.env.API_URL + '/api/auth/auth-sms-code', { cellphone: this.form.cellphone, sms_code: this.sms_code }).then(res => {
+                  if (res.data.status) {
+                      UIkit.modal('#modal-sms').hide();
+                      this.save();
+                  } else {
+                      this.$store.commit('disabledLoading');
+                      UIkit.notification.closeAll();
+                      UIkit.notification({
+                          message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> ' + res.data.message,
+                          status: 'danger',
+                          timeout: 1000
+                      });
+                  }
+              });
+          },
+          save() {
+              this.$axios.post(process.env.API_URL + '/api/member/insert', this.form).then(res => {
+                  this.$store.commit('disabledLoading');
+                  if (res.data.status) {
+                      // sessionStorage.setItem('register_success', 'true');
+                      UIkit.modal('#modal-success').show();
+                  } else {
+                      UIkit.modal('#modal-sms').hide();
+                      UIkit.notification({
+                          message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> ' + res.data.message,
+                          status: 'danger',
+                          timeout: 1000
+                      });
+                  }
+              });
+          },
+        },
+    }
+</script>
+
+<style scoped lang="scss">
+
+label {
+  margin-bottom: 0;
+  min-width: 90px;
+}
+
+.container {
+  padding: 25px 4vmin 75px;
+  width: calc(100% - 15vmin);
+  min-width: calc(100% - 200px);
+  max-width: calc(100% - 200px);
+  flex-basis: calc(100% - 200px);
+
+  .form-content {
+    max-width: 1000px;
+    padding-left: 20vmin;
+    padding-right: 20vmin;
+  }
+}
+
+.menu {
+  font-size: 18px;
+  font-weight: bold;
+  width: 40vmin;
+  min-width: 150px;
+  max-width: 200px;
+  flex-basis: 40vmin;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 1%;
+  border-right: 1px solid #999;
+
+  > div {
+    padding: 5px 0;
+  }
+}
+
+.uk-modal-dialog {
+  width: 400px;
+}
+
+</style>
