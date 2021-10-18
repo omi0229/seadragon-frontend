@@ -9,7 +9,7 @@
             <a href="/"><img src="/S__111558660.jpg"/></a>
             <div class="uk-flex-1 uk-flex uk-flex-right uk-height-1-1 header-padding">
                 <div class="uk-margin-small-right">
-                    <a href="#modal-register" class="uk-flex uk-link-reset" uk-toggle>
+                    <a href="#modal-login" class="uk-flex uk-link-reset" uk-toggle>
                         <span uk-icon="icon: sign-in"></span>登入
                     </a>
                 </div>
@@ -58,19 +58,74 @@
                 </div>
             </div>
         </div>
+
+        <div id="modal-login" uk-modal="bg-close: false">
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title uk-text-center">會員登入</h2>
+                <div>
+                    <div class="uk-flex uk-flex-middle">
+                        <label for="cellphone" class="uk-width-1-4">帳號 (手機號碼)</label>
+                        <input id="cellphone" type="text" maxlength="10" class="uk-input uk-width-3-4" placeholder="請輸入您註冊的手機號碼" v-model="login.cellphone" />
+                    </div>
+                    <div class="uk-flex uk-flex-middle uk-margin-top">
+                        <label for="password" class="uk-width-1-4">密碼</label>
+                        <input id="password" type="password" maxlength="50" class="uk-input uk-width-3-4" placeholder="請輸入密碼" v-model="login.cellphone" />
+                    </div>
+                    <div class="uk-margin uk-flex uk-flex-middle">
+                        <div class="uk-width-1-4">
+                            <label class="uk-text-small" for="captcha">驗證碼</label>
+                        </div>
+                        <div class="uk-width-3-4 uk-flex uk-flex-middle">
+                            <div class="uk-width-1-4" @click="refreshCode">
+                                <Captcha :identifyCode="captcha.answers" :contentHeight="30" :contentWidth="120"></Captcha>
+                            </div>
+                            <div class="uk-width-3-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-right">
+                                <input type="text" id="captcha" maxlength="5" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1" placeholder="請輸入驗證碼" v-model="input.captcha">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-flex uk-flex-middle">
+                        <div class="uk-width-1-4"></div>
+                        <div class="uk-width-3-4 uk-flex uk-flex-middle uk-text-danger">
+                            (驗證碼看不清時,請重新點擊驗證碼圖片)
+                        </div>
+                    </div>
+                </div>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-small uk-button-danger" type="button">忘記密碼</button>
+                    <button class="uk-button uk-button-small uk-button-primary" type="button" @click="register">會員註冊</button>
+                    <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
+                    <button class="uk-button uk-button-small uk-button-primary" type="button">登入</button>
+                </p>
+            </div>
+        </div>
+
     </div>
 </template>
 
 <script>
   import { getCartCount } from '~/plugins/app.js';
+  import Captcha from '~/components/Captcha';
 
   export default {
+    components: { Captcha },
     data() {
       return {
-
+        login: {
+          cellphone: '',
+          phone: '',
+        },
+        input: {
+          captcha: '',
+        },
+        captcha: {
+          answers: '',
+        },
       }
     },
     mounted() {
+      this.refreshCode();
+
       if (!localStorage.getItem('cart_id')) {
         this.$axios(process.env.API_URL + '/api/cart/get-cart-id').then(res => {
           localStorage.setItem('cart_id', res.data);
@@ -83,11 +138,33 @@
       showCart() {
 
       },
+      register() {
+        location.href = '/register';
+      },
+      randomNum(min, max) {
+        return Math.floor(Math.random() * (max - min) + min)
+      },
+      refreshCode() {
+        this.captcha.answers = '';
+        this.makeCode(this.captcha.answers, 5);
+      },
+      makeCode(o, l) {
+        for (let i = 0; i < l; i++) {
+          this.captcha.answers += this.randomNum(0, 9);
+        }
+      },
     }
   }
 </script>
 
 <style scoped lang="scss">
+
+    #modal-login {
+        label {
+            margin-bottom: 0;
+            min-width: 90px;
+        }
+    }
 
     #header {
 

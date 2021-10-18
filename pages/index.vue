@@ -67,6 +67,19 @@
             </template>
         </template>
 
+        <div id="modal-success" uk-modal>
+            <div class="uk-modal-dialog">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-body">
+                    <div class="uk-text-center uk-text-success"><span uk-icon="icon: check; ratio: 3.5"></span></div>
+                    <div class="uk-text-center uk-margin-top"><h3>{{ message }}</h3></div>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-button uk-button-small uk-button-primary uk-modal-close" type="button">確定</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </template>
@@ -84,6 +97,7 @@
                 list: [],
                 carousel_list: [],
                 put_on_list: [],
+                message: '註冊成功',
             }
         },
         async asyncData({$axios, store, route}) {
@@ -114,6 +128,11 @@
         },
         mounted() {
             this.$store.commit('disabledLoading');
+
+            if (sessionStorage.getItem('register_success') && sessionStorage.getItem('register_success') === 'true') {
+                sessionStorage.removeItem('register_success')
+                UIkit.modal('#modal-success').show();
+            }
         },
         methods: {
             getData(page, directory_id) {
@@ -149,6 +168,10 @@
     width: 100%;
     object-fit: cover;
   }
+}
+
+.uk-modal-dialog {
+  width: 400px;
 }
 
 </style>

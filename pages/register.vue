@@ -125,20 +125,6 @@
                 </div>
             </div>
         </div>
-
-        <div id="modal-success" uk-modal>
-            <div class="uk-modal-dialog">
-                <button class="uk-modal-close-default" type="button" uk-close></button>
-                <div class="uk-modal-body">
-                    <div class="uk-text-center uk-text-success"><span uk-icon="icon: check; ratio: 3.5"></span></div>
-                    <div class="uk-text-center uk-margin-top"><h3>{{ message }}</h3></div>
-                </div>
-                <div class="uk-modal-footer uk-text-right">
-                    <button class="uk-button uk-button-small uk-button-primary uk-modal-close" type="button">確定</button>
-                </div>
-            </div>
-        </div>
-
     </div>
 </template>
 
@@ -183,8 +169,6 @@
                 sms_code: '',
                 set_interval: null,
                 origin_zipcode,
-
-                message: '註冊成功',
 
                 test_code: '',
             }
@@ -348,11 +332,11 @@
           },
           save() {
               this.$axios.post(process.env.API_URL + '/api/member/insert', this.form).then(res => {
-                  this.$store.commit('disabledLoading');
                   if (res.data.status) {
-                      // sessionStorage.setItem('register_success', 'true');
-                      UIkit.modal('#modal-success').show();
+                      sessionStorage.setItem('register_success', 'true');
+                      location.href = '/';
                   } else {
+                      this.$store.commit('disabledLoading');
                       UIkit.modal('#modal-sms').hide();
                       UIkit.notification({
                           message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> ' + res.data.message,
