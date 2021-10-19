@@ -48,3 +48,12 @@ export const emailRule = email => {
 export const randomNum = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min)
 }
+
+export const notification = (message, type, second = 1000) => {
+    UIkit.notification.closeAll();
+    UIkit.notification({
+        message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> ' + message,
+        status: type,
+        timeout: second
+    })
+}

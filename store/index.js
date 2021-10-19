@@ -5,6 +5,17 @@ export const state = () => ({
   news_types_list: [],
   cooking_types_list: [],
   directory_list: [],
+  member: {
+      id: '',
+      cellphone: '',
+      name: '',
+      telephone: '',
+      zipcode: '',
+      country: '',
+      city: '',
+      address: '',
+      token: '',
+  },
 });
 
 export const mutations = {
@@ -33,5 +44,27 @@ export const mutations = {
   },
   setDirectoryList(state, result) {
     state.directory_list = result;
+  },
+  clearLoginMember(state) {
+    state.member.id = '';
+    state.member.cellphone = '';
+    state.member.name = '';
+    state.member.telephone = '';
+    state.member.zipcode = '';
+    state.member.country = '';
+    state.member.city = '';
+    state.member.address = '';
+    state.member.token = '';
+  },
+  setLoginMember(state, result) {
+    state.member.id = result.id ? result.id : '';
+    state.member.cellphone = result.cellphone ? result.cellphone : '';
+    state.member.name = result.name ? result.name : '';
+    state.member.telephone = result.telephone ? result.telephone : '';
+    state.member.zipcode = result.zipcode ? result.zipcode : '';
+    state.member.country = result.country ? result.country : '';
+    state.member.city = result.city ? result.city : '';
+    state.member.address = result.address ? result.address : '';
+    state.member.token = result.token ? result.token : '';
   }
 };

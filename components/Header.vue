@@ -8,16 +8,30 @@
             </div>
             <a href="/"><img src="/S__111558660.jpg"/></a>
             <div class="uk-flex-1 uk-flex uk-flex-right uk-height-1-1 header-padding">
-                <div class="uk-margin-small-right">
+                <template v-if="$store.state.member.id">
+                  <div class="uk-margin-small-right">
+                    <a href="/" class="uk-flex uk-link-reset" uk-toggle>
+                        <span uk-icon="icon: user"></span>您好！<span class="uk-text-primary uk-text-bold">{{$store.state.member.name}}</span>
+                    </a>
+                  </div>
+                  <div class="uk-margin-small-right">
+                    <a href="#modal-logout" class="uk-flex uk-link-reset" uk-toggle>
+                      <span uk-icon="icon: sign-out"></span>登出
+                    </a>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="uk-margin-small-right">
                     <a href="#modal-login" class="uk-flex uk-link-reset" uk-toggle>
-                        <span uk-icon="icon: sign-in"></span>登入
+                      <span uk-icon="icon: sign-in"></span>登入
                     </a>
-                </div>
-                <div class="uk-margin-small-right">
+                  </div>
+                  <div class="uk-margin-small-right">
                     <a href="/register" class="uk-flex uk-link-reset">
-                        <span uk-icon="icon: user"></span>註冊
+                      <span uk-icon="icon: user"></span>註冊
                     </a>
-                </div>
+                  </div>
+                </template>
                 <div class="cursor uk-flex" @click="showCart">
                     <span uk-icon="icon: cart; ratio: 1" :class="{ 'cart-icon-margin': $store.state.cart_count <= 0 }"></span><span class="uk-badge" v-show="$store.state.cart_count > 0">{{ $store.state.cart_count }}</span>購物車
                 </div>
@@ -95,8 +109,22 @@
                     <button class="uk-button uk-button-small uk-button-danger" type="button">忘記密碼</button>
                     <button class="uk-button uk-button-small uk-button-primary" type="button" @click="register">會員註冊</button>
                     <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
-                    <button class="uk-button uk-button-small uk-button-primary" type="button">登入</button>
+                    <button class="uk-button uk-button-small uk-button-primary" type="button" @click="memberLogin">登入</button>
                 </p>
+            </div>
+        </div>
+
+        <div id="modal-logout" uk-modal="bg-close: false">
+            <div class="uk-modal-dialog">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-body">
+                    <div class="uk-text-center uk-text-warning"><span uk-icon="icon: question; ratio: 3.5"></span></div>
+                    <div class="uk-text-center uk-margin-top"><h3>確定登出？</h3></div>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
+                    <button class="uk-button uk-button-small uk-button-primary uk-modal-close" type="button" @click="memberLogout">確定</button>
+                </div>
             </div>
         </div>
 
@@ -104,7 +132,7 @@
 </template>
 
 <script>
-  import { getCartCount, randomNum } from '~/plugins/app.js';
+  import { getCartCount, randomNum, notification } from '~/plugins/app.js';
   import Captcha from '~/components/Captcha';
 
   export default {
@@ -133,6 +161,10 @@
       }
 
       getCartCount(this.$store, localStorage.getItem('cart_id'));
+
+      if (sessionStorage.getItem('login_member')) {
+        this.$store.commit('setLoginMember', JSON.parse(sessionStorage.getItem('login_member')));
+      }
     },
     methods: {
       showCart() {
@@ -149,6 +181,52 @@
         for (let i = 0; i < l; i++) {
           this.captcha.answers += randomNum(0, 9);
         }
+      },
+      memberLogin() {
+        if (!this.login.cellphone) {
+          notification('帳號不得為空', 'danger');
+          return false;
+        }
+
+        if (!this.login.password) {
+          notification('密碼不得為空', 'danger');
+          return false;
+        }
+
+        if (this.input.captcha !== this.captcha.answers) {
+          notification('驗證碼錯誤', 'danger');
+          return false;
+        }
+
+        this.$store.commit('enabledLoading');
+
+        this.$axios.post(process.env.API_URL + '/api/auth/login', this.login).then(res => {
+          if (res.data.status) {
+            UIkit.modal('#modal-login').hide();
+            sessionStorage.setItem('login_member', JSON.stringify(res.data.data));
+            this.login.cellphone = this.login.password = '';
+            setTimeout(() => {
+              this.$store.commit('setLoginMember', res.data.data);
+              notification('登入成功', 'success', 2000);
+              this.$store.commit('disabledLoading');
+            }, 2000)
+          } else {
+            notification(res.data.message, 'danger');
+            this.$store.commit('disabledLoading');
+          }
+        });
+
+        return true;
+      },
+      memberLogout() {
+        this.$store.commit('enabledLoading');
+        UIkit.modal('#modal-logout').hide();
+        sessionStorage.removeItem('login_member');
+        setTimeout(() => {
+          this.$store.commit('clearLoginMember');
+          notification('登出成功', 'success', 2000);
+          this.$store.commit('disabledLoading');
+        }, 2000)
       },
     }
   }
@@ -239,6 +317,10 @@
       label {
         margin-bottom: 0 !important;
       }
+    }
+
+    #modal-logout .uk-modal-dialog {
+      width: 400px;
     }
 
 </style>

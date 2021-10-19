@@ -2,7 +2,7 @@
     <div class="uk-flex">
         <div class="menu">
             <div>
-              <a href="#" class="uk-link-text uk-text-decoration-none">會員註冊</a>
+              <a href="/register" class="uk-link-text uk-text-decoration-none">會員註冊</a>
             </div>
             <div>
               <a href="#" class="uk-link-text uk-text-decoration-none">忘記密碼</a>

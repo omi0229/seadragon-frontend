@@ -37,7 +37,7 @@
         width: 100%;
         min-height: 100vh;
         height: 100vh;
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 0.7);
         z-index: 2000;
         top: 50%;
         left: 50%;
