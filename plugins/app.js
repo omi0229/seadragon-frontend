@@ -43,3 +43,8 @@ export const emailRule = email => {
 
     return true;
 }
+
+// 亂數產生數字
+export const randomNum = (min, max) => {
+    return Math.floor(Math.random() * (max - min) + min)
+}

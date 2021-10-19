@@ -69,7 +69,7 @@
                     </div>
                     <div class="uk-flex uk-flex-middle uk-margin-top">
                         <label for="password" class="uk-width-1-4">密碼</label>
-                        <input id="password" type="password" maxlength="50" class="uk-input uk-width-3-4" placeholder="請輸入密碼" v-model="login.cellphone" />
+                        <input id="password" type="password" maxlength="50" class="uk-input uk-width-3-4" placeholder="請輸入密碼" v-model="login.password" />
                     </div>
                     <div class="uk-margin uk-flex uk-flex-middle">
                         <div class="uk-width-1-4">
@@ -77,7 +77,7 @@
                         </div>
                         <div class="uk-width-3-4 uk-flex uk-flex-middle">
                             <div class="uk-width-1-4" @click="refreshCode">
-                                <Captcha :identifyCode="captcha.answers" :contentHeight="30" :contentWidth="120"></Captcha>
+                                <Captcha elementId="login-graphic-captcha" :identifyCode="captcha.answers" :contentHeight="30" :contentWidth="120"></Captcha>
                             </div>
                             <div class="uk-width-3-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-right">
                                 <input type="text" id="captcha" maxlength="5" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1" placeholder="請輸入驗證碼" v-model="input.captcha">
@@ -104,7 +104,7 @@
 </template>
 
 <script>
-  import { getCartCount } from '~/plugins/app.js';
+  import { getCartCount, randomNum } from '~/plugins/app.js';
   import Captcha from '~/components/Captcha';
 
   export default {
@@ -113,7 +113,7 @@
       return {
         login: {
           cellphone: '',
-          phone: '',
+          password: '',
         },
         input: {
           captcha: '',
@@ -141,16 +141,13 @@
       register() {
         location.href = '/register';
       },
-      randomNum(min, max) {
-        return Math.floor(Math.random() * (max - min) + min)
-      },
       refreshCode() {
         this.captcha.answers = '';
         this.makeCode(this.captcha.answers, 5);
       },
       makeCode(o, l) {
         for (let i = 0; i < l; i++) {
-          this.captcha.answers += this.randomNum(0, 9);
+          this.captcha.answers += randomNum(0, 9);
         }
       },
     }

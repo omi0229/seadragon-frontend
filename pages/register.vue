@@ -130,7 +130,7 @@
 
 <script>
     import { filter, find } from 'lodash';
-    import { init, passwordRule, emailRule } from '~/plugins/app.js';
+    import { init, passwordRule, emailRule, randomNum } from '~/plugins/app.js';
     import twzipcode from 'twzipcode-data'
     import Captcha from '~/components/Captcha';
 
@@ -201,16 +201,13 @@
               this.form.zipcode = find(this.select.cities, ['city', this.form.city]).zipcode;
             }
           },
-          randomNum(min, max) {
-            return Math.floor(Math.random() * (max - min) + min)
-          },
           refreshCode() {
             this.captcha.answers = '';
             this.makeCode(this.captcha.answers, 5);
           },
           makeCode(o, l) {
             for (let i = 0; i < l; i++) {
-              this.captcha.answers += this.randomNum(0, 9);
+              this.captcha.answers += randomNum(0, 9);
             }
           },
           auth() {
