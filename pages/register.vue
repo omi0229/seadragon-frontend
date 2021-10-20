@@ -1,13 +1,6 @@
 <template>
     <div class="uk-flex">
-        <div class="menu">
-            <div>
-              <a href="/register" class="uk-link-text uk-text-decoration-none">會員註冊</a>
-            </div>
-            <div>
-              <a href="#" class="uk-link-text uk-text-decoration-none">忘記密碼</a>
-            </div>
-        </div>
+        <RegisterMenu></RegisterMenu>
         <div class="container">
           <ul class="uk-breadcrumb">
               <li><a href="/">Home</a></li>
@@ -133,10 +126,11 @@
     import { init, passwordRule, emailRule, randomNum } from '~/plugins/app.js';
     import twzipcode from 'twzipcode-data'
     import Captcha from '~/components/Captcha';
+    import RegisterMenu from '~/components/RegisterMenu';
 
     export default {
         layout: 'default',
-        components: { Captcha },
+        components: { Captcha, RegisterMenu },
         data() {
 
             let origin_zipcode = twzipcode();
@@ -187,9 +181,6 @@
             this.select.counties = this.origin_zipcode.counties;
         },
         methods: {
-          getData(page, directory_id) {
-            this.$store.commit('enabledLoading');
-          },
           selectCountry() {
             this.form.city = '';
             this.form.zipcode = '';
@@ -365,23 +356,6 @@ label {
     max-width: 1000px;
     padding-left: 20vmin;
     padding-right: 20vmin;
-  }
-}
-
-.menu {
-  font-size: 18px;
-  font-weight: bold;
-  width: 40vmin;
-  min-width: 150px;
-  max-width: 200px;
-  flex-basis: 40vmin;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 1%;
-  border-right: 1px solid #999;
-
-  > div {
-    padding: 5px 0;
   }
 }
 
