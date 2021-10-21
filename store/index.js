@@ -65,6 +65,17 @@ export const mutations = {
     state.member.country = result.country ? result.country : '';
     state.member.city = result.city ? result.city : '';
     state.member.address = result.address ? result.address : '';
-    state.member.token = result.token ? result.token : '';
-  }
+    state.member.token = result.access_token ? result.access_token : '';
+  },
 };
+
+const cookieparser = process.server ? require('cookieparser') : undefined
+
+export const actions = {
+  async nuxtServerInit({commit}, {req}) {
+    let parse = cookieparser.parse(req.headers.cookie);
+    if (parse && parse.user) {
+      commit('setLoginMember', JSON.parse(parse.user));
+    }
+  },
+}

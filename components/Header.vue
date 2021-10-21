@@ -11,7 +11,12 @@
                 <template v-if="$store.state.member.id">
                   <div class="uk-margin-small-right">
                     <a href="/" class="uk-flex uk-link-reset" uk-toggle>
-                        <span uk-icon="icon: user"></span>您好！<span class="uk-text-primary uk-text-bold">{{$store.state.member.name}}</span>
+                        您好！<span class="uk-text-primary uk-text-bold">{{$store.state.member.name}}</span>
+                    </a>
+                  </div>
+                  <div class="uk-margin-small-right">
+                    <a href="/account/basic" class="uk-flex uk-link-reset" uk-toggle>
+                        <span uk-icon="icon: user"></span>會員中心
                     </a>
                   </div>
                   <div class="uk-margin-small-right">
@@ -132,6 +137,7 @@
 </template>
 
 <script>
+  import Cookies from 'js-cookie';
   import { getCartCount, randomNum, notification } from '~/plugins/app.js';
   import Captcha from '~/components/Captcha';
 
@@ -203,10 +209,13 @@
         this.$axios.post(process.env.API_URL + '/api/auth/login', this.login).then(res => {
           if (res.data.status) {
             UIkit.modal('#modal-login').hide();
-            sessionStorage.setItem('login_member', JSON.stringify(res.data.data));
+            // sessionStorage.setItem('login_member', JSON.stringify(res.data.data));
             this.login.cellphone = this.login.password = '';
             setTimeout(() => {
               this.$store.commit('setLoginMember', res.data.data);
+
+              Cookies.set('user', JSON.stringify(res.data.data));
+
               notification('登入成功', 'success', 2000);
               this.$store.commit('disabledLoading');
             }, 2000)
@@ -221,7 +230,10 @@
       memberLogout() {
         this.$store.commit('enabledLoading');
         UIkit.modal('#modal-logout').hide();
-        sessionStorage.removeItem('login_member');
+        // sessionStorage.removeItem('login_member');
+
+        Cookies.remove('user');
+
         setTimeout(() => {
           this.$store.commit('clearLoginMember');
           notification('登出成功', 'success', 2000);
