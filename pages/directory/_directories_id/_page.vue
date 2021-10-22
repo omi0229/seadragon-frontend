@@ -3,7 +3,7 @@
     <div class="container">
       <ul class="uk-breadcrumb">
           <li><a href="/">Home</a></li>
-          <li><a href="/product">線上購物</a></li>
+          <li><a href="/directory">線上購物</a></li>
       </ul>
 
           <ul class="uk-subnav uk-subnav-divider" uk-margin>
