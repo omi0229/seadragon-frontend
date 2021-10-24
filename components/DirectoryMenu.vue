@@ -1,18 +1,21 @@
 <template>
 
     <div class="menu">
-        <div>
-          <a href="/account/basic" class="uk-link-text uk-text-decoration-none">基本資料</a>
-        </div>
-        <div>
-          <a href="/account/password" class="uk-link-text uk-text-decoration-none">變更密碼</a>
+        <div v-for="item in list">
+          <a :href="'/directory/' + item.id" class="uk-link-text uk-text-decoration-none">{{item.name}}</a>
         </div>
     </div>
 
 </template>
 
 <script>
-    export default {}
+    export default {
+      data() {
+        return {
+          list: this.$store.state.directory_list,
+        }
+      },
+    }
 </script>
 
 <style scoped lang="scss">

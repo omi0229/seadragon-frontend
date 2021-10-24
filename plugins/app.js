@@ -3,15 +3,15 @@ import axios from 'axios';
 export const init = store => {
     return new Promise(async resolve => {
         await axios.get(process.env.API_URL + '/api/news-type/list/all').then(res => {
-            store.commit('setNewsTypesList', res.data);
+            store.dispatch('setNewsTypesList', res.data);
         });
 
         await axios.get(process.env.API_URL + '/api/cooking-type/list/all').then(res => {
-            store.commit('setCookingTypesList', res.data);
+            store.dispatch('setCookingTypesList', res.data);
         });
 
         await axios.get(process.env.API_URL + '/api/directory/list/all').then(res => {
-            store.commit('setDirectoryList', res.data);
+            store.dispatch('setDirectoryList', res.data);
         });
 
         resolve();
@@ -50,10 +50,30 @@ export const randomNum = (min, max) => {
 }
 
 export const notification = (message, type, second = 1000) => {
+
+    let icon = type === 'success' ? 'check' : 'close'
+
     UIkit.notification.closeAll();
     UIkit.notification({
-        message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> ' + message,
+        message: '<span uk-icon=\'icon: ' + icon + ';ratio: 1.5\'></span> ' + message,
         status: type,
         timeout: second
     })
+}
+
+export const loginAuth = (store, reload = false) => {
+  if (store.state.user_expired_time) {
+    let timer = setInterval(() => {
+      if (new Date().getTime() > Number(store.state.user_expired_time)) {
+        store.commit('clearExpiredTime');
+        store.commit('clearLoginMember');
+        if (reload) {
+          store.commit('enabledLoading');
+          window.location.reload();
+        }
+
+        clearInterval(timer);
+      }
+    }, 1000)
+  }
 }

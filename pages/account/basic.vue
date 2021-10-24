@@ -5,7 +5,7 @@
           <ul class="uk-breadcrumb">
               <li><a href="/">Home</a></li>
               <li><a href="#">會員中心</a></li>
-              <li><a href="/basic">基本資料修改</a></li>
+              <li><a href="/account/basic">基本資料修改</a></li>
           </ul>
 
           <div class="form-content uk-flex uk-flex-column uk-margin-auto">
@@ -14,8 +14,8 @@
               </div>
               <div>
                   <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_phone">行動電話 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入行動電話 ( 帳號 )" v-model="form.cellphone">
+                      <label class="uk-text-small uk-width-1-4">行動電話 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <div class="uk-width-3-4"> {{ cellphone }} </div>
                   </div>
                   <div class="uk-margin uk-flex uk-flex-middle">
                       <label class="uk-text-small uk-width-1-4" for="register_name">姓名 <span class="uk-text-bold uk-text-danger">*</span></label>
@@ -97,8 +97,9 @@
 </template>
 
 <script>
+    import Cookies from 'js-cookie';
     import { filter, find } from 'lodash';
-    import { init, passwordRule, emailRule, randomNum } from '~/plugins/app.js';
+    import { init, loginAuth, emailRule, randomNum, notification } from '~/plugins/app.js';
     import twzipcode from 'twzipcode-data'
     import Captcha from '~/components/Captcha';
     import AccountMenu from '~/components/AccountMenu';
@@ -106,20 +107,22 @@
     export default {
         layout: 'default',
         components: { Captcha, AccountMenu },
+        middleware: 'authenticated',
         data() {
 
             let origin_zipcode = twzipcode();
 
             return {
+                id: this.$store.state.member.id,
+                cellphone: this.$store.state.member.cellphone,
                 form: {
-                  cellphone: '',
-                  name: '',
-                  email: '',
-                  telephone: '',
-                  country: '',
-                  city: '',
-                  zipcode: '',
-                  address: '',
+                  name: this.$store.state.member.name,
+                  email: this.$store.state.member.email,
+                  telephone: this.$store.state.member.telephone,
+                  country: this.$store.state.member.country,
+                  city: this.$store.state.member.city,
+                  zipcode: this.$store.state.member.zipcode,
+                  address: this.$store.state.member.address,
                 },
                 input: {
                   captcha: '',
@@ -143,9 +146,15 @@
             await init(store);
         },
         mounted() {
+            loginAuth(this.$store, true);
+
             this.refreshCode();
-            this.$store.commit('disabledLoading');
             this.select.counties = this.origin_zipcode.counties;
+            this.selectCountry();
+            this.form.city = this.$store.state.member.city;
+            this.form.zipcode = this.$store.state.member.zipcode;
+
+            this.$store.commit('disabledLoading');
         },
         methods: {
           selectCountry() {
@@ -169,18 +178,6 @@
             }
           },
           auth() {
-            if (!this.form.cellphone) {
-              return {'status': false, 'message': '請輸入行動電話'}
-            }
-
-            if (this.form.cellphone.length !== 10) {
-              return {'status': false, 'message': '行動電話長度須為10碼'}
-            }
-
-            if (this.form.cellphone.substr(0, 2) !== '09') {
-              return {'status': false, 'message': '行動電話格式錯誤'}
-            }
-
             if (!this.form.name) {
               return {'status': false, 'message': '請輸入姓名'}
             }
@@ -211,19 +208,36 @@
             UIkit.modal('#modal-confirm').show();
           },
           save() {
-              this.$axios.post(process.env.API_URL + '/api/member/insert', this.form).then(res => {
-                  if (res.data.status) {
-                      sessionStorage.setItem('register_success', 'true');
-                      location.href = '/';
-                  } else {
-                      this.$store.commit('disabledLoading');
-                      UIkit.modal('#modal-sms').hide();
-                      UIkit.notification({
-                          message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> ' + res.data.message,
-                          status: 'danger',
-                          timeout: 1000
-                      });
+              this.$store.commit('enabledLoading');
+
+              let data = { id: this.id, form: this.form };
+
+              let config = {
+                  headers: {
+                    Authorization: 'Bearer ' + this.$store.state.member.token
                   }
+              };
+
+              this.$axios.post(process.env.API_URL + '/api/member/update', data, config).then(res => {
+                  UIkit.modal('#modal-confirm').hide();
+                  this.$store.commit('disabledLoading');
+                  let user = {
+                    id: this.$store.state.member.id,
+                    cellphone: this.$store.state.member.cellphone,
+                    name: this.form.name,
+                    email: this.form.email,
+                    telephone: this.form.telephone,
+                    zipcode: this.form.zipcode,
+                    country: this.form.country,
+                    city: this.form.city,
+                    address: this.form.address,
+                    access_token: this.$store.state.member.token,
+                  }
+
+                  Cookies.set('user', JSON.stringify(user));
+                  this.$store.commit('setLoginMember', user);
+
+                  res.data.status ? notification(res.data.message, 'success', 2000) : notification(res.data.message, 'danger', 1000);
               });
           },
         },

@@ -1,48 +1,48 @@
 <template>
-
-    <div class="container">
-      <ul class="uk-breadcrumb">
-          <li><a href="/">Home</a></li>
-          <li><a href="/directory">線上購物</a></li>
-      </ul>
-
-          <ul class="uk-subnav uk-subnav-divider" uk-margin>
-              <li :class="item.id === directories_id ? 'uk-active' : ''" v-for="item in $store.state.directory_list">
-                  <a :href="'/directory/' + item.id" >{{item.name}}</a>
-              </li>
+    <div class="uk-flex">
+        <DirectoryMenu></DirectoryMenu>
+        <div class="container">
+          <ul class="uk-breadcrumb">
+              <li><a href="/">Home</a></li>
+              <li><a href="/directory">線上購物</a></li>
+              <li><a :href="'/directory/' + info.id">{{ info.name }}</a></li>
           </ul>
-
-          <div class="uk-flex uk-flex-wrap">
-              <!-- v-for -->
-              <div class="uk-width-1-3 uk-margin-small-top" v-for="item in list">
-                  <div class="uk-card uk-card-default uk-card-body item-img">
-                      <a :href="'/product-info/' + item.id" class="uk-text-decoration-none">
-                          <img :src="item.product.web_img_path" />
-                      </a>
-                      <div class="uk-margin-small uk-text-emphasis uk-text-large">
-                          <a :href="'/product-info/' + item.id" class="uk-link-heading uk-text-decoration-none">{{item.product.title}}</a>
+              <div class="uk-flex uk-flex-wrap">
+                  <!-- v-for -->
+                  <div class="uk-width-1-3 uk-margin-small-top" v-for="item in list">
+                      <div class="uk-card uk-card-default uk-card-body item-img">
+                          <a :href="'/product-info/' + item.id" class="uk-text-decoration-none">
+                              <img :src="item.product.web_img_path" />
+                          </a>
+                          <div class="uk-margin-small uk-text-emphasis uk-text-large">
+                              <a :href="'/product-info/' + item.id" class="uk-link-heading uk-text-decoration-none">{{item.product.title}}</a>
+                          </div>
                       </div>
                   </div>
               </div>
-          </div>
-          <Pagination ref="pagination" :all_count="all_count" :page_count="page_count" :page_item_count="page_item_count" @get-data="getData"></Pagination>
+              <Pagination ref="pagination" :all_count="all_count" :page_count="page_count" :page_item_count="page_item_count" @get-data="getData"></Pagination>
+        </div>
     </div>
-
 </template>
 
 <script>
-    import { head } from 'lodash';
+    import { head, find } from 'lodash';
     import moment from 'moment';
     import Pagination from "../../../components/Pagination";
     import { init } from '~/plugins/app.js';
+    import DirectoryMenu from '~/components/DirectoryMenu';
 
     export default {
-        components: {Pagination},
+        components: {Pagination, DirectoryMenu},
         layout: 'default',
         data() {
             return {
                 directories_id: '',
                 list: [],
+                info: {
+                  id: null,
+                  name: '',
+                },
                 all_count: 0,
                 page_count: 0,
                 page_item_count: 10,
@@ -83,6 +83,12 @@
         mounted() {
             if (this.$route.params.page) {
                 this.$refs.pagination.setPage(Number(this.$route.params.page));
+            }
+
+            let type = find(this.$store.state.directory_list, ['id', this.directories_id]);
+            if (type) {
+                this.info.id = type.id ? type.id : null;
+                this.info.name = type.name ? type.name : null;
             }
 
             this.$store.commit('disabledLoading');

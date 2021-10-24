@@ -10,12 +10,12 @@
             <div class="uk-flex-1 uk-flex uk-flex-right uk-height-1-1 header-padding">
                 <template v-if="$store.state.member.id">
                   <div class="uk-margin-small-right">
-                    <a href="/" class="uk-flex uk-link-reset" uk-toggle>
+                    <a href="/" class="uk-flex uk-link-reset">
                         您好！<span class="uk-text-primary uk-text-bold">{{$store.state.member.name}}</span>
                     </a>
                   </div>
                   <div class="uk-margin-small-right">
-                    <a href="/account/basic" class="uk-flex uk-link-reset" uk-toggle>
+                    <a href="/account/basic" class="uk-flex uk-link-reset">
                         <span uk-icon="icon: user"></span>會員中心
                     </a>
                   </div>
@@ -44,37 +44,13 @@
         </div>
         <div class="nav" uk-navbar>
             <div class="nav-item">
-                <a href="#">最新消息</a>
-                <div class="uk-navbar-dropdown">
-                    <ul class="uk-nav uk-navbar-dropdown-nav">
-                        <!-- v-for -->
-                        <li v-for="item in $store.state.news_types_list">
-                            <a :href="'/news/' + item.id">{{item.name}}</a>
-                        </li>
-                    </ul>
-                </div>
+                <a :href="$store.state.news_types_list[0] ? '/news/' + $store.state.news_types_list[0].id : '#'">最新消息</a>
             </div>
             <div class="nav-item">
-                <a href="#">烹飪教學</a>
-                <div class="uk-navbar-dropdown">
-                    <ul class="uk-nav uk-navbar-dropdown-nav">
-                        <!-- v-for -->
-                        <li v-for="item in $store.state.cooking_types_list">
-                            <a :href="'/cooking/' + item.id">{{item.name}}</a>
-                        </li>
-                    </ul>
-                </div>
+                <a :href="$store.state.cooking_types_list[0] ? '/cooking/' + $store.state.cooking_types_list[0].id : '#'">烹飪教學</a>
             </div>
             <div class="nav-item">
-                <a href="#">線上購物</a>
-                <div class="uk-navbar-dropdown">
-                    <ul class="uk-nav uk-navbar-dropdown-nav">
-                        <!-- v-for -->
-                        <li v-for="item in $store.state.directory_list">
-                            <a :href="'/directory/' + item.id">{{item.name}}</a>
-                        </li>
-                    </ul>
-                </div>
+                <a :href="$store.state.directory_list[0] ? '/directory/' + $store.state.directory_list[0].id : '#'">線上購物</a>
             </div>
         </div>
 
@@ -138,7 +114,7 @@
 
 <script>
   import Cookies from 'js-cookie';
-  import { getCartCount, randomNum, notification } from '~/plugins/app.js';
+  import { getCartCount, randomNum, notification, loginAuth } from '~/plugins/app.js';
   import Captcha from '~/components/Captcha';
 
   export default {
@@ -209,12 +185,24 @@
         this.$axios.post(process.env.API_URL + '/api/auth/login', this.login).then(res => {
           if (res.data.status) {
             UIkit.modal('#modal-login').hide();
-            // sessionStorage.setItem('login_member', JSON.stringify(res.data.data));
             this.login.cellphone = this.login.password = '';
             setTimeout(() => {
+
+              let expired_time = new Date().getTime() + 86400000;
+
               this.$store.commit('setLoginMember', res.data.data);
+              this.$store.commit('setExpiredTime', expired_time);
 
               Cookies.set('user', JSON.stringify(res.data.data));
+              Cookies.set('user_expired_time', expired_time);
+
+              let timer = setInterval(() => {
+                if (new Date().getTime() > expired_time) {
+                  this.$store.commit('clearExpiredTime');
+                  this.$store.commit('clearLoginMember');
+                  clearInterval(timer);
+                }
+              }, 1000);
 
               notification('登入成功', 'success', 2000);
               this.$store.commit('disabledLoading');
@@ -230,14 +218,13 @@
       memberLogout() {
         this.$store.commit('enabledLoading');
         UIkit.modal('#modal-logout').hide();
-        // sessionStorage.removeItem('login_member');
 
         Cookies.remove('user');
+        Cookies.remove('user_expired_time');
 
         setTimeout(() => {
           this.$store.commit('clearLoginMember');
-          notification('登出成功', 'success', 2000);
-          this.$store.commit('disabledLoading');
+          window.location.reload();
         }, 2000)
       },
     }

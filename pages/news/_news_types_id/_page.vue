@@ -1,55 +1,54 @@
 <template>
-
-    <div class="container">
-      <ul class="uk-breadcrumb">
-          <li><a href="/">Home</a></li>
-          <li><a href="/news">最新消息</a></li>
-      </ul>
-
-      <div>
-
-          <ul class="uk-subnav uk-subnav-divider" uk-margin>
-              <li :class="item.id === news_types_id ? 'uk-active' : ''" v-for="item in $store.state.news_types_list">
-                  <a :href="'/news/' + item.id" >{{item.name}}</a>
-              </li>
+    <div class="uk-flex">
+        <NewsMenu></NewsMenu>
+        <div class="container">
+          <ul class="uk-breadcrumb">
+              <li><a href="/">Home</a></li>
+              <li><a href="/news">最新消息</a></li>
+              <li><a :href="'/news/' + info.id">{{ info.name }}</a></li>
           </ul>
+          <div>
 
-
-          <!-- v-for -->
-          <div class="uk-flex uk-margin-large-bottom" v-for="item in list">
-              <div class="uk-width-2-5 news-img">
-                  <a :href="'/news-info/' + item.id" :target="item.target === 1 ? '_blank' : '_top'" class="uk-text-decoration-none">
-                      <img :src="item.web_img_path" />
-                  </a>
-              </div>
-              <div class="uk-width-3-5 uk-padding uk-padding-remove-vertical">
-                  <div class="uk-margin-top uk-margin-bottom uk-text-muted">
-                      {{ dateFormat(item.start_date) }}
+              <!-- v-for -->
+              <div class="uk-flex uk-margin-large-bottom" v-for="item in list">
+                  <div class="uk-width-2-5 news-img">
+                      <a :href="'/news-info/' + item.id" :target="item.target === 1 ? '_blank' : '_top'" class="uk-text-decoration-none">
+                          <img :src="item.web_img_path" />
+                      </a>
                   </div>
-                  <div class="uk-text-emphasis uk-text-lead">
-                      <a :href="'/news-info/' + item.id" :target="item.target === 1 ? '_blank' : '_top'" class="uk-link-heading uk-text-decoration-none"> {{item.title}} </a>
+                  <div class="uk-width-3-5 uk-padding uk-padding-remove-vertical">
+                      <div class="uk-margin-top uk-margin-bottom uk-text-muted">
+                          {{ dateFormat(item.start_date) }}
+                      </div>
+                      <div class="uk-text-emphasis uk-text-lead">
+                          <a :href="'/news-info/' + item.id" :target="item.target === 1 ? '_blank' : '_top'" class="uk-link-heading uk-text-decoration-none"> {{item.title}} </a>
+                      </div>
                   </div>
               </div>
+              <Pagination ref="pagination" :all_count="all_count" :page_count="page_count" :page_item_count="page_item_count" @get-data="getData"></Pagination>
           </div>
-          <Pagination ref="pagination" :all_count="all_count" :page_count="page_count" :page_item_count="page_item_count" @get-data="getData"></Pagination>
-      </div>
+        </div>
     </div>
-
 </template>
 
 <script>
-    import { head } from 'lodash';
+    import { head, find } from 'lodash';
     import moment from 'moment';
     import Pagination from '../../../components/Pagination';
     import { init, domInit } from '~/plugins/app.js';
+    import NewsMenu from '~/components/NewsMenu';
 
     export default {
-        components: {Pagination},
+        components: {Pagination, NewsMenu},
         layout: 'default',
         data() {
             return {
                 news_types_id: '',
                 list: [],
+                info: {
+                  id: null,
+                  name: '',
+                },
                 all_count: 0,
                 page_count: 0,
                 page_item_count: 10,
@@ -58,7 +57,7 @@
         async fetch ({ $axios, store, params }) {
             await init(store);
         },
-        asyncData({$axios, store, route}) {
+        async asyncData({$axios, store, route}) {
             let news_types_id = route.params.news_types_id;
             if(!news_types_id) {
                 let news_type = head(store.state.news_types_list);
@@ -89,6 +88,12 @@
         mounted() {
             if (this.$route.params.page) {
                 this.$refs.pagination.setPage(Number(this.$route.params.page));
+            }
+
+            let type = find(this.$store.state.news_types_list, ['id', this.news_types_id]);
+            if (type) {
+                this.info.id = type.id ? type.id : null;
+                this.info.name = type.name ? type.name : null;
             }
 
             this.$store.commit('disabledLoading');

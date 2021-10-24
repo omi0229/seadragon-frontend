@@ -86,7 +86,7 @@
 
 <script>
     import { find } from 'lodash';
-    import { init } from '~/plugins/app.js';
+    import { init, loginAuth } from '~/plugins/app.js';
     import Pagination from '~/components/Pagination';
 
     export default {
@@ -127,6 +127,8 @@
             await init(store);
         },
         mounted() {
+            loginAuth(this.$store);
+
             this.$store.commit('disabledLoading');
 
             if (sessionStorage.getItem('register_success') && sessionStorage.getItem('register_success') === 'true') {

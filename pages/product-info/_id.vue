@@ -1,60 +1,78 @@
 <template>
-
-    <div class="container">
-        <ul class="uk-breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li><a href="/directory">線上購物</a></li>
-            <li><a href="#">{{ info.product.title }}</a></li>
-        </ul>
-
-        <div>
-            <div class="uk-flex">
-                <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
-                    <img :src="info.product.web_img_path" style="height: 60vmin; width: 100%; object-fit: cover;" />
-                </div>
-                <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
-                    <div class="uk-text-lead uk-text-bold uk-margin-large-bottom">{{ info.product.title }}</div>
-                    <div class="uk-margin-bottom uk-flex uk-flex-middle">
-                        <div class="uk-width-1-5 ">規格：</div>
-                        <div class="uk-width-4-5">
-                            <select class="uk-select" v-model="value.specification">
-                                <option value="">請選擇規格</option>
-                                <!-- v-for -->
-                                <option :value="item.id" v-for="item in info.product.specification">
-                                    {{item.name}} - 原價：{{item.original_price}} - 售價：{{item.selling_price}} - 庫存：<span class="uk-text-danger">{{item.inventory ? '有庫存' : '無庫存'}}</span>
-                                </option>
-                            </select>
+    <div class="uk-flex">
+        <DirectoryMenu></DirectoryMenu>
+        <div class="container">
+            <ul class="uk-breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li><a href="/directory">線上購物</a></li>
+                <li><a :href="'/directory/' + info.directories_id">{{ info.directories_name }}</a></li>
+                <li><a :href="'/product-info/' + info.id">{{ info.product.title }}</a></li>
+            </ul>
+            <div>
+                <div class="uk-flex">
+                    <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
+                        <img :src="info.product.web_img_path" style="height: 60vmin; width: 100%; object-fit: cover;" />
+                    </div>
+                    <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
+                        <div class="uk-text-lead uk-text-bold uk-margin-large-bottom">{{ info.product.title }}</div>
+                        <div class="uk-margin-bottom uk-flex uk-flex-middle">
+                            <div class="uk-width-1-5 ">規格：</div>
+                            <div class="uk-width-4-5">
+                                <select class="uk-select" v-model="value.specification">
+                                    <option value="">請選擇規格</option>
+                                    <!-- v-for -->
+                                    <option :value="item.id" v-for="item in info.product.specification">
+                                        {{item.name}} - 原價：{{item.original_price}} - 售價：{{item.selling_price}} - 庫存：<span class="uk-text-danger">{{item.inventory ? '有庫存' : '無庫存'}}</span>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
+                            <div class="uk-text-lead uk-text-bold uk-margin-large-bottom">{{ info.product.title }}</div>
+                            <div class="uk-margin-bottom uk-flex uk-flex-middle">
+                                <div class="uk-width-1-5 ">規格：</div>
+                                <div class="uk-width-4-5">
+                                    <select class="uk-select" v-model="value.specification">
+                                        <option value="">請選擇規格</option>
+                                        <!-- v-for -->
+                                        <option :value="item.id" v-for="item in info.product.specification">
+                                            {{item.name}} - 原價：{{item.original_price}} - 售價：{{item.selling_price}} - 庫存：<span class="uk-text-danger">{{item.inventory ? '有庫存' : '無庫存'}}</span>
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="uk-margin-bottom uk-flex uk-flex-middle">
+                                <div class="uk-width-1-5 ">數量：</div>
+                                <div class="uk-width-4-5 uk-inline">
+                                    <a class="uk-form-icon" uk-icon="icon: minus; ratio: 0.7" @click.stop.prevent="addCount(-1)"></a>
+                                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: plus; ratio: 0.7" @click.stop.prevent="addCount(1)"></a>
+                                    <input class="uk-input" type="text" placeholder="請輸入數量" v-model.number="value.count">
+                                </div>
+                            </div>
+                            <div class="uk-margin-bottom">
+                                <button class="uk-button uk-button-secondary uk-button-large uk-border-rounded uk-flex uk-flex-middle" @click="addCart">
+                                    <span class="uk-margin-small-right" uk-icon="icon: cart; ratio: 2"></span> 加入購物車
+                                </button>
+                            </div>
+                            <div v-html="info.product.description_html"></div>
                         </div>
                     </div>
-                    <div class="uk-margin-bottom uk-flex uk-flex-middle">
-                        <div class="uk-width-1-5 ">數量：</div>
-                        <div class="uk-width-4-5 uk-inline">
-                            <a class="uk-form-icon" uk-icon="icon: minus; ratio: 0.7" @click.stop.prevent="addCount(-1)"></a>
-                            <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: plus; ratio: 0.7" @click.stop.prevent="addCount(1)"></a>
-                            <input class="uk-input" type="text" placeholder="請輸入數量" v-model.number="value.count">
-                        </div>
-                    </div>
-                    <div class="uk-margin-bottom">
-                        <button class="uk-button uk-button-secondary uk-button-large uk-border-rounded uk-flex uk-flex-middle" @click="addCart">
-                            <span class="uk-margin-small-right" uk-icon="icon: cart; ratio: 2"></span> 加入購物車
-                        </button>
-                    </div>
-                    <div v-html="info.product.description_html"></div>
+                    <div class="padding-x-15px uk-margin-large-top uk-text-large">產品內文</div>
+                    <hr/>
+                    <div class="uk-padding-small" v-html="info.product.content"></div>
                 </div>
             </div>
-            <div class="padding-x-15px uk-margin-large-top uk-text-large">產品內文</div>
-            <hr/>
-            <div class="uk-padding-small" v-html="info.product.content"></div>
         </div>
     </div>
-
 </template>
 
 <script>
     import moment from 'moment';
     import { init, getCartCount } from '~/plugins/app.js';
+    import DirectoryMenu from '~/components/DirectoryMenu';
 
     export default {
+        components: {DirectoryMenu},
         layout: 'default',
         data() {
             return {
@@ -145,7 +163,7 @@
 <style scoped lang="scss">
 
     .container {
-        padding: 25px 4vmin;
+        padding: 25px 0;
 
         img {
             height: 100%;
