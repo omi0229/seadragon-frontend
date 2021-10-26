@@ -101,7 +101,7 @@ const cookieparser = process.server ? require('cookieparser') : undefined
 
 export const actions = {
   async nuxtServerInit({commit, dispatch, redirect}, {req}) {
-    let parse = cookieparser.parse(req.headers.cookie);
+    let parse = req.headers && req.headers.cookie ? cookieparser.parse(req.headers.cookie) : null;
     if (parse && parse.user && parse.user_expired_time && new Date().getTime() <= Number(parse.user_expired_time)) {
       commit('setLoginMember', JSON.parse(parse.user));
       commit('setExpiredTime', Number(parse.user_expired_time));
