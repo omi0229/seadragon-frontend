@@ -276,6 +276,9 @@
           },
           __setSmsCode() {
             this.$axios.post(process.env.API_URL + '/api/auth/set-sms-code', {cellphone: this.form.cellphone}).then(res => {
+              if (!res.data.status && res.data.data) {
+                this.seconds = res.data.data;
+              }
 
               // test
               this.test_code = res.data.message;
