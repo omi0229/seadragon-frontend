@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <p class="uk-text-right">
-                    <button class="uk-button uk-button-small uk-button-danger" type="button">忘記密碼</button>
+                    <button class="uk-button uk-button-small uk-button-danger" type="button" @click="forget">忘記密碼</button>
                     <button class="uk-button uk-button-small uk-button-primary" type="button" @click="register">會員註冊</button>
                     <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
                     <button class="uk-button uk-button-small uk-button-primary" type="button" @click="memberLogin">登入</button>
@@ -151,6 +151,9 @@
     methods: {
       showCart() {
 
+      },
+      forget() {
+        location.href = '/forget';
       },
       register() {
         location.href = '/register';

@@ -45,7 +45,7 @@
                   </div>
               </div>
               <div class="uk-text-right">
-                  <button class="uk-button uk-button-small uk-button-primary uk-padding uk-padding-remove-vertical" type="button" @click="confirm">送出</button>
+                  <button class="uk-button uk-button-small uk-button-primary uk-padding uk-padding-remove-vertical" type="button" @click="confirm" :disabled="seconds > 0">送出 <span v-show="seconds > 0">({{seconds}})</span></button>
               </div>
           </div>
 
@@ -68,9 +68,7 @@
 </template>
 
 <script>
-    import { filter, find } from 'lodash';
-    import { init, passwordRule, emailRule, randomNum } from '~/plugins/app.js';
-    import twzipcode from 'twzipcode-data'
+    import { init, randomNum, notification} from '~/plugins/app.js';
     import Captcha from '~/components/Captcha';
     import RegisterMenu from '~/components/RegisterMenu';
 
@@ -90,6 +88,7 @@
                 captcha: {
                   answers: '',
                 },
+                seconds: 0,
             }
         },
         async asyncData({$axios, store, route}) {
@@ -153,8 +152,21 @@
             UIkit.modal('#modal-confirm').show();
           },
           send() {
+              UIkit.modal('#modal-confirm').hide();
+              this.$store.commit('enabledLoading');
               this.$axios.post(process.env.API_URL + '/api/member/forget', this.form).then(res => {
-                  console.log(res.data);
+                  this.seconds = res.data.data ? res.data.data : 0;
+                  let timer = setInterval(() => {
+                    this.seconds -= 1;
+                    if (this.seconds <= 0) {
+                      clearInterval(timer);
+                      this.refreshCode();
+                      this.seconds = 0;
+                    }
+                  }, 1000)
+
+                  this.$store.commit('disabledLoading');
+                  res.data.status ? notification(res.data.message, 'success') : notification(res.data.message, 'danger')
               });
           },
         },
