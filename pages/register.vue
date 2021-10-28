@@ -325,7 +325,7 @@
           save() {
               this.$axios.post(process.env.API_URL + '/api/member/insert', this.form).then(res => {
                   if (res.data.status) {
-                      sessionStorage.setItem('register_success', 'true');
+                      sessionStorage.setItem('success_modal', 'register_success');
                       location.href = '/';
                   } else {
                       this.$store.commit('disabledLoading');

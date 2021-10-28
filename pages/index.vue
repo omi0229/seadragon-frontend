@@ -86,7 +86,7 @@
 
 <script>
     import { find } from 'lodash';
-    import { init, loginAuth } from '~/plugins/app.js';
+    import { init, loginAuth, modalMessage } from '~/plugins/app.js';
     import Pagination from '~/components/Pagination';
 
     export default {
@@ -97,7 +97,7 @@
                 list: [],
                 carousel_list: [],
                 put_on_list: [],
-                message: '註冊成功',
+                message: '',
             }
         },
         async asyncData({$axios, store, route}) {
@@ -131,15 +131,12 @@
 
             this.$store.commit('disabledLoading');
 
-            if (sessionStorage.getItem('register_success') && sessionStorage.getItem('register_success') === 'true') {
-                this.message = '註冊成功';
-                sessionStorage.removeItem('register_success')
+            modalMessage().then(message => {
+              this.message = message;
+              if (this.message) {
                 UIkit.modal('#modal-success').show();
-            } else if (sessionStorage.getItem('login_success') && sessionStorage.getItem('login_success') === 'true') {
-                this.message = '登入成功';
-                sessionStorage.removeItem('login_success')
-                UIkit.modal('#modal-success').show();
-            }
+              }
+            })
         },
         methods: {
             getData(page, directory_id) {

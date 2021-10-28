@@ -77,3 +77,25 @@ export const loginAuth = (store, reload = false) => {
     }, 1000)
   }
 }
+
+export const modalMessage = () => {
+  return new Promise(resolve => {
+    let message = '';
+    if (sessionStorage.getItem('success_modal')) {
+      switch (sessionStorage.getItem('success_modal')) {
+        case 'register_success':
+          message = '註冊成功';
+          break;
+        case 'login_success':
+          message = '登入成功';
+          break;
+        case 'sms_code_send_success':
+          message = '簡訊已發送';
+          break;
+      }
+
+      sessionStorage.removeItem('success_modal')
+    }
+    resolve(message);
+  });
+}

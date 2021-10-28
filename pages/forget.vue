@@ -172,6 +172,7 @@
                     }, 1000)
                   } else {
                     setTimeout(() => {
+                      sessionStorage.setItem('success_modal', 'sms_code_send_success');
                       location.href = '/';
                     }, 2000);
                   }

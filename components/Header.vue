@@ -204,7 +204,7 @@
               }, 1000);
 
               if (location.pathname === '/register' || location.pathname === '/forget') {
-                sessionStorage.setItem('login_success', 'true');
+                sessionStorage.setItem('success_modal', 'login_success');
                 location.href = '/';
               } else {
                 this.$store.commit('disabledLoading');
