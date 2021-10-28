@@ -143,10 +143,6 @@
       }
 
       getCartCount(this.$store, localStorage.getItem('cart_id'));
-
-      if (sessionStorage.getItem('login_member')) {
-        this.$store.commit('setLoginMember', JSON.parse(sessionStorage.getItem('login_member')));
-      }
     },
     methods: {
       showCart() {
