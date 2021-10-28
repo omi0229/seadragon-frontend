@@ -159,8 +159,8 @@
                 captcha: {
                   answers: '',
                 },
-                origin_seconds: 60,
-                seconds: 60,
+                origin_seconds: 120,
+                seconds: 120,
                 sms_code: '',
                 set_interval: null,
                 origin_zipcode,
