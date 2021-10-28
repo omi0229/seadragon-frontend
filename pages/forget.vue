@@ -75,6 +75,7 @@
     export default {
         layout: 'default',
         components: { Captcha, RegisterMenu },
+        middleware: 'login',
         data() {
 
             return {
@@ -156,17 +157,24 @@
               this.$store.commit('enabledLoading');
               this.$axios.post(process.env.API_URL + '/api/member/forget', this.form).then(res => {
                   this.seconds = res.data.data ? res.data.data : 0;
-                  let timer = setInterval(() => {
-                    this.seconds -= 1;
-                    if (this.seconds <= 0) {
-                      clearInterval(timer);
-                      this.refreshCode();
-                      this.seconds = 0;
-                    }
-                  }, 1000)
 
-                  this.$store.commit('disabledLoading');
                   res.data.status ? notification(res.data.message, 'success') : notification(res.data.message, 'danger')
+
+                  if (this.seconds > 0) {
+                    this.$store.commit('disabledLoading');
+                    let timer = setInterval(() => {
+                      this.seconds -= 1;
+                      if (this.seconds <= 0) {
+                        clearInterval(timer);
+                        this.refreshCode();
+                        this.seconds = 0;
+                      }
+                    }, 1000)
+                  } else {
+                    setTimeout(() => {
+                      location.href = '/';
+                    }, 2000);
+                  }
               });
           },
         },

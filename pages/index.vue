@@ -132,7 +132,12 @@
             this.$store.commit('disabledLoading');
 
             if (sessionStorage.getItem('register_success') && sessionStorage.getItem('register_success') === 'true') {
+                this.message = '註冊成功';
                 sessionStorage.removeItem('register_success')
+                UIkit.modal('#modal-success').show();
+            } else if (sessionStorage.getItem('login_success') && sessionStorage.getItem('login_success') === 'true') {
+                this.message = '登入成功';
+                sessionStorage.removeItem('login_success')
                 UIkit.modal('#modal-success').show();
             }
         },

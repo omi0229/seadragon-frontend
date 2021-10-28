@@ -203,8 +203,13 @@
                 }
               }, 1000);
 
-              notification('登入成功', 'success', 2000);
-              this.$store.commit('disabledLoading');
+              if (location.pathname === '/register' || location.pathname === '/forget') {
+                sessionStorage.setItem('login_success', 'true');
+                location.href = '/';
+              } else {
+                this.$store.commit('disabledLoading');
+                notification('登入成功', 'success', 2000);
+              }
             }, 2000)
           } else {
             notification(res.data.message, 'danger');

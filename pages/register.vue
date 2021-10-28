@@ -131,6 +131,7 @@
     export default {
         layout: 'default',
         components: { Captcha, RegisterMenu },
+        middleware: 'login',
         data() {
 
             let origin_zipcode = twzipcode();
