@@ -52,7 +52,7 @@
                         <div class="uk-width-1-4 content" v-for="p_item in item.put_ons">
                             <div>
                                 <a :href="'/product-info/' + p_item.id" class="uk-link-heading">
-                                    <img :src="p_item.web_img_path" alt="">
+                                    <img :src="p_item.img" alt="">
                                 </a>
                             </div>
                             <div>

@@ -11,7 +11,15 @@
             <div>
                 <div class="uk-flex">
                     <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
-                        <img :src="info.product.web_img_path" style="height: 60vmin; width: 100%; object-fit: cover;" />
+                        <img :src="info.img" />
+                        <div class="uk-flex uk-child-width-1-5 uk-margin-small-top">
+                            <!-- v-for -->
+                            <div class="thumbnail" v-for="item in info.web_img_list">
+                                <a data-fancybox :href="item.path">
+                                    <img :src="item.path" />
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
                         <div class="uk-text-lead uk-text-bold uk-margin-large-bottom">{{ info.product.title }}</div>
@@ -55,6 +63,8 @@
     import moment from 'moment';
     import { init, getCartCount } from '~/plugins/app.js';
     import DirectoryMenu from '~/components/DirectoryMenu';
+    import { Fancybox, Carousel, Panzoom } from "@fancyapps/ui";
+    import "@fancyapps/ui/dist/fancybox.css";
 
     export default {
         components: {DirectoryMenu},
@@ -150,10 +160,18 @@
     .container {
         padding: 25px 0;
 
+      img {
+        height: 60vmin;
+        width: 100%;
+        object-fit: cover;
+      }
+
+      .thumbnail {
         img {
-            height: 100%;
-            width: auto;
+          height: 80px;
         }
+      }
+
     }
 
 </style>
