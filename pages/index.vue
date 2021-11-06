@@ -61,7 +61,11 @@
                                 </a>
                             </div>
                             <div class="uk-text-center uk-text-danger uk-text-bold size-20">
-                                <span v-if="p_item.product_specification.data.length > 0"> ${{ p_item.product_specification.data[0].selling_price }} / {{ p_item.product_specification.data[0].unit }}</span>
+                                <span v-if="p_item.product_specification.data.length > 0">
+                                    ${{ p_item.product_specification.data[0].selling_price }}
+                                    <span v-show="p_item.product_specification.data[0].unit">/</span>
+                                    {{ p_item.product_specification.data[0].unit }}
+                                </span>
                             </div>
                         </div>
                     </div>

@@ -24,8 +24,11 @@
                     <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
                         <div class="uk-text-lead uk-text-bold uk-margin-large-bottom">{{ info.product.title }}</div>
                         <div class="uk-text-large uk-margin-small-bottom">
-                          <span class="uk-text-muted" v-if="info.product.specification.length > 0"> 原價： <s>${{ info.product.specification[0].original_price }} / {{ info.product.specification[0].unit }}</s> </span>
-                          <span class="uk-text-danger uk-text-bold uk-margin-left" v-if="info.product.specification.length > 0"> ${{ info.product.specification[0].selling_price }} / {{ info.product.specification[0].unit }}</span>
+                            <template v-if="info.product.specification.length > 0">
+                                <span class="uk-text-muted">
+                                  原價：<s>${{ price.original }} <span v-show="price.unit">/</span> {{ price.unit }}</s> </span>
+                                <span class="uk-text-danger uk-text-bold uk-margin-left" v-if="info.product.specification.length > 0"> ${{ price.selling }} <span v-show="price.unit">/</span> {{ price.unit }}</span>
+                            </template>
                         </div>
                         <div class="uk-margin-bottom uk-flex uk-flex-middle">
                             <div class="uk-width-1-5 ">規格：</div>
@@ -64,6 +67,8 @@
 </template>
 
 <script>
+"use strict";
+    import { find } from 'lodash';
     import moment from 'moment';
     import { init, getCartCount } from '~/plugins/app.js';
     import DirectoryMenu from '~/components/DirectoryMenu';
@@ -80,6 +85,7 @@
                     specification: '',
                     count: 0,
                 },
+                price: null,
             }
         },
         async fetch({$axios, store, params}) {
@@ -107,10 +113,39 @@
                     content: res.data.product.keywords,
                 }];
 
+                let price = {
+                    original: 0,
+                    selling: 0,
+                    unit: null,
+                };
+
+                if (res.data.product.specification.length > 0) {
+                    price.original = res.data.product.specification[0].original_price;
+                    price.selling = res.data.product.specification[0].selling_price;
+                    price.unit = res.data.product.specification[0].unit;
+                }
+
                 return {
                     info: res.data,
+                    price,
                 };
             })
+        },
+        watch: {
+            'value.specification'(new_data, old_data) {
+                if (this.info.product.specification.length > 0) {
+                    if(new_data) {
+                      let specification = find(this.info.product.specification, ['id', new_data]);
+                      this.price.original = specification.original_price;
+                      this.price.selling = specification.selling_price;
+                      this.price.unit = specification.unit;
+                    } else {
+                      this.price.original = this.info.product.specification[0].original_price;
+                      this.price.selling = this.info.product.specification[0].selling_price;
+                      this.price.unit = this.info.product.specification[0].unit;
+                    }
+                }
+            },
         },
         computed: {
             dateFormat() {
