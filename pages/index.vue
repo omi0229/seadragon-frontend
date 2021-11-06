@@ -25,7 +25,7 @@
                     <ul class="uk-slider-items uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m">
                         <!-- v-for -->
                         <li class="carousel" v-for="item in carousel_list">
-                            <div class="uk-card uk-card-default">
+                            <div class="uk-card uk-card-default cursor" @click="toUrl('/news-info/', item.id)">
                                 <div class="uk-card-media-top">
                                     <img :src="item.web_img_path" alt="">
                                 </div>
@@ -55,10 +55,13 @@
                                     <img :src="p_item.img" alt="">
                                 </a>
                             </div>
-                            <div>
+                            <div class="uk-text-center uk-margin-small-top size-20">
                                 <a :href="'/product-info/' + p_item.id" class="uk-link-heading">
                                     {{p_item.product.title}}
                                 </a>
+                            </div>
+                            <div class="uk-text-center uk-text-danger uk-text-bold size-20">
+                                <span v-if="p_item.product_specification.data.length > 0"> ${{ p_item.product_specification.data[0].selling_price }} / {{ p_item.product_specification.data[0].unit }}</span>
                             </div>
                         </div>
                     </div>
@@ -150,6 +153,9 @@
                     this.$store.commit('disabledLoading');
                     UIkit.scroll('#put_ons_end_' + directory_id).scrollTo('#put_ons_start_' + directory_id);
                 });
+            },
+            toUrl(url, id) {
+                location.href = url + id;
             },
         },
     }

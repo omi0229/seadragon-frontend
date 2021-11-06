@@ -23,6 +23,10 @@
                     </div>
                     <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
                         <div class="uk-text-lead uk-text-bold uk-margin-large-bottom">{{ info.product.title }}</div>
+                        <div class="uk-text-large uk-margin-small-bottom">
+                          <span class="uk-text-muted" v-if="info.product.specification.length > 0"> 原價： <s>${{ info.product.specification[0].original_price }} / {{ info.product.specification[0].unit }}</s> </span>
+                          <span class="uk-text-danger uk-text-bold uk-margin-left" v-if="info.product.specification.length > 0"> ${{ info.product.specification[0].selling_price }} / {{ info.product.specification[0].unit }}</span>
+                        </div>
                         <div class="uk-margin-bottom uk-flex uk-flex-middle">
                             <div class="uk-width-1-5 ">規格：</div>
                             <div class="uk-width-4-5">
@@ -81,7 +85,7 @@
         async fetch({$axios, store, params}) {
             await init(store);
         },
-        asyncData({app, $axios, store, route, redirect}) {
+        asyncData({app, $axios, route, redirect}) {
             let id = route.params.id;
             if (!id) {
                 redirect('/directory');

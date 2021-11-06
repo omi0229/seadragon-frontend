@@ -8,14 +8,14 @@
               <li><a :href="'/news/' + info.id">{{ info.name }}</a></li>
           </ul>
           <div>
-
               <!-- v-for -->
               <div class="uk-flex uk-margin-large-bottom" v-for="item in list">
-                  <div class="uk-width-2-5 news-img">
+                  <div class="uk-width-2-5 news-img" v-if="item.web_img_path">
                       <a :href="'/news-info/' + item.id" :target="item.target === 1 ? '_blank' : '_top'" class="uk-text-decoration-none">
                           <img :src="item.web_img_path" />
                       </a>
                   </div>
+                  <div class="uk-width-2-5 news-img cursor" @click="toUrl(item.id)" v-else></div>
                   <div class="uk-width-3-5 uk-padding uk-padding-remove-vertical">
                       <div class="uk-margin-top uk-margin-bottom uk-text-muted">
                           {{ dateFormat(item.start_date) }}
@@ -109,6 +109,9 @@
                     this.page_count = res.data.page_count;
                     UIkit.scroll('#footer').scrollTo('#header');
                 });
+            },
+            toUrl(id) {
+                location.href = '/news-info/' + id;
             },
         }
     }

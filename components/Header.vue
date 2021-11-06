@@ -2,6 +2,7 @@
     <div id="header">
         <div class="top uk-flex uk-flex-between">
             <div class="top-left uk-flex-1 uk-padding-small uk-flex uk-height-1-1 header-padding">
+                <img src="/images/icon/t-youtube.png" class="uk-border-circle uk-margin-small-right"/>
                 <img src="/images/icon/facebook.png" class="uk-border-circle uk-margin-small-right"/>
                 <img src="/images/icon/ig.png" class="uk-border-circle uk-margin-small-right"/>
                 <img src="/images/icon/line.png" class="uk-border-circle"/>
@@ -10,7 +11,7 @@
             <div class="uk-flex-1 uk-flex uk-flex-right uk-height-1-1 header-padding">
                 <template v-if="$store.state.member.id">
                   <div class="uk-margin-small-right">
-                    <a href="/" class="uk-flex uk-link-reset">
+                    <a href="/" class="uk-flex uk-flex-middle uk-link-reset">
                         您好！<span class="uk-text-primary uk-text-bold">{{$store.state.member.name}}</span>
                     </a>
                   </div>
@@ -27,7 +28,7 @@
                 </template>
                 <template v-else>
                   <div class="uk-margin-small-right">
-                    <a href="#modal-login" class="uk-flex uk-link-reset" uk-toggle>
+                    <a href="#modal-login" class="uk-flex uk-link-reset" @click="generalLogin" uk-toggle>
                       <span uk-icon="icon: sign-in"></span>登入
                     </a>
                   </div>
@@ -145,8 +146,19 @@
       getCartCount(this.$store, localStorage.getItem('cart_id'));
     },
     methods: {
+      generalLogin() {
+        if (sessionStorage.getItem('to_url')) {
+          sessionStorage.removeItem('to_url')
+        }
+      },
       showCart() {
-
+        if (!(this.$store.state.member.id && this.$store.state.member.token)) {
+          notification('請登入會員', 'warning');
+          sessionStorage.setItem('to_url', 'shopping-cart')
+          UIkit.modal('#modal-login').show();
+        } else {
+          location.href = '/shopping-cart';
+        }
       },
       forget() {
         location.href = '/forget';
@@ -202,6 +214,11 @@
                   clearInterval(timer);
                 }
               }, 1000);
+
+              if (sessionStorage.getItem('to_url')) {
+                location.href = '/' + sessionStorage.getItem('to_url');
+                return true;
+              }
 
               if (location.pathname === '/register' || location.pathname === '/forget') {
                 sessionStorage.setItem('success_modal', 'login_success');

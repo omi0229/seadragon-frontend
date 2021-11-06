@@ -14,8 +14,11 @@
                           <a :href="'/product-info/' + item.id" class="uk-text-decoration-none">
                               <img :src="item.img" />
                           </a>
-                          <div class="uk-margin-small uk-text-emphasis uk-text-large">
+                          <div class="uk-text-center uk-margin-small uk-text-emphasis uk-text-large">
                               <a :href="'/product-info/' + item.id" class="uk-link-heading uk-text-decoration-none">{{item.product.title}}</a>
+                          </div>
+                          <div class="uk-text-center uk-text-danger uk-text-bold uk-text-large">
+                              <span v-if="item.product_specification.data.length > 0"> ${{ item.product_specification.data[0].selling_price }} / {{ item.product_specification.data[0].unit }}</span>
                           </div>
                       </div>
                   </div>
