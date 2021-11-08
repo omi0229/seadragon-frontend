@@ -47,7 +47,7 @@
                             <div class="uk-width-4-5 uk-inline">
                                 <a class="uk-form-icon" uk-icon="icon: minus; ratio: 0.7" @click.stop.prevent="addCount(-1)"></a>
                                 <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: plus; ratio: 0.7" @click.stop.prevent="addCount(1)"></a>
-                                <input class="uk-input" type="text" placeholder="請輸入數量" v-model.number="value.count">
+                                <input class="uk-input" type="text" maxlength="4" placeholder="請輸入數量" v-model.number="value.count">
                             </div>
                         </div>
                         <div class="uk-margin-bottom">
