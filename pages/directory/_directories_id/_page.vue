@@ -10,7 +10,7 @@
               <div class="uk-flex uk-flex-wrap">
                   <!-- v-for -->
                   <div class="uk-width-1-3 uk-margin-small-top" v-for="item in list">
-                      <div class="uk-card uk-card-default uk-card-body item-img">
+                      <div class="uk-card uk-card-body item-img">
                           <a :href="'/product-info/' + item.id" class="uk-text-decoration-none">
                               <img :src="item.img" />
                           </a>

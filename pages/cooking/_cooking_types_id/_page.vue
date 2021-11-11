@@ -12,7 +12,7 @@
             <div class="uk-flex uk-flex-wrap">
                 <!-- v-for -->
                 <div class="uk-width-1-3 uk-margin-small-top" v-for="item in list">
-                    <div class="uk-card uk-card-default uk-card-body item-img">
+                    <div class="uk-card uk-card-body item-img">
                         <template v-if="item.target === 1">
                             <a :href="'https://www.youtube.com/watch?v=' + item.youtube_id" target="_blank" class="uk-text-decoration-none">
                                 <img :src="'https://img.youtube.com/vi/' + item.youtube_id + '/hqdefault.jpg'" />
@@ -28,7 +28,7 @@
                             <div class="uk-margin-small-top uk-text-emphasis uk-text-large">
                                 <a :href="'#modal-media-youtube-' + item.youtube_id" class="uk-link-heading uk-text-decoration-none" uk-toggle>{{item.title}}</a>
                             </div>
-                            <div :id="'modal-media-youtube-' + item.youtube_id" class="uk-flex-top" uk-modal>
+                            <div :id="'modal-media-youtube-' + item.youtube_id" class="uk-flex-top uk-modal" uk-modal>
                                 <div class="uk-modal-dialog uk-width-auto uk-margin-auto-vertical">
                                     <button class="uk-modal-close-outside" type="button" uk-close></button>
                                     <iframe :src="item.youtube_url" uk-video uk-responsive></iframe>
@@ -134,7 +134,7 @@
         padding: 25px 4vmin;
     }
 
-    iframe {
+    body > div > div > iframe {
       width: 85vw;
       height: 85vh;
     }

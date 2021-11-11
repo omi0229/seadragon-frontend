@@ -292,7 +292,7 @@
             display: flex;
             align-items: center;
             font-weight: bold;
-            font-size: 2.5vmin;
+            font-size: 20px;
 
             .nav-item {
                 padding: 0 35px;

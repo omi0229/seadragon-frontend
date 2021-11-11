@@ -10,7 +10,7 @@
           <div>
               <!-- v-for -->
               <div class="uk-flex uk-margin-large-bottom" v-for="item in list">
-                  <div class="uk-width-2-5 news-img" v-if="item.web_img_path">
+                  <div class="uk-width-2-5 news-img uk-text-center" v-if="item.web_img_path">
                       <a :href="'/news-info/' + item.id" :target="item.target === 1 ? '_blank' : '_top'" class="uk-text-decoration-none">
                           <img :src="item.web_img_path" />
                       </a>

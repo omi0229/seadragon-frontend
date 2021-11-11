@@ -25,11 +25,11 @@
                     <ul class="uk-slider-items uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m">
                         <!-- v-for -->
                         <li class="carousel" v-for="item in carousel_list">
-                            <div class="uk-card uk-card-default cursor" @click="toUrl('/news-info/', item.id)">
+                            <div class="uk-card cursor uk-padding-small" @click="toUrl('/news-info/', item.id)">
                                 <div class="uk-card-media-top">
                                     <img :src="item.web_img_path" alt="">
                                 </div>
-                                <div class="uk-card-body">
+                                <div class="uk-padding-small">
                                     {{item.title}}
                                 </div>
                             </div>
@@ -177,6 +177,10 @@
 }
 
 .carousel, .put_ons {
+
+  font-size: 20px;
+  color: #000;
+
   img {
     height: 200px;
     width: 100%;
