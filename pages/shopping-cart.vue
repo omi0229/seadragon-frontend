@@ -76,24 +76,24 @@
               <div v-if="step === 2">
                   <h4 class="uk-text-bold uk-margin-remove-bottom">配送方式</h4>
                   <div class="uk-margin-small-top">
-                      <label><input class="uk-radio" type="radio" value="1" v-model="form.delivery_method"> 宅配到府</label>
+                      <label><input class="uk-radio" type="radio" value="1" v-model="receiver.delivery_method"> 宅配到府</label>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">付款方式</h4>
                   <div class="uk-margin-small-top">
-                      <label><input class="uk-radio" type="radio" value="1" v-model="form.payment_method"> 信用卡</label>
+                      <label><input class="uk-radio" type="radio" value="1" v-model="receiver.payment_method"> 信用卡</label>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">訂購人資訊</h4>
                   <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
                       <div class="uk-flex uk-flex-middle">
                           <div class="uk-width-1-6">姓名</div>
                           <div class="uk-width-1-3">
-                              <input class="uk-input uk-form-small" maxlength="20" placeholder="請輸入姓名" disabled v-model="form.name" />
+                              <input class="uk-input uk-form-small" maxlength="20" placeholder="請輸入姓名" disabled v-model="name" />
                           </div>
                       </div>
                       <div class="uk-flex uk-flex-middle uk-margin-top">
                           <div class="uk-width-1-6">行動電話</div>
                           <div class="uk-width-1-3">
-                              <input class="uk-input uk-form-small" maxlength="10" placeholder="請輸入行動電話" v-model="form.cellphone" />
+                              <input class="uk-input uk-form-small" maxlength="10" placeholder="請輸入行動電話" disabled v-model="cellphone" />
                           </div>
                       </div>
                       <div class="uk-flex uk-flex-middle uk-margin-top">
@@ -137,8 +137,8 @@
                           </div>
                       </div>
                       <div class="uk-margin-top uk-flex uk-flex-middle">
-                          <input id="synchronize" type="checkbox" class="uk-checkbox uk-margin-remove-top">
-                          <label for="synchronize" class="uk-margin-left" v-model="value.synchronize">將訂購人資料同步至會員資料</label>
+                          <input id="synchronize" type="checkbox" class="uk-checkbox uk-margin-remove-top" v-model="value.synchronize">
+                          <label for="synchronize" class="uk-margin-left">將訂購人資料同步至會員資料</label>
                       </div>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">收件人資訊</h4>
@@ -201,27 +201,27 @@
                   <h4 class="uk-text-bold uk-margin-remove-bottom">發票資訊</h4>
                   <div class="uk-margin-small-top">
                       <div>
-                          <label><input class="uk-radio" type="radio" value="1" v-model="form.invoice_method"> 個人收銀發票</label>
+                          <label><input class="uk-radio" type="radio" value="1" v-model="receiver.invoice_method"> 個人收銀發票</label>
                       </div>
                       <div class="uk-margin-top">
-                          <label><input class="uk-radio" type="radio" value="2" v-model="form.invoice_method"> 公司戶收銀發票</label>
-                          <div class="uk-flex uk-flex-middle uk-margin-small-top" v-show="form.invoice_method === '2'">
+                          <label><input class="uk-radio" type="radio" value="2" v-model="receiver.invoice_method"> 公司戶收銀發票</label>
+                          <div class="uk-flex uk-flex-middle uk-margin-small-top" v-show="receiver.invoice_method === '2'">
                               <div class="uk-width-1-6">統一編號</div>
                               <div class="uk-width-1-3">
-                                  <input class="uk-input uk-form-small" maxlength="8" placeholder="請輸入統一編號" v-model="form.invoice_tax_id_number" />
+                                  <input class="uk-input uk-form-small" maxlength="8" placeholder="請輸入統一編號" v-model="receiver.invoice_tax_id_number" />
                               </div>
                           </div>
-                          <div class="uk-flex uk-flex-middle uk-margin-top" v-show="form.invoice_method === '2'">
+                          <div class="uk-flex uk-flex-middle uk-margin-top" v-show="receiver.invoice_method === '2'">
                               <div class="uk-width-1-6">發票抬頭</div>
                               <div class="uk-width-1-3">
-                                  <input class="uk-input uk-form-small" maxlength="100" placeholder="請輸入發票抬頭" v-model="form.invoice_name" />
+                                  <input class="uk-input uk-form-small" maxlength="100" placeholder="請輸入發票抬頭" v-model="receiver.invoice_name" />
                               </div>
                           </div>
                       </div>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">備註</h4>
                   <div class="uk-margin-small-top">
-                      <textarea class="uk-textarea" rows="5" placeholder="如：送貨前請電話聯絡、限本人簽收…等" v-model="form.bookmark"></textarea>
+                      <textarea class="uk-textarea" rows="5" placeholder="如：送貨前請電話聯絡、限本人簽收…等" v-model="receiver.bookmark"></textarea>
                   </div>
               </div>
               <div v-if="step === 3">
@@ -251,15 +251,15 @@
                   </table>
                   <div class="uk-flex uk-flex-middle uk-flex-right">
                       <div class="uk-width-5-6 uk-text-right">小計：</div>
-                      <div class="uk-width-1-6 uk-text-right">$ {{ shoppingCartPrice.toLocaleString() }}</div>
+                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ shoppingCartPrice.toLocaleString() }}</div>
                   </div>
                   <div class="uk-flex uk-flex-middle uk-flex-right">
                       <div class="uk-width-5-6 uk-text-right">運費：</div>
-                      <div class="uk-width-1-6 uk-text-right">$ {{ delivery_fee.toLocaleString() }}</div>
+                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ delivery_fee.toLocaleString() }}</div>
                   </div>
                   <div class="uk-flex uk-flex-middle uk-flex-right">
                       <div class="uk-width-5-6 uk-text-right">本訂單需付款總金額：</div>
-                      <div class="uk-width-1-6 uk-text-right">$ {{ (shoppingCartPrice + delivery_fee).toLocaleString() }}</div>
+                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ (shoppingCartPrice + delivery_fee).toLocaleString() }}</div>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">付款方式與寄送資料</h4>
                   <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
@@ -290,24 +290,24 @@
                       <div class="uk-flex uk-flex-middle uk-margin-top">
                           <div class="uk-width-1-6">發票類型</div>
                           <div class="uk-width-5-6">
-                              <template v-if="form.invoice_method === '1'">個人收銀發票</template>
-                              <template v-if="form.invoice_method === '2'">公司戶收銀發票</template>
+                              <template v-if="receiver.invoice_method === '1'">個人收銀發票</template>
+                              <template v-if="receiver.invoice_method === '2'">公司戶收銀發票</template>
                           </div>
                       </div>
                       <!-- v-if -->
-                      <div class="uk-flex uk-flex-middle uk-margin-top" v-if="form.invoice_method === '2'">
+                      <div class="uk-flex uk-flex-middle uk-margin-top" v-if="receiver.invoice_method === '2'">
                           <div class="uk-width-1-6">統一編號</div>
-                          <div class="uk-width-5-6"> {{ form.invoice_tax_id_number }} </div>
+                          <div class="uk-width-5-6"> {{ receiver.invoice_tax_id_number }} </div>
                       </div>
                       <!-- v-if -->
-                      <div class="uk-flex uk-flex-middle uk-margin-top" v-if="form.invoice_method === '2'">
+                      <div class="uk-flex uk-flex-middle uk-margin-top" v-if="receiver.invoice_method === '2'">
                           <div class="uk-width-1-6">發票抬頭</div>
-                          <div class="uk-width-5-6"> {{ form.invoice_name }} </div>
+                          <div class="uk-width-5-6"> {{ receiver.invoice_name }} </div>
                       </div>
                       <!-- v-if -->
-                      <div class="uk-flex uk-margin-top" v-if="form.bookmark">
+                      <div class="uk-flex uk-margin-top" v-if="receiver.bookmark">
                           <div class="uk-width-1-6">備註</div>
-                          <div class="uk-width-5-6" v-html="form.bookmark"></div>
+                          <div class="uk-width-5-6" v-html="receiver.bookmark"></div>
                       </div>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">訂購注意事項</h4>
@@ -328,6 +328,12 @@
               </div>
           </div>
 
+        </div>
+
+        <div class="uk-hidden">
+            <form id="form" type="post" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post">
+                <input type="hidden" :name="item.key" :value="item.value" v-for="item in ECPay" />
+            </form>
         </div>
 
         <div id="modal-confirm" uk-modal="bg-close: false">
@@ -364,13 +370,22 @@
                         Authorization: 'Bearer ' + this.$store.state.member.token
                     }
                 },
+                name: '',
+                cellphone: '',
                 form: {
+                  email: '',
+                  telephone: '',
+                  country: '',
+                  city: '',
+                  zipcode: '',
+                  address: '',
+                },
+                receiver: {
                   delivery_method: '1',
                   payment_method: '1',
                   cellphone: '',
                   name: '',
                   email: '',
-                  telephone: '',
                   country: '',
                   city: '',
                   zipcode: '',
@@ -379,15 +394,6 @@
                   invoice_tax_id_number: '',
                   invoice_name: '',
                   bookmark: '',
-                },
-                receiver: {
-                  cellphone: '',
-                  name: '',
-                  email: '',
-                  country: '',
-                  city: '',
-                  zipcode: '',
-                  address: '',
                 },
                 select: {
                   counties: [],
@@ -401,6 +407,7 @@
                 },
                 delivery_fee: 0, // 運費
                 origin_zipcode,
+                ECPay: [],
             }
         },
         async fetch ({ $axios, store, params }) {
@@ -408,8 +415,8 @@
         },
         watch: {
           'value.is_orderer'(new_data, old_data) {
-            this.receiver.cellphone = new_data ? this.form.cellphone : '';
-            this.receiver.name = new_data ? this.form.name : '';
+            this.receiver.cellphone = new_data ? this.cellphone : '';
+            this.receiver.name = new_data ? this.name : '';
             this.receiver.email = new_data ? this.form.email : '';
             this.receiver.country = new_data ? this.form.country : '';
             this.selectCountry('receiver');
@@ -451,8 +458,8 @@
         },
         methods: {
           setMemberInfo(member) {
-            this.form.cellphone = member.cellphone;
-            this.form.name = member.name;
+            this.name = member.name;
+            this.cellphone = member.cellphone;
             this.form.email = member.email;
             this.form.telephone = member.telephone;
             this.form.country = member.country;
@@ -506,6 +513,9 @@
               }
             });
           },
+          removeAllProduct(uu_id) {
+            this.$axios.delete(process.env.API_URL + '/api/cart/remove-cart-all-product/' + uu_id, this.config);
+          },
           last() {
             if (this.step > 1) {
               UIkit.scroll().scrollTo('#header');
@@ -535,16 +545,12 @@
               })
             } else if (this.step === 2) {
               this.$store.commit('disabledLoading');
-              if (!this.auth().status) {
-                notification(this.auth().message, 'danger');
-                return false;
-              }
               if (!this.receiverAuth().status) {
                 notification(this.receiverAuth().message, 'danger');
                 return false;
               }
 
-              if (this.form.invoice_method === '2' && (!(this.form.invoice_tax_id_number && this.form.invoice_name))) {
+              if (this.receiver.invoice_method === '2' && (!(this.receiver.invoice_tax_id_number && this.receiver.invoice_name))) {
                 notification('請填寫統一編號以及發票抬頭', 'danger');
                 return false;
               }
@@ -557,25 +563,6 @@
           },
           addCount(num, key) {
             this.list[key].count += num;
-          },
-          auth() {
-            if (!this.form.cellphone) {
-              return {'status': false, 'message': '請輸入訂購人行動電話'}
-            }
-
-            if (this.form.cellphone.length !== 10) {
-              return {'status': false, 'message': '訂購人行動電話長度須為10碼'}
-            }
-
-            if (this.form.cellphone.substr(0, 2) !== '09') {
-              return {'status': false, 'message': '訂購人行動電話格式錯誤'}
-            }
-
-            if (!this.form.name) {
-              return {'status': false, 'message': '請輸入訂購人姓名'}
-            }
-
-            return { 'status': true }
           },
           receiverAuth() {
             if (!this.receiver.cellphone) {
@@ -602,21 +589,42 @@
           },
           confirm() {
             UIkit.notification.closeAll();
-
-            if (!this.auth().status) {
-              UIkit.notification({
-                message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> ' + this.auth().message + '',
-                status: 'danger',
-                timeout: 1000
-              })
-
-              return false;
-            }
-
             UIkit.modal('#modal-confirm').show();
           },
           send() {
-              UIkit.modal('#modal-confirm').hide();
+            this.$store.commit('enabledLoading');
+
+            if (this.receiver.invoice_method === '1') {
+              this.receiver.invoice_tax_id_number = this.receiver.invoice_name = '';
+            }
+
+            let obj = {
+              member_id: this.$store.state.member.id,
+              list: this.list,
+              form: this.form,
+              receiver: this.receiver,
+              synchronize: this.value.synchronize,
+            }
+
+            this.ECPay = [];
+            this.$axios.post(process.env.API_URL + '/api/order/create', obj, this.config).then(res => {
+              for (const [key, value] of Object.entries(res.data.ecpay)) {
+                this.ECPay.push({
+                  key: key,
+                  value: value,
+                })
+              }
+
+              setTimeout(() => {
+                document.getElementById('form').submit();
+              }, 1000)
+
+              if (res.data.status) {
+                // this.removeAllProduct(localStorage.getItem('cart_id'));
+              }
+            });
+
+            UIkit.modal('#modal-confirm').hide();
           },
         },
     }

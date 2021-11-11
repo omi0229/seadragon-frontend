@@ -133,10 +133,21 @@
         async fetch ({ $axios, store, params }) {
             await init(store);
         },
-        mounted() {
+        async mounted() {
             loginAuth(this.$store);
 
             this.$store.commit('disabledLoading');
+
+            if (this.$store.state.member.id) {
+              let config = {
+                headers: {
+                  Authorization: 'Bearer ' + this.$store.state.member.token
+                }
+              };
+              await this.getNotification(this.$store.state.member.id, config).then(res => {
+
+              });
+            }
 
             modalMessage().then(message => {
               this.message = message;
@@ -146,7 +157,15 @@
             })
         },
         methods: {
-            getData(page, directory_id) {
+          getNotification(member_id, config) {
+            return new Promise(resolve => {
+                this.$axios.get(process.env.API_URL + '/api/member/notification/' + member_id, config).then(res => {
+                    console.log(res.data);
+                    resolve(res);
+                });
+            })
+          },
+          getData(page, directory_id) {
                 this.$store.commit('enabledLoading');
                 this.$axios.get(process.env.API_URL + '/api/product/' + directory_id + '/' + page).then(res => {
                     let obj = find(this.put_on_list, ['id', directory_id]);

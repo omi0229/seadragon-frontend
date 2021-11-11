@@ -92,6 +92,9 @@ export const modalMessage = () => {
         case 'sms_code_send_success':
           message = '簡訊已發送';
           break;
+        case 'order_success':
+          message = '訂購完成';
+          break;
       }
 
       sessionStorage.removeItem('success_modal')
