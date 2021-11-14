@@ -1,7 +1,7 @@
 <template>
 
     <div class="uk-padding-large uk-padding-remove-horizontal uk-padding-remove-top">
-        <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow="animation: push; max-height: 600; autoplay: true" v-show="list.length > 0">
+        <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow="animation: push; autoplay: true" v-show="list.length > 0">
             <ul class="uk-slideshow-items">
                 <li v-for="item in list">
                     <template v-if="item.href">
