@@ -255,11 +255,11 @@
                   </div>
                   <div class="uk-flex uk-flex-middle uk-flex-right">
                       <div class="uk-width-5-6 uk-text-right">運費：</div>
-                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ delivery_fee.toLocaleString() }}</div>
+                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ receiver.freight.toLocaleString() }}</div>
                   </div>
                   <div class="uk-flex uk-flex-middle uk-flex-right">
                       <div class="uk-width-5-6 uk-text-right">本訂單需付款總金額：</div>
-                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ (shoppingCartPrice + delivery_fee).toLocaleString() }}</div>
+                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ (shoppingCartPrice + receiver.freight).toLocaleString() }}</div>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">付款方式與寄送資料</h4>
                   <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
@@ -330,12 +330,6 @@
 
         </div>
 
-        <div class="uk-hidden">
-            <form id="form" type="post" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post">
-                <input type="hidden" :name="item.key" :value="item.value" v-for="item in ECPay" />
-            </form>
-        </div>
-
         <div id="modal-confirm" uk-modal="bg-close: false">
             <div class="uk-modal-dialog">
                 <button class="uk-modal-close-default" type="button" uk-close></button>
@@ -349,6 +343,13 @@
                 </div>
             </div>
         </div>
+
+        <div class="uk-hidden">
+            <form id="form" type="post" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post">
+                <input type="hidden" :name="item.key" :value="item.value" v-for="item in ECPay" />
+            </form>
+        </div>
+
     </div>
 </template>
 
@@ -390,6 +391,7 @@
                   city: '',
                   zipcode: '',
                   address: '',
+                  freight: 0, // 運費
                   invoice_method: '1',
                   invoice_tax_id_number: '',
                   invoice_name: '',
@@ -405,7 +407,6 @@
                     synchronize: false,
                     is_orderer: false,
                 },
-                delivery_fee: 0, // 運費
                 origin_zipcode,
                 ECPay: [],
             }
@@ -620,7 +621,7 @@
               }, 1000)
 
               if (res.data.status) {
-                // this.removeAllProduct(localStorage.getItem('cart_id'));
+                this.removeAllProduct(localStorage.getItem('cart_id'));
               }
             });
 

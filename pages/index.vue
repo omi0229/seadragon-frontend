@@ -134,33 +134,34 @@
             await init(store);
         },
         async mounted() {
-            loginAuth(this.$store);
+          loginAuth(this.$store);
 
-            this.$store.commit('disabledLoading');
+          this.$store.commit('disabledLoading');
 
-            if (this.$store.state.member.id) {
-              let config = {
-                headers: {
-                  Authorization: 'Bearer ' + this.$store.state.member.token
-                }
-              };
-              await this.getNotification(this.$store.state.member.id, config).then(res => {
-
-              });
-            }
-
-            modalMessage().then(message => {
-              this.message = message;
-              if (this.message) {
-                UIkit.modal('#modal-success').show();
+          if (this.$store.state.member.id) {
+            let config = {
+              headers: {
+                Authorization: 'Bearer ' + this.$store.state.member.token
               }
-            })
+            };
+            await this.getNotification(this.$store.state.member.id, config).then(res => {
+              if (res.data.data.length > 0) {
+                sessionStorage.setItem('success_modal', 'order_success');
+              }
+            });
+          }
+
+          modalMessage().then(message => {
+            this.message = message;
+            if (this.message) {
+              UIkit.modal('#modal-success').show();
+            }
+          })
         },
         methods: {
           getNotification(member_id, config) {
             return new Promise(resolve => {
                 this.$axios.get(process.env.API_URL + '/api/member/notification/' + member_id, config).then(res => {
-                    console.log(res.data);
                     resolve(res);
                 });
             })

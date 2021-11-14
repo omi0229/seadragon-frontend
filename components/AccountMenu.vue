@@ -7,6 +7,9 @@
         <div>
           <a href="/account/password" class="uk-link-text uk-text-decoration-none">變更密碼</a>
         </div>
+        <div>
+          <a href="/account/record" class="uk-link-text uk-text-decoration-none">訂單紀錄</a>
+        </div>
     </div>
 
 </template>
