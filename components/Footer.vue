@@ -37,7 +37,13 @@
                     <a href="/cooking" class="uk-link-heading">烹飪教學</a>
                 </div>
                 <div class="uk-margin-small-right uk-margin-small-left">
+                    <a href="#" class="uk-link-heading">關於我們</a>
+                </div>
+                <div class="uk-margin-small-right uk-margin-small-left">
                     <a href="/directory" class="uk-link-heading">線上購物</a>
+                </div>
+                <div class="uk-margin-small-right uk-margin-small-left">
+                    <a href="#" class="uk-link-heading">購物說明</a>
                 </div>
             </div>
         </div>

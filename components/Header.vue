@@ -45,6 +45,9 @@
         </div>
         <div class="nav" uk-navbar>
             <div class="nav-item">
+                <a href="#">關於海龍王</a>
+            </div>
+            <div class="nav-item">
                 <a :href="$store.state.news_types_list[0] ? '/news/' + $store.state.news_types_list[0].id : '#'">最新消息</a>
             </div>
             <div class="nav-item">
@@ -52,6 +55,19 @@
             </div>
             <div class="nav-item">
                 <a :href="$store.state.directory_list[0] ? '/directory/' + $store.state.directory_list[0].id : '#'">線上購物</a>
+            </div>
+            <div class="nav-item">
+                <a href="#">購物說明</a>
+            </div>
+            <div class="uk-padding-small uk-padding-remove-vertical uk-margin-auto-left">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search ...">
+                    <div class="input-group-append">
+                        <span class="input-group-text bg-secondary text-white">
+                            <span uk-icon="search"></span>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -288,11 +304,16 @@
 
         .nav {
             height: 8vmin;
+            min-height: 58px;
             background-color: rgb(238, 238, 238);
             display: flex;
             align-items: center;
             font-weight: bold;
             font-size: 20px;
+
+            > div:last-child {
+                width: 450px;
+            }
 
             .nav-item {
                 padding: 0 35px;
