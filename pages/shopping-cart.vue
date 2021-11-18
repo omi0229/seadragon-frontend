@@ -524,8 +524,28 @@
             }
           },
           next() {
-            this.$store.commit('enabledLoading');
             if (this.step === 1) {
+
+              let shopping_cart_auth = true;
+              this.list.some(v => {
+                if (!v.count) {
+                  notification('請選擇數量！', 'danger', 500);
+                  shopping_cart_auth = false;
+                  return true;
+                }
+
+                if (v.count < 0 || isNaN(v.count)) {
+                  notification('數量格式錯誤！', 'danger', 500);
+                  shopping_cart_auth = false;
+                  return true;
+                }
+              });
+
+              if (!shopping_cart_auth) {
+                return false;
+              }
+
+              this.$store.commit('enabledLoading');
               let inventory_status = true;
               this.getShoppingCart().then(res => {
                 res.data.data.forEach(v => {
@@ -563,7 +583,9 @@
             }
           },
           addCount(num, key) {
-            this.list[key].count += num;
+            if ((num > 0 || (num < 0 && this.list[key].count > 1)) && this.list[key].count < 9999) {
+              this.list[key].count += num;
+            }
           },
           receiverAuth() {
             if (!this.receiver.cellphone) {

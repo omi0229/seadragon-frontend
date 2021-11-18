@@ -83,7 +83,7 @@
                 info: null,
                 value: {
                     specification: '',
-                    count: 0,
+                    count: 1,
                 },
                 price: null,
             }
@@ -159,7 +159,7 @@
         },
         methods: {
             addCount(num) {
-                if (num > 0 || (num < 0 && this.value.count > 0)) {
+                if ((num > 0 || (num < 0 && this.value.count > 1)) && this.value.count < 9999) {
                     this.value.count += num;
                 }
             },
@@ -173,6 +173,11 @@
 
                 if (!this.value.count) {
                     UIkit.notification({message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> 請選擇數量！', status: 'danger', timeout: 500})
+                    return false;
+                }
+
+                if (this.value.count < 0 || isNaN(this.value.count)) {
+                    UIkit.notification({message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> 數量格式錯誤！', status: 'danger', timeout: 500})
                     return false;
                 }
 
