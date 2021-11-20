@@ -254,8 +254,8 @@
                       <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ shoppingCartPrice.toLocaleString() }}</div>
                   </div>
                   <div class="uk-flex uk-flex-middle uk-flex-right">
-                      <div class="uk-width-5-6 uk-text-right">運費：</div>
-                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ receiver.freight.toLocaleString() }}</div>
+                      <div class="uk-width-5-6 uk-text-right">運費<span v-if="receiver.freight_name">({{receiver.freight_name}})</span>：</div>
+                      <div class="uk-width-1-6 uk-text-right uk-text-danger"> $ {{ freight }}</div>
                   </div>
                   <div class="uk-flex uk-flex-middle uk-flex-right">
                       <div class="uk-width-5-6 uk-text-right">本訂單需付款總金額：</div>
@@ -392,6 +392,8 @@
                   zipcode: '',
                   address: '',
                   freight: 0, // 運費
+                  freight_id: null, // 運費
+                  freight_name: '', // 運費
                   invoice_method: '1',
                   invoice_tax_id_number: '',
                   invoice_name: '',
@@ -409,6 +411,7 @@
                 },
                 origin_zipcode,
                 ECPay: [],
+                freight_list: [],
             }
         },
         async fetch ({ $axios, store, params }) {
@@ -444,15 +447,36 @@
             })
             return price;
           },
+          freight() {
+            this.receiver.freight = 0;
+            this.receiver.freight_id = null;
+            this.receiver.freight_name = '';
+            
+            this.freight_list.some(v => {
+              if (this.shoppingCartPrice >= v.start_total && this.shoppingCartPrice <= v.end_total) {
+                this.receiver.freight = v.freight;
+                this.receiver.freight_id = v.id;
+                this.receiver.freight_name = v.floor2_type;
+                return true;
+              }
+            })
+
+            return this.receiver.freight;
+          },
         },
-        mounted() {
+        async mounted() {
           this.select.counties = this.origin_zipcode.counties;
           this.select.main_island_counties = filter(this.select.counties, v => {
               return v.name !== '澎湖縣' && v.name !== '金門縣' && v.name !== '連江縣';
           });
 
           this.setMemberInfo(this.$store.state.member);
-          this.getShoppingCart().then(res => {
+
+          await this.getFreightList().then(res => {
+            this.freight_list = res.data.data
+          })
+
+          await this.getShoppingCart().then(res => {
             this.list = res.data.data;
             this.$store.commit('disabledLoading');
           })
@@ -494,6 +518,13 @@
                     this.form.zipcode = find(this.select.cities, ['city', this.form.city]).zipcode;
                 }
             }
+          },
+          getFreightList() {
+              return new Promise(resolve => {
+                this.$axios.get(process.env.API_URL + '/api/order/freight', this.config).then(res => {
+                  resolve(res);
+                });
+              })
           },
           getShoppingCart() {
             return new Promise(resolve => {

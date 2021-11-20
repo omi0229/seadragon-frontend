@@ -122,10 +122,10 @@
                           </table>
                           <div class="uk-flex uk-flex-middle uk-flex-right">
                               <div class="uk-width-5-6 uk-text-right">小計：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(info.freight, info.order_products).toLocaleString() }}</div>
+                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(0, info.order_products).toLocaleString() }}</div>
                           </div>
                           <div class="uk-flex uk-flex-middle uk-flex-right">
-                              <div class="uk-width-5-6 uk-text-right">運費：</div>
+                              <div class="uk-width-5-6 uk-text-right">運費<span v-if="info.freight_name">({{ info.freight_name }})</span>：</div>
                               <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ info.freight.toLocaleString() }}</div>
                           </div>
                           <div class="uk-flex uk-flex-middle uk-flex-right">
