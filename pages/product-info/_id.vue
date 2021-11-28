@@ -23,38 +23,41 @@
                     </div>
                     <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
                         <div class="uk-text-lead uk-text-bold uk-margin-large-bottom">{{ info.product.title }}</div>
-                        <div class="uk-text-large uk-margin-small-bottom">
-                            <template v-if="info.product.specification.length > 0">
-                                <span class="uk-text-muted">
-                                  原價：<s>${{ price.original }} <span v-show="price.unit">/</span> {{ price.unit }}</s> </span>
-                                <span class="uk-text-danger uk-text-bold uk-margin-left" v-if="info.product.specification.length > 0"> ${{ price.selling }} <span v-show="price.unit">/</span> {{ price.unit }}</span>
-                            </template>
-                        </div>
-                        <div class="uk-margin-bottom uk-flex uk-flex-middle">
-                            <div class="uk-width-1-5 ">規格：</div>
-                            <div class="uk-width-4-5">
-                                <select class="uk-select" v-model="value.specification">
-                                    <option value="">請選擇規格</option>
-                                    <!-- v-for -->
-                                    <option :value="item.id" v-for="item in info.product.specification">
-                                        {{item.name}} - 原價：{{item.original_price}} - 售價：{{item.selling_price}} - 庫存：<span class="uk-text-danger">{{item.inventory ? '有庫存' : '無庫存'}}</span>
-                                    </option>
-                                </select>
+                        <template v-if="info.product.sales_status !== 0">
+                            <div class="uk-text-large uk-margin-small-bottom">
+                                <template v-if="info.product.specification.length > 0">
+                                    <span class="uk-text-muted">
+                                      原價：<s>${{ price.original }} <span v-show="price.unit">/</span> {{ price.unit }}</s> </span>
+                                    <span class="uk-text-danger uk-text-bold uk-margin-left" v-if="info.product.specification.length > 0"> ${{ price.selling }} <span v-show="price.unit">/</span> {{ price.unit }}</span>
+                                </template>
                             </div>
-                        </div>
-                        <div class="uk-margin-bottom uk-flex uk-flex-middle">
-                            <div class="uk-width-1-5 ">數量：</div>
-                            <div class="uk-width-4-5 uk-inline">
-                                <a class="uk-form-icon" uk-icon="icon: minus; ratio: 0.7" @click.stop.prevent="addCount(-1)"></a>
-                                <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: plus; ratio: 0.7" @click.stop.prevent="addCount(1)"></a>
-                                <input class="uk-input" type="text" maxlength="4" placeholder="請輸入數量" v-model.number="value.count">
+                            <div class="uk-margin-bottom uk-flex uk-flex-middle">
+                                <div class="uk-width-1-5 ">規格：</div>
+                                <div class="uk-width-4-5">
+                                    <select class="uk-select" v-model="value.specification">
+                                        <option value="">請選擇規格</option>
+                                        <!-- v-for -->
+                                        <option :value="item.id" v-for="item in info.product.specification">
+                                            {{item.name}} - 原價：{{item.original_price}} - 售價：{{item.selling_price}} - 庫存：<span class="uk-text-danger">{{item.inventory ? '有庫存' : '無庫存'}}</span>
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="uk-margin-bottom">
-                            <button class="uk-button uk-button-secondary uk-button-large uk-border-rounded uk-flex uk-flex-middle" @click="addCart">
-                                <span class="uk-margin-small-right" uk-icon="icon: cart; ratio: 2"></span> 加入購物車
-                            </button>
-                        </div>
+                            <div class="uk-margin-bottom uk-flex uk-flex-middle">
+                                <div class="uk-width-1-5 ">數量：</div>
+                                <div class="uk-width-4-5 uk-inline">
+                                    <a class="uk-form-icon" uk-icon="icon: minus; ratio: 0.7" @click.stop.prevent="addCount(-1)"></a>
+                                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: plus; ratio: 0.7" @click.stop.prevent="addCount(1)"></a>
+                                    <input class="uk-input" type="text" maxlength="4" placeholder="請輸入數量" v-model.number="value.count">
+                                </div>
+                            </div>
+                            <!-- v-if -->
+                            <div class="uk-margin-bottom" v-if="haveInventory">
+                                <button class="uk-button uk-button-secondary uk-button-large uk-border-rounded uk-flex uk-flex-middle" @click="addCart">
+                                    <span class="uk-margin-small-right" uk-icon="icon: cart; ratio: 2"></span> 加入購物車
+                                </button>
+                            </div>
+                        </template>
                         <div v-html="info.product.description_html"></div>
                     </div>
                 </div>
@@ -153,6 +156,17 @@
                     return moment(datetime).format('Y/MM/DD');
                 }
             },
+            haveInventory() {
+                let auth = false;
+                this.info.product.specification.some(v => {
+                    if(v.inventory > 0) {
+                        auth = true;
+                        return true;
+                    }
+                });
+
+                return auth;
+            },
         },
         mounted() {
             this.$store.commit('disabledLoading');
@@ -178,6 +192,17 @@
 
                 if (this.value.count < 0 || isNaN(this.value.count)) {
                     UIkit.notification({message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> 數量格式錯誤！', status: 'danger', timeout: 500})
+                    return false;
+                }
+
+                let info = find(this.info.product.specification, ['id', this.value.specification]);
+                if (!info) {
+                    UIkit.notification({message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> 無此商品！', status: 'danger', timeout: 500})
+                    return false;
+                }
+
+                if(info.inventory <= 0) {
+                    UIkit.notification({message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> 此規格已無庫存！', status: 'danger', timeout: 500})
                     return false;
                 }
 

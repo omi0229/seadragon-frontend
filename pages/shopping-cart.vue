@@ -81,6 +81,7 @@
                   <h4 class="uk-text-bold uk-margin-remove-bottom">付款方式</h4>
                   <div class="uk-margin-small-top">
                       <label><input class="uk-radio" type="radio" value="1" v-model="receiver.payment_method"> 信用卡</label>
+                      <label><input class="uk-radio" type="radio" value="2" v-model="receiver.payment_method"> ATM</label>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">訂購人資訊</h4>
                   <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
@@ -451,7 +452,7 @@
             this.receiver.freight = 0;
             this.receiver.freight_id = null;
             this.receiver.freight_name = '';
-            
+
             this.freight_list.some(v => {
               if (this.shoppingCartPrice >= v.start_total && this.shoppingCartPrice <= v.end_total) {
                 this.receiver.freight = v.freight;

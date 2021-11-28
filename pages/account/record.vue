@@ -111,6 +111,8 @@
                     switch(payment) {
                       case 1:
                           return '信用卡';
+                      case 2:
+                          return 'ATM';
                       default:
                           return '';
                     }
@@ -120,36 +122,47 @@
                 return status => {
                     switch(status) {
                         case 0:
-                            return '未付款';
+                            return '尚未付款';
                         case 1:
-                            return '已付款';
+                            return '付款成功';
+                        case -1:
+                            return '付款金額錯誤';
+                        case -2:
+                            return '付款失敗';
                         default:
                             return '';
                     }
                 }
             },
             orderStatusFormat() {
-                return status => {
-                    switch(status) {
-                        case 0:
-                            return '待確認';
-                        case 1:
-                            return '已確認';
-                        case 2:
-                            return '已出貨';
-                        default:
-                            return '';
-                    }
+              return status => {
+                switch (Number(status)) {
+                  case -2:
+                  case -1:
+                    return '已取消';
+                  case 0:
+                  case 1:
+                    return '待處理';
+                  case 2:
+                    return '已出貨';
+                  case 3:
+                    return '已完成';
+                  default:
+                    return '';
                 }
+              }
             },
             orderStatusColor() {
                 return status => {
                     switch(status) {
-                        case 0:
+                        case -2:
+                        case -1:
                             return 'uk-text-danger';
+                        case 0:
                         case 1:
                             return 'uk-text-default';
                         case 2:
+                        case 3:
                             return 'uk-text-primary';
                         default:
                             return '';

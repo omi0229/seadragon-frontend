@@ -33,15 +33,47 @@
                             <div class="uk-flex uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-6"> 付款方式 </div>
                                 <!-- v-if -->
-                                <div class="uk-width-5-6" v-if="info.payment_status === 1"> {{ paymentFormat(info.payment_method) }} </div>
+                                <div class="uk-width-5-6" v-if="info.payment_status !== 0"> {{ paymentFormat(info.payment_method) }} </div>
                                 <div class="uk-width-5-6" v-else>
                                     <label class="uk-margin-remove-bottom"><input class="uk-radio" type="radio" value="1" v-model="payment_method"> 信用卡</label>
+                                    <label class="uk-margin-remove-bottom uk-margin-small-left"><input class="uk-radio" type="radio" value="2" v-model="payment_method"> ATM</label>
                                 </div>
                             </div>
                             <!-- v-if -->
-                            <div class="uk-flex uk-flex-middle uk-margin-top" v-if="info.payment_status === 0">
+                            <div class="uk-flex uk-flex-middle uk-margin-top" v-if="info.payment_status === 0 && (payment_method === '1' || (payment_method === '2' && !info.vAccount))">
                                 <div class="uk-width-1-6"> </div>
                                 <div class="uk-width-5-6"> <button class="uk-button-small uk-button-primary" @click="confirm"> 前往付款 </button></div>
+                            </div>
+                            <!-- v-if -->
+                            <div class="uk-flex uk-flex-middle uk-margin-top" v-if="atmDelay">
+                                <div class="uk-width-1-6"> </div>
+                                <div class="uk-width-5-6"> <button class="uk-button-small uk-button-primary" @click="confirm"> 重新取號 </button></div>
+                            </div>
+                            <!-- v-if -->
+                            <div class="uk-flex uk-flex-middle uk-margin-top" v-if="info.payment_method === 2">
+                                <div class="uk-width-1-6"> 取號狀態 </div>
+                                <!-- v-if -->
+                                <div class="uk-width-5-6 uk-text-bold" v-if="info.vAccount"> 已取號 </div>
+                                <div class="uk-width-5-6 uk-text-bold" v-else> 未取號 </div>
+                            </div>
+                            <div class="uk-padding-small uk-margin-top" style="border: 1px solid #e1e1e1;" v-if="info.vAccount">
+                                <div class="uk-text-primary">ATM繳費資訊</div>
+                                <!-- v-if -->
+                                <div class="uk-flex uk-flex-middle uk-margin-top">
+                                    <div class="uk-width-1-6"> 繳費虛擬帳號 </div>
+                                    <!-- v-if -->
+                                    <div class="uk-width-5-6 uk-text-bold"> {{ info.vAccount }} </div>
+                                </div>
+                                <!-- v-if -->
+                                <div class="uk-flex uk-flex-middle uk-margin-top">
+                                    <div class="uk-width-1-6"> 繳費銀行代碼 </div>
+                                    <div class="uk-width-5-6 uk-text-bold"> {{ info.BankCode }} </div>
+                                </div>
+                                <!-- v-if -->
+                                <div class="uk-flex uk-flex-middle uk-margin-top">
+                                    <div class="uk-width-1-6"> 繳費期限 </div>
+                                    <div class="uk-width-5-6 uk-text-bold uk-text-danger"> {{ info.ExpireDate }} </div>
+                                </div>
                             </div>
                             <div class="uk-flex uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-6"> 處理狀態 </div>
@@ -182,6 +214,11 @@
                     city: '',
                     address: '',
                     freight: 0,
+                    payment_method: '',
+                    TradeNo: '',
+                    BankCode: '',
+                    vAccount: '',
+                    ExpireDate: '',
                     invoice_method: null,
                     invoice_tax_id_number: '',
                     invoice_name: '',
@@ -213,6 +250,8 @@
               switch (payment) {
                 case 1:
                   return '信用卡';
+                case 2:
+                  return 'ATM';
                 default:
                   return '';
               }
@@ -222,9 +261,13 @@
             return status => {
               switch (status) {
                 case 0:
-                  return '未付款';
+                  return '尚未付款';
                 case 1:
-                  return '已付款';
+                  return '付款成功';
+                case -1:
+                  return '付款金額錯誤';
+                case -2:
+                  return '付款失敗';
                 default:
                   return '';
               }
@@ -232,13 +275,17 @@
           },
           orderStatusFormat() {
             return status => {
-              switch (status) {
+              switch (Number(status)) {
+                case -2:
+                case -1:
+                  return '已取消';
                 case 0:
-                  return '待確認';
                 case 1:
-                  return '已確認';
+                  return '待處理';
                 case 2:
                   return '已出貨';
+                case 3:
+                  return '已完成';
                 default:
                   return '';
               }
@@ -247,11 +294,14 @@
           orderStatusColor() {
             return status => {
               switch (status) {
-                case 0:
+                case -2:
+                case -1:
                   return 'uk-text-danger';
+                case 0:
                 case 1:
                   return 'uk-text-default';
                 case 2:
+                case 3:
                   return 'uk-text-primary';
                 default:
                   return '';
@@ -266,6 +316,16 @@
                   return price.toLocaleString();
               }
           },
+          atmDelay() {
+            if (this.payment_method === '2' && this.info.vAccount) {
+              let ExpireDate = this.info.ExpireDate + ' 23:59:59';
+              if (moment().valueOf() > moment(ExpireDate).valueOf()) {
+                return true;
+              }
+              return false;
+            }
+            return false;
+          },
         },
         mounted() {
             let path_array = location.pathname.split('/');
@@ -276,6 +336,7 @@
             this.order_id = path_array[3];
             this.getOrderInfo(this.order_id).then(res => {
                 !res.data.data ? location.href = '/' : this.info = res.data.data;
+                this.payment_method = this.info.payment_method.toString();
                 this.$store.commit('disabledLoading');
             });
         },
@@ -294,7 +355,7 @@
           send() {
               UIkit.modal('#modal-confirm').hide();
               this.$store.commit('enabledLoading');
-              let data = { order_id: this.order_id, list: this.info.order_products};
+              let data = { order_id: this.order_id, list: this.info.order_products, payment_method: this.payment_method};
               this.$axios.post(process.env.API_URL + '/api/order/payment', data, this.config).then(res => {
                   if (res.data.status) {
                       for (const [key, value] of Object.entries(res.data.ecpay)) {
