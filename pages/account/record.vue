@@ -180,13 +180,13 @@
         },
         async mounted() {
             loginAuth(this.$store, true);
-            await this.getOrderList(moment().add(-6, 'months').format('Y-MM-DD'), moment().format('Y-MM-DD')).then(res => {
+            await this.getOrderList(moment().add(-1, 'months').format('Y-MM-DD'), moment().format('Y-MM-DD')).then(res => {
                 this.list = res.data.data
             });
 
             this.value.start_date = document.getElementsByClassName("start-date").flatpickr({
                 locale: 'zh_tw',
-                defaultDate: moment().add(-6, 'months').format('Y-MM-DD')
+                defaultDate: moment().add(-1, 'months').format('Y-MM-DD')
             });
             this.value.end_date = document.getElementsByClassName("end-date").flatpickr({
                 locale: 'zh_tw',

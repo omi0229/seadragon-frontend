@@ -270,7 +270,11 @@
                       </div>
                       <div class="uk-flex uk-flex-middle uk-margin-top">
                           <div class="uk-width-1-6"> 付款方式 </div>
-                          <div class="uk-width-5-6"> 信用卡 </div>
+                          <div class="uk-width-5-6">
+                              <!-- v-if -->
+                              <span v-if="receiver.payment_method === '1'">信用卡</span>
+                              <span v-else-if="receiver.payment_method === '2'">ATM</span>
+                          </div>
                       </div>
                       <div class="uk-flex uk-flex-middle uk-margin-top">
                           <div class="uk-width-1-6"> 收件者 </div>
@@ -356,7 +360,7 @@
 
 <script>
     import { find, filter } from 'lodash';
-    import { init, notification} from '~/plugins/app.js';
+    import { init, notification, getCartCount} from '~/plugins/app.js';
     import twzipcode from 'twzipcode-data'
 
     export default {
@@ -542,6 +546,8 @@
                 this.getShoppingCart().then(cart => {
                   this.list = cart.data.data;
                   this.$store.commit('disabledLoading');
+
+                  getCartCount(this.$store, localStorage.getItem('cart_id'))
                 })
               }
             });
@@ -578,18 +584,8 @@
               }
 
               this.$store.commit('enabledLoading');
-              let inventory_status = true;
               this.getShoppingCart().then(res => {
-                res.data.data.forEach(v => {
-                  let obj = find(this.list, ['specifications_id', v.specifications_id]);
-                  if (obj) {
-                    obj.product_specification.inventory = v.product_specification.inventory;
-                    if (obj.product_specification.inventory < obj.count) {
-                      inventory_status = false;
-                    }
-                  }
-                });
-
+                let inventory_status = this.__inventorySum(res);
                 inventory_status ? this.step = 2 : notification('庫存不足', 'danger');
                 this.$store.commit('disabledLoading');
                 if (this.step === 2) {
@@ -613,6 +609,20 @@
                 UIkit.scroll().scrollTo('#header');
               }
             }
+          },
+          __inventorySum(res) {
+            let inventory_status = true
+            res.data.data.forEach(v => {
+              let obj = find(this.list, ['specifications_id', v.specifications_id]);
+              if (obj) {
+                obj.product_specification.inventory = v.product_specification.inventory;
+                if (obj.product_specification.inventory < obj.count) {
+                  inventory_status = false;
+                }
+              }
+            });
+
+            return inventory_status;
           },
           addCount(num, key) {
             if ((num > 0 || (num < 0 && this.list[key].count > 1)) && this.list[key].count < 9999) {
@@ -646,8 +656,24 @@
             UIkit.notification.closeAll();
             UIkit.modal('#modal-confirm').show();
           },
-          send() {
+          async send() {
             this.$store.commit('enabledLoading');
+
+            let inventory_status = true;
+            await this.getShoppingCart().then(res => {
+              if (!this.__inventorySum(res)) {
+                inventory_status = false;
+              }
+            })
+
+            if (!inventory_status) {
+              this.$store.commit('disabledLoading');
+              UIkit.modal('#modal-confirm').hide();
+              notification('庫存不足', 'danger')
+              this.step = 1;
+              UIkit.scroll().scrollTo('#header');
+              return false;
+            }
 
             if (this.receiver.invoice_method === '1') {
               this.receiver.invoice_tax_id_number = this.receiver.invoice_name = '';

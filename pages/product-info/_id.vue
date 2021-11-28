@@ -38,7 +38,7 @@
                                         <option value="">請選擇規格</option>
                                         <!-- v-for -->
                                         <option :value="item.id" v-for="item in info.product.specification">
-                                            {{item.name}} - 原價：{{item.original_price}} - 售價：{{item.selling_price}} - 庫存：<span class="uk-text-danger">{{item.inventory ? '有庫存' : '無庫存'}}</span>
+                                            {{item.name}} - 原價：{{item.original_price}} - 售價：{{item.selling_price}} - 庫存：<span class="uk-text-danger">{{item.inventory > 0 ? '有庫存' : '無庫存'}}</span>
                                         </option>
                                     </select>
                                 </div>
