@@ -317,7 +317,7 @@
               }
           },
           atmDelay() {
-            if (this.payment_method === '2' && this.info.vAccount) {
+            if (this.info.payment_status !== 1 && this.payment_method === '2' && this.info.vAccount) {
               let ExpireDate = this.info.ExpireDate + ' 23:59:59';
               if (moment().valueOf() > moment(ExpireDate).valueOf()) {
                 return true;

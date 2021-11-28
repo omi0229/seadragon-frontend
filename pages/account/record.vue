@@ -178,11 +178,10 @@
                 }
             },
         },
-        mounted() {
+        async mounted() {
             loginAuth(this.$store, true);
-            this.getOrderList(moment().add(-6, 'months').format('Y-MM-DD'), moment().format('Y-MM-DD')).then(res => {
+            await this.getOrderList(moment().add(-6, 'months').format('Y-MM-DD'), moment().format('Y-MM-DD')).then(res => {
                 this.list = res.data.data
-                this.$store.commit('disabledLoading');
             });
 
             this.value.start_date = document.getElementsByClassName("start-date").flatpickr({
