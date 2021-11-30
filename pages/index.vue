@@ -130,9 +130,6 @@
               put_on_list: put_on_list,
             };
         },
-        async fetch ({ $axios, store, params }) {
-            await init(store);
-        },
         async mounted() {
           loginAuth(this.$store);
 

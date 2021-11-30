@@ -1,23 +1,5 @@
 import axios from 'axios';
 
-export const init = store => {
-    return new Promise(async resolve => {
-        await axios.get(process.env.API_URL + '/api/news-type/list/all').then(res => {
-            store.dispatch('setNewsTypesList', res.data);
-        });
-
-        await axios.get(process.env.API_URL + '/api/cooking-type/list/all').then(res => {
-            store.dispatch('setCookingTypesList', res.data);
-        });
-
-        await axios.get(process.env.API_URL + '/api/directory/list/all').then(res => {
-            store.dispatch('setDirectoryList', res.data);
-        });
-
-        resolve();
-    });
-};
-
 export const getCartCount = (store, cart_id) => {
     axios.post(process.env.API_URL + '/api/cart/get-cart-count', {cart_id: cart_id}).then(res => {
         store.commit('setCartCount', res.data);

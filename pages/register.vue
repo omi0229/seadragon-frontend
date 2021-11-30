@@ -173,9 +173,6 @@
 
             };
         },
-        async fetch ({ $axios, store, params }) {
-            await init(store);
-        },
         mounted() {
             this.refreshCode();
             this.$store.commit('disabledLoading');

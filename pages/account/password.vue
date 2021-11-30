@@ -94,9 +94,6 @@
                 },
             }
         },
-        async fetch ({ $axios, store, params }) {
-            await init(store);
-        },
         mounted() {
             loginAuth(this.$store, true);
 

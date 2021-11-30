@@ -419,9 +419,6 @@
                 freight_list: [],
             }
         },
-        async fetch ({ $axios, store, params }) {
-            await init(store);
-        },
         watch: {
           'value.is_orderer'(new_data, old_data) {
             this.receiver.cellphone = new_data ? this.cellphone : '';

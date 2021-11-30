@@ -92,7 +92,9 @@
             }
         },
         async fetch({$axios, store, params}) {
-            await init(store);
+            await $axios.get(process.env.API_URL + '/api/directory/list/all').then(res => {
+                store.dispatch('setDirectoryList', res.data);
+            });
         },
         asyncData({app, $axios, route, redirect}) {
             let id = route.params.id;

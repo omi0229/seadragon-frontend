@@ -69,7 +69,9 @@
             }
         },
         async fetch ({ $axios, store, params }) {
-            await init(store);
+            await $axios.get(process.env.API_URL + '/api/cooking-type/list/all').then(res => {
+                store.dispatch('setCookingTypesList', res.data);
+            });
         },
         asyncData({$axios, store, route}) {
             let cooking_types_id = route.params.cooking_types_id;

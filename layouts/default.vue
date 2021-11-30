@@ -66,7 +66,7 @@
     }
 
     .default-content {
-      min-height: calc(100vh - 33vmin - 350px);
+      min-height: calc(100vh - 295px - 238.4px);
     }
 
 </style>

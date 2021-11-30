@@ -97,9 +97,6 @@
                 },
             }
         },
-        async fetch ({ $axios, store, params }) {
-            await init(store);
-        },
         computed: {
             orderDate() {
                 return date => {
