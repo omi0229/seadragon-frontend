@@ -58,7 +58,7 @@
             }
         },
         async fetch ({ $axios, store, params }) {
-            await $axios.get(process.env.API_URL + '/api/directory/list/all').then(res => {
+            await $axios.get(process.env.API_URL + '/api/directory/menu').then(res => {
                 store.dispatch('setDirectoryList', res.data);
             });
         },
@@ -99,9 +99,10 @@
             if (type) {
                 this.info.id = type.id ? type.id : null;
                 this.info.name = type.name ? type.name : null;
+                this.$store.commit('disabledLoading');
+            } else {
+                location.href = '/';
             }
-
-            this.$store.commit('disabledLoading');
         },
         methods: {
             getData(page) {

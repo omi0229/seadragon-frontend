@@ -92,7 +92,7 @@
             }
         },
         async fetch({$axios, store, params}) {
-            await $axios.get(process.env.API_URL + '/api/directory/list/all').then(res => {
+            await $axios.get(process.env.API_URL + '/api/directory/menu').then(res => {
                 store.dispatch('setDirectoryList', res.data);
             });
         },
@@ -103,6 +103,12 @@
             }
 
             return $axios.get(process.env.API_URL + '/api/product-info/' + id).then(res => {
+
+                if (!res.data) {
+                    redirect('/directory');
+                    return false;
+                }
+
                 app.head.title = '線上購物：' + res.data.product.title;
                 app.head.meta = [{
                     charset: 'utf-8'
