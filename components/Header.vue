@@ -45,7 +45,7 @@
         </div>
         <div class="nav" uk-navbar>
             <div class="nav-item">
-                <a href="#">關於海龍王</a>
+                <a href="/about">關於海龍王</a>
             </div>
             <div class="nav-item">
                 <a href="/news">最新消息</a>
@@ -57,7 +57,7 @@
                 <a href="/directory">線上購物</a>
             </div>
             <div class="nav-item">
-                <a href="#">購物說明</a>
+                <a href="/shopping-explanation">購物說明</a>
             </div>
             <div class="uk-padding-small uk-padding-remove-vertical uk-margin-auto-left">
                 <div class="input-group">
