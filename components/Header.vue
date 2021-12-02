@@ -139,8 +139,8 @@
     data() {
       return {
         login: {
-          cellphone: '',
-          password: '',
+          cellphone: '0919099128',
+          password: 'm12345678',
         },
         input: {
           captcha: '',
