@@ -49,7 +49,10 @@
         </div>
         <hr class="uk-margin-remove-bottom">
         <div class="uk-width-1-1 uk-text-center uk-padding-small contact">
-            <div>Email： dragon-king-market@hotmail.com 客服專線：0903080848</div>
+            <div>
+                <span class="uk-margin-right">Email： dragon-king-market@hotmail.com</span>
+                <span>客服專線：0903080848</span>
+            </div>
             <div>Copyright © 2021 海龍王市集有限公司</div>
         </div>
     </div>
