@@ -27,7 +27,7 @@
                   </div>
                   <div class="uk-margin uk-flex uk-flex-middle">
                       <label class="uk-text-small uk-width-1-4" for="register_name">姓名 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="text" id="register_name" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入姓名" v-model="form.name">
+                      <input type="text" id="register_name" maxlength="5" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入姓名" v-model="form.name">
                   </div>
                   <div class="uk-margin uk-flex uk-flex-middle">
                       <label class="uk-text-small uk-width-1-4" for="register_email">電子信箱</label>

@@ -151,7 +151,7 @@
                       <div class="uk-flex uk-flex-middle uk-margin-top">
                           <div class="uk-width-1-6">姓名</div>
                           <div class="uk-width-1-3">
-                              <input class="uk-input uk-form-small" maxlength="20" placeholder="請輸入姓名" v-model="receiver.name" />
+                              <input class="uk-input uk-form-small" maxlength="5" placeholder="請輸入姓名" v-model="receiver.name" />
                           </div>
                       </div>
                       <div class="uk-flex uk-flex-middle uk-margin-top">
@@ -350,7 +350,7 @@
         </div>
 
         <div class="uk-hidden">
-            <form id="form" type="post" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post">
+            <form id="form" type="post" :action="url.payment" method="post">
                 <input type="hidden" :name="item.key" :value="item.value" v-for="item in ECPay" />
             </form>
         </div>
@@ -417,6 +417,9 @@
                 origin_zipcode,
                 ECPay: [],
                 freight_list: [],
+                url: {
+                    payment: '',
+                },
             }
         },
         watch: {
@@ -473,6 +476,10 @@
           });
 
           this.setMemberInfo(this.$store.state.member);
+
+          this.$axios.get(process.env.API_URL + '/api/order/get/payment_url', this.config).then(res => {
+              this.url.payment = res.data;
+          });
 
           await this.getFreightList().then(res => {
             this.freight_list = res.data.data
