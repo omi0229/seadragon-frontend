@@ -184,7 +184,7 @@
         </div>
 
         <div class="uk-hidden">
-            <form id="form" type="post" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post">
+            <form id="form" type="post" :action="url.payment" method="post">
                 <input type="hidden" :name="item.key" :value="item.value" v-for="item in ECPay" />
             </form>
         </div>
@@ -234,6 +234,9 @@
                     }
                 },
                 ECPay: [],
+                url: {
+                    payment: '',
+                },
             }
         },
         computed: {
@@ -324,18 +327,22 @@
             return false;
           },
         },
-        mounted() {
-            let path_array = location.pathname.split('/');
-            if (path_array.length !== 4) {
-              location.href = '/';
-            }
+        async mounted() {
+          let path_array = location.pathname.split('/');
+          if (path_array.length !== 4) {
+            location.href = '/';
+          }
 
-            this.order_id = path_array[3];
-            this.getOrderInfo(this.order_id).then(res => {
-                !res.data.data ? location.href = '/' : this.info = res.data.data;
-                this.payment_method = this.info.payment_method.toString();
-                this.$store.commit('disabledLoading');
-            });
+          await this.$axios.get(process.env.API_URL + '/api/order/get/payment_url', this.config).then(res => {
+            this.url.payment = res.data;
+          });
+
+          this.order_id = path_array[3];
+          this.getOrderInfo(this.order_id).then(res => {
+            !res.data.data ? location.href = '/' : this.info = res.data.data;
+            this.payment_method = this.info.payment_method.toString();
+            this.$store.commit('disabledLoading');
+          });
         },
         methods: {
           getOrderInfo(order_id) {

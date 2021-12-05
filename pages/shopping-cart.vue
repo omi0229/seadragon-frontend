@@ -478,7 +478,7 @@
 
           this.setMemberInfo(this.$store.state.member);
 
-          this.$axios.get(process.env.API_URL + '/api/order/get/payment_url', this.config).then(res => {
+          await this.$axios.get(process.env.API_URL + '/api/order/get/payment_url', this.config).then(res => {
               this.url.payment = res.data;
           });
 
