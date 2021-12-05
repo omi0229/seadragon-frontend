@@ -359,6 +359,7 @@
 </template>
 
 <script>
+    import Cookies from 'js-cookie';
     import { find, filter } from 'lodash';
     import { init, notification, getCartCount} from '~/plugins/app.js';
     import twzipcode from 'twzipcode-data'
@@ -693,6 +694,16 @@
 
             this.ECPay = [];
             this.$axios.post(process.env.API_URL + '/api/order/create', obj, this.config).then(res => {
+
+              if (obj.synchronize) {
+                let user = JSON.parse(Cookies.get('user'));
+                user.zipcode = obj.form.zipcode;
+                user.country = obj.form.country;
+                user.city = obj.form.city;
+                user.address = obj.form.address;
+                Cookies.set('user', JSON.stringify(user));
+              }
+
               for (const [key, value] of Object.entries(res.data.ecpay)) {
                 this.ECPay.push({
                   key: key,
