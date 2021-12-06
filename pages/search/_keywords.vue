@@ -90,7 +90,20 @@
         data() {
             return {
                 keywords: '',
-                result: [],
+                result: {
+                  cooking: {
+                    list: [],
+                    all_count: 0,
+                    page_count: 0,
+                    page_item_count: 0,
+                  },
+                  product: {
+                    list: [],
+                    all_count: 0,
+                    page_count: 0,
+                    page_item_count: 0,
+                  }
+                },
             }
         },
         async asyncData({$axios, store, route, redirect}) {
@@ -99,14 +112,15 @@
                 redirect('/');
             }
 
-            return $axios.get(process.env.API_URL + '/api/search/all/' + keywords).then(res => {
-                return {
-                    keywords: keywords,
-                    result: res.data,
-                };
-            })
+            return {
+                keywords: keywords,
+            };
         },
-        mounted() {
+        async mounted() {
+            await this.$axios.get(process.env.API_URL + '/api/search/all/' + this.keywords).then(res => {
+                this.result = res.data;
+            });
+
             this.$store.commit('disabledLoading');
         },
         methods: {
