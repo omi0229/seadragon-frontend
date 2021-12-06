@@ -61,8 +61,8 @@
             </div>
             <div class="uk-padding-small uk-padding-remove-vertical uk-margin-auto-left">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search ...">
-                    <div class="input-group-append">
+                    <input type="text" class="form-control" placeholder="Search ..." maxlength="40" @keyup.enter="search" v-model="keywords">
+                    <div class="input-group-append cursor" @click="search">
                         <span class="input-group-text bg-secondary text-white">
                             <span uk-icon="search"></span>
                         </span>
@@ -148,6 +148,7 @@
         captcha: {
           answers: '',
         },
+        keywords: '',
       }
     },
     mounted() {
@@ -160,6 +161,10 @@
       }
 
       getCartCount(this.$store, localStorage.getItem('cart_id'));
+
+      if (sessionStorage.getItem('keywords')) {
+        this.keywords = sessionStorage.getItem('keywords');
+      }
     },
     methods: {
       generalLogin() {
@@ -263,6 +268,15 @@
           this.$store.commit('clearLoginMember');
           window.location.reload();
         }, 2000)
+      },
+      search() {
+        if (!this.keywords) {
+          notification('請輸入關鍵字', 'danger');
+          return false;
+        }
+
+        sessionStorage.setItem('keywords', this.keywords);
+        location.href = '/search/' + this.keywords;
       },
     }
   }
