@@ -2,7 +2,7 @@
     <div class="uk-flex">
         <SearchMenu></SearchMenu>
         <div class="container">
-          <ul class="uk-breadcrumb">
+          <ul id="cooking_start" class="uk-breadcrumb">
               <li><a href="/">Home</a></li>
               <li><a href="#">搜尋結果</a></li>
               <li><a href="#">烹飪教學</a></li>
@@ -37,13 +37,13 @@
                     </div>
                 </div>
 
-                <Pagination :all_count="result.cooking.all_count" :page_count="result.cooking.page_count" :page_item_count="result.cooking.page_item_count" @get-data="getCookingData"></Pagination>
+                <Pagination id="cooking_end" :all_count="result.cooking.all_count" :page_count="result.cooking.page_count" :page_item_count="result.cooking.page_item_count" @get-data="getCookingData"></Pagination>
           </div>
           <div class="uk-margin-auto not-find" v-else>
               查無相關烹飪教學影片!!
           </div>
 
-          <ul class="uk-breadcrumb">
+          <ul id="product_start" class="uk-breadcrumb">
               <li><a href="/">Home</a></li>
               <li><a href="#">搜尋結果</a></li>
               <li><a href="#">相關線上購物產品</a></li>
@@ -70,7 +70,7 @@
                   </div>
               </div>
 
-              <Pagination :all_count="result.product.all_count" :page_count="result.product.page_count" :page_item_count="result.product.page_item_count" @get-data="getProductData"></Pagination>
+              <Pagination id="product_end" :all_count="result.product.all_count" :page_count="result.product.page_count" :page_item_count="result.product.page_item_count" @get-data="getProductData"></Pagination>
           </div>
           <div class="uk-margin-auto not-find" v-else>
               查無相關線上購物產品資料!!
@@ -124,18 +124,22 @@
             this.$store.commit('disabledLoading');
         },
         methods: {
-            getProductData(page) {
-                this.$store.commit('enabledLoading');
-                this.$axios.get(process.env.API_URL + '/api/search/product/'+ this.keywords +'/' + page).then(res => {
-                    this.result.product = res.data;
-                    this.$store.commit('disabledLoading');
-                });
-            },
             getCookingData(page) {
                 this.$store.commit('enabledLoading');
                 this.$axios.get(process.env.API_URL + '/api/search/cooking/'+ this.keywords +'/' + page).then(res => {
                     this.result.cooking = res.data;
                     this.$store.commit('disabledLoading');
+
+                    UIkit.scroll('#cooking_end').scrollTo('#cooking_start');
+                });
+            },
+            getProductData(page) {
+                this.$store.commit('enabledLoading');
+                this.$axios.get(process.env.API_URL + '/api/search/product/'+ this.keywords +'/' + page).then(res => {
+                    this.result.product = res.data;
+                    this.$store.commit('disabledLoading');
+
+                    UIkit.scroll('#product_end').scrollTo('#product_start');
                 });
             },
         }
