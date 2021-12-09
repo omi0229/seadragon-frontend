@@ -48,3 +48,28 @@ body {
 .size-26 {
   font-size: 26px;
 }
+
+/* web */
+.mobile {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .web {
+    display: none;
+  }
+
+  .mobile {
+    display: block;
+  }
+
+  .uk-breadcrumb > * > * {
+    font-size: 14px;
+  }
+
+  .uk-breadcrumb > :nth-child(n+2):not(.uk-first-column)::before {
+    font-size: 14px;
+    margin: 0 5px;
+  }
+
+}

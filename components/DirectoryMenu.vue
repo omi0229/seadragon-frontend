@@ -33,6 +33,10 @@
   > div {
     padding: 5px 0;
   }
+
+  @media (max-width: 960px) {
+    display: none;
+  }
 }
 
 </style>

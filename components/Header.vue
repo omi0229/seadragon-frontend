@@ -1,47 +1,77 @@
 <template>
     <div id="header">
-        <div class="top uk-flex uk-flex-between">
-            <div class="top-left uk-flex-1 uk-padding-small uk-flex uk-height-1-1 header-padding">
-                <img src="/images/icon/t-youtube.png" class="uk-border-circle uk-margin-small-right"/>
-                <img src="/images/icon/facebook.png" class="uk-border-circle uk-margin-small-right"/>
-                <img src="/images/icon/ig.png" class="uk-border-circle uk-margin-small-right"/>
-                <img src="/images/icon/line.png" class="uk-border-circle"/>
-            </div>
-            <a href="/"><img src="/S__111558660.jpg"/></a>
-            <div class="uk-flex-1 uk-flex uk-flex-right uk-height-1-1 header-padding">
-                <template v-if="$store.state.member.id">
-                  <div class="uk-margin-small-right">
-                    <a href="/" class="uk-flex uk-flex-middle uk-link-reset">
-                        您好！<span class="uk-text-primary uk-text-bold">{{$store.state.member.name}}</span>
-                    </a>
-                  </div>
-                  <div class="uk-margin-small-right">
-                    <a href="/account/basic" class="uk-flex uk-link-reset">
-                        <span uk-icon="icon: user"></span>會員中心
-                    </a>
-                  </div>
-                  <div class="uk-margin-small-right">
-                    <a href="#modal-logout" class="uk-flex uk-link-reset" uk-toggle>
-                      <span uk-icon="icon: sign-out"></span>登出
-                    </a>
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="uk-margin-small-right">
-                    <a href="#modal-login" class="uk-flex uk-link-reset" @click="generalLogin" uk-toggle>
-                      <span uk-icon="icon: sign-in"></span>登入
-                    </a>
-                  </div>
-                  <div class="uk-margin-small-right">
-                    <a href="/register" class="uk-flex uk-link-reset">
-                      <span uk-icon="icon: user"></span>註冊
-                    </a>
-                  </div>
-                </template>
-                <div class="cursor uk-flex" @click="showCart">
-                    <span uk-icon="icon: cart; ratio: 1" :class="{ 'cart-icon-margin': $store.state.cart_count <= 0 }"></span><span class="uk-badge" v-show="$store.state.cart_count > 0">{{ $store.state.cart_count }}</span>購物車
+        <div class="web">
+            <div class="top uk-flex uk-flex-between">
+                <div class="top-left uk-flex-1 uk-padding-small uk-flex uk-height-1-1 header-padding">
+                    <img src="/images/icon/t-youtube.png" class="uk-border-circle uk-margin-small-right"/>
+                    <img src="/images/icon/facebook.png" class="uk-border-circle uk-margin-small-right"/>
+                    <img src="/images/icon/ig.png" class="uk-border-circle uk-margin-small-right"/>
+                    <img src="/images/icon/line.png" class="uk-border-circle"/>
+                </div>
+                <a href="/"><img src="/S__111558660.jpg"/></a>
+                <div class="uk-flex-1 uk-flex uk-flex-right uk-height-1-1 header-padding">
+                    <template v-if="$store.state.member.id">
+                      <div class="uk-margin-small-right">
+                        <a href="/" class="uk-flex uk-flex-middle uk-link-reset">
+                            您好！<span class="uk-text-primary uk-text-bold">{{$store.state.member.name}}</span>
+                        </a>
+                      </div>
+                      <div class="uk-margin-small-right">
+                        <a href="/account/basic" class="uk-flex uk-link-reset">
+                            <span uk-icon="icon: user"></span>會員中心
+                        </a>
+                      </div>
+                      <div class="uk-margin-small-right">
+                        <a href="#modal-logout" class="uk-flex uk-link-reset" uk-toggle>
+                          <span uk-icon="icon: sign-out"></span>登出
+                        </a>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div class="uk-margin-small-right">
+                        <a href="#modal-login" class="uk-flex uk-link-reset" @click="generalLogin" uk-toggle>
+                          <span uk-icon="icon: sign-in"></span>登入
+                        </a>
+                      </div>
+                      <div class="uk-margin-small-right">
+                        <a href="/register" class="uk-flex uk-link-reset">
+                          <span uk-icon="icon: user"></span>註冊
+                        </a>
+                      </div>
+                    </template>
+                    <div class="cursor uk-flex" @click="showCart">
+                        <span uk-icon="icon: cart; ratio: 1" :class="{ 'cart-icon-margin': $store.state.cart_count <= 0 }"></span><span class="uk-badge" v-show="$store.state.cart_count > 0">{{ $store.state.cart_count }}</span>購物車
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="mobile">
+            <div class="mobile-top-block"></div>
+            <div class="uk-flex uk-flex-middle uk-flex-between mobile-top-block mobile-top-fixed">
+                <div class="uk-text-left uk-width-1-5" uk-toggle="target: #offcanvas-overlay">
+                    <span uk-icon="icon: menu; ratio: 1.2"></span>
+                </div>
+                <div class="uk-text-center uk-width-3-5"><a href="/"><img src="/S__111558660.jpg" class="logo" /></a></div>
+                <div class="uk-text-right  uk-width-1-5 uk-position-relative">
+                    <span uk-icon="icon: cart; ratio: 1.2" class="cursor" :class="{ 'cart-icon-margin': $store.state.cart_count <= 0 }" @click="showCart"></span>
+                    <span class="uk-badge uk-position-absolute" v-show="$store.state.cart_count > 0">{{ $store.state.cart_count }}</span>
+                </div>
+            </div>
+
+            <div id="offcanvas-overlay" uk-offcanvas="overlay: true">
+                <div class="uk-offcanvas-bar">
+                    <button class="uk-offcanvas-close" type="button" uk-close></button>
+                    <div class="top">
+                        <div class="top-left uk-flex-1 uk-padding-small uk-flex header-padding">
+                            <img src="/images/icon/t-youtube.png" class="uk-border-circle uk-margin-small-right"/>
+                            <img src="/images/icon/facebook.png" class="uk-border-circle uk-margin-small-right"/>
+                            <img src="/images/icon/ig.png" class="uk-border-circle uk-margin-small-right"/>
+                            <img src="/images/icon/line.png" class="uk-border-circle"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="nav" uk-navbar>
             <div class="nav-item">
@@ -72,45 +102,45 @@
         </div>
 
         <div id="modal-login" uk-modal="bg-close: false">
-            <div class="uk-modal-dialog uk-modal-body">
-                <h2 class="uk-modal-title uk-text-center">會員登入</h2>
-                <div>
-                    <div class="uk-flex uk-flex-middle">
-                        <label for="cellphone" class="uk-width-1-4">帳號 (手機號碼)</label>
-                        <input id="cellphone" type="text" maxlength="10" class="uk-input uk-width-3-4" placeholder="請輸入您註冊的手機號碼" v-model="login.cellphone" />
-                    </div>
-                    <div class="uk-flex uk-flex-middle uk-margin-top">
-                        <label for="password" class="uk-width-1-4">密碼</label>
-                        <input id="password" type="password" maxlength="50" class="uk-input uk-width-3-4" placeholder="請輸入密碼" v-model="login.password" />
-                    </div>
-                    <div class="uk-margin uk-flex uk-flex-middle">
-                        <div class="uk-width-1-4">
-                            <label class="uk-text-small" for="captcha">驗證碼</label>
-                        </div>
-                        <div class="uk-width-3-4 uk-flex uk-flex-middle">
-                            <div class="uk-width-1-4" @click="refreshCode">
-                                <Captcha elementId="login-graphic-captcha" :identifyCode="captcha.answers" :contentHeight="30" :contentWidth="120"></Captcha>
-                            </div>
-                            <div class="uk-width-3-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-right">
-                                <input type="text" id="captcha" maxlength="5" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1" placeholder="請輸入驗證碼" v-model="input.captcha">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="uk-flex uk-flex-middle">
-                        <div class="uk-width-1-4"></div>
-                        <div class="uk-width-3-4 uk-flex uk-flex-middle uk-text-danger">
-                            (驗證碼看不清時,請重新點擊驗證碼圖片)
-                        </div>
-                    </div>
-                </div>
-                <p class="uk-text-right">
-                    <button class="uk-button uk-button-small uk-button-danger" type="button" @click="forget">忘記密碼</button>
-                    <button class="uk-button uk-button-small uk-button-primary" type="button" @click="register">會員註冊</button>
-                    <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
-                    <button class="uk-button uk-button-small uk-button-primary" type="button" @click="memberLogin">登入</button>
-                </p>
-            </div>
-        </div>
+              <div class="uk-modal-dialog uk-modal-body">
+                  <h2 class="uk-modal-title uk-text-center">會員登入</h2>
+                  <div>
+                      <div class="uk-flex uk-flex-middle">
+                          <label for="cellphone" class="uk-width-1-4">帳號 (手機號碼)</label>
+                          <input id="cellphone" type="text" maxlength="10" class="uk-input uk-width-3-4" placeholder="請輸入您註冊的手機號碼" v-model="login.cellphone" />
+                      </div>
+                      <div class="uk-flex uk-flex-middle uk-margin-top">
+                          <label for="password" class="uk-width-1-4">密碼</label>
+                          <input id="password" type="password" maxlength="50" class="uk-input uk-width-3-4" placeholder="請輸入密碼" v-model="login.password" />
+                      </div>
+                      <div class="uk-margin uk-flex uk-flex-middle">
+                          <div class="uk-width-1-4">
+                              <label class="uk-text-small" for="captcha">驗證碼</label>
+                          </div>
+                          <div class="uk-width-3-4 uk-flex uk-flex-middle">
+                              <div class="uk-width-1-4" @click="refreshCode">
+                                  <Captcha elementId="login-graphic-captcha" :identifyCode="captcha.answers" :contentHeight="30" :contentWidth="120"></Captcha>
+                              </div>
+                              <div class="uk-width-3-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-right">
+                                  <input type="text" id="captcha" maxlength="5" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1" placeholder="請輸入驗證碼" v-model="input.captcha">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="uk-flex uk-flex-middle">
+                          <div class="uk-width-1-4"></div>
+                          <div class="uk-width-3-4 uk-flex uk-flex-middle uk-text-danger">
+                              (驗證碼看不清時,請重新點擊驗證碼圖片)
+                          </div>
+                      </div>
+                  </div>
+                  <p class="uk-text-right">
+                      <button class="uk-button uk-button-small uk-button-danger" type="button" @click="forget">忘記密碼</button>
+                      <button class="uk-button uk-button-small uk-button-primary" type="button" @click="register">會員註冊</button>
+                      <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
+                      <button class="uk-button uk-button-small uk-button-primary" type="button" @click="memberLogin">登入</button>
+                  </p>
+              </div>
+          </div>
 
         <div id="modal-logout" uk-modal="bg-close: false">
             <div class="uk-modal-dialog">
@@ -324,6 +354,7 @@
             align-items: center;
             font-weight: bold;
             font-size: 20px;
+            flex-wrap: nowrap;
 
             > div:last-child {
                 width: 450px;
@@ -331,6 +362,7 @@
 
             .nav-item {
                 padding: 0 35px;
+                white-space: nowrap;
 
                 ul {
                   max-height: 308px;
@@ -347,6 +379,9 @@
                 }
             }
 
+            @media (max-width: 960px) {
+                display: none;
+            }
         }
 
         .uk-navbar-dropdown {
@@ -356,6 +391,11 @@
         .uk-badge {
             margin-top: 3px;
             background: red !important;
+
+            @media (max-width: 960px) {
+                right: -6px;
+                top: -6px;
+            }
         }
 
         .header-padding {
@@ -366,6 +406,33 @@
             margin-right: 1.2vmin;
         }
 
+        .mobile-top-block {
+            height: 70px;
+        }
+
+        .mobile-top-fixed {
+            z-index: 1;
+            background-color: #ffffff;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 0 10px;
+        }
+
+        .logo {
+            @media (max-width: 960px) {
+                height: 50px;
+            }
+        }
+
+        .uk-offcanvas-bar {
+            background: #fff;
+            color: #333;
+
+            .uk-close {
+                color: #333;
+            }
+        }
     }
 
     #modal-register {

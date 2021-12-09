@@ -109,13 +109,12 @@
         },
         async asyncData({$axios, store, route}) {
             let list = [];
-            let api = process.env.API_URL + '/api/banners/list';
-            $axios.get(api).then(res => {
+            await $axios.get(process.env.API_URL + '/api/banners/list').then(res => {
                 list = res.data;
             });
 
             let carousel_list = [];
-            $axios.get(process.env.API_URL + '/api/news').then(res => {
+            await $axios.get(process.env.API_URL + '/api/news').then(res => {
                 carousel_list = res.data.list;
             });
 

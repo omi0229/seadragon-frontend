@@ -78,10 +78,7 @@
         },
         methods: {
             selectPage(page) {
-
                 let directory_id = this.directory_id ? this.directory_id : null;
-
-                // loading.show = true;
                 if (page >= 1 && page <= this.pages) {
                     this.page = page;
                     this.$emit('get-data', page, directory_id);

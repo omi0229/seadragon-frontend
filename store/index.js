@@ -1,5 +1,5 @@
 export const state = () => ({
-  loading: true,
+  loading: false,
   to_top: false,
   cart_count: 0,
   news_types_list: [],
