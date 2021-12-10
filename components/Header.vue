@@ -60,13 +60,39 @@
 
             <div id="offcanvas-overlay" uk-offcanvas="overlay: true">
                 <div class="uk-offcanvas-bar">
-                    <button class="uk-offcanvas-close" type="button" uk-close></button>
                     <div class="top">
                         <div class="top-left uk-flex-1 uk-padding-small uk-flex header-padding">
                             <img src="/images/icon/t-youtube.png" class="uk-border-circle uk-margin-small-right"/>
                             <img src="/images/icon/facebook.png" class="uk-border-circle uk-margin-small-right"/>
                             <img src="/images/icon/ig.png" class="uk-border-circle uk-margin-small-right"/>
                             <img src="/images/icon/line.png" class="uk-border-circle"/>
+                        </div>
+                        <button class="uk-offcanvas-close" type="button" uk-close></button>
+                    </div>
+                    <div class="uk-text-bold uk-text-large">
+                        <div class="item">
+                            <a href="#modal-login" class="uk-link-heading">會員登入</a>
+                        </div>
+                        <div class="item">
+                            <a href="/register" class="uk-link-heading">會員註冊</a>
+                        </div>
+                        <div class="item">
+                            <a href="/news" class="uk-link-heading">最新消息</a>
+                        </div>
+                        <div class="item">
+                            <a href="/cooking" class="uk-link-heading">烹飪教學</a>
+                        </div>
+                        <div class="item">
+                            <a href="/about" class="uk-link-heading">關於海龍王</a>
+                        </div>
+                        <div class="item">
+                            <button class="uk-button uk-button-text" type="button" uk-toggle="target: #toggle-directory; animation: uk-animation-fade">線上購物</button>
+                            <div id="toggle-directory" class="uk-padding-small offcanvas-toggle" hidden>
+                                Animation
+                            </div>
+                        </div>
+                        <div class="item">
+                            <a href="/shopping-explanation" class="uk-link-heading">購物說明</a>
                         </div>
                     </div>
                 </div>
@@ -327,8 +353,12 @@
             height: 25vmin;
             text-align: center;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+
+            @media (max-width: 960px) {
+                height: auto;
+            }
 
             $size: 40px;
 
@@ -425,12 +455,50 @@
             }
         }
 
+        #offcanvas-overlay {
+            background-color: rgb(0, 0, 0, 0);
+
+            .offcanvas-toggle {
+                font-size: 20px;
+                color: #161b61;
+            }
+
+            &::before {
+                background: rgba(0, 0, 0, 0);
+            }
+        }
+
         .uk-offcanvas-bar {
-            background: #fff;
+            background: #eeeeee;
             color: #333;
+            padding: 5px 10px 5px 5px;
 
             .uk-close {
                 color: #333;
+            }
+
+            a {
+                color: #333;
+            }
+
+            .item {
+                margin: 30px 20px;
+            }
+
+            .uk-button-text {
+                color: #333;
+                font-size: 24px;
+            }
+
+            .uk-button-text::after {
+                display: inline-block;
+                margin-left: 0.5em;
+                vertical-align: 0.255em;
+                content: "";
+                border-top: 0.3em solid;
+                border-right: 0.3em solid transparent;
+                border-bottom: 0;
+                border-left: 0.3em solid transparent;
             }
         }
     }

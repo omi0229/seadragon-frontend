@@ -7,7 +7,34 @@
                 <li><a href="/directory">線上購物</a></li>
                 <li><a :href="'/directory/' + info.id">{{ info.name }}</a></li>
             </ul>
-            <div class="uk-text-right">
+
+            <div class="mobile uk-text-bold uk-text-center uk-margin-small-bottom">{{ info.name }}</div>
+            <div class="mobile uk-margin-bottom">
+                <div class="uk-text-center uk-margin-small-bottom">
+                    <button class="uk-button uk-button-link uk-text-bold" type="button">{{sortName}} <span uk-icon="icon: chevron-down; ratio: 0.8"></span> </button>
+                    <div id="sort" uk-dropdown="pos: bottom">
+                        <ul class="uk-nav uk-dropdown-nav">
+                            <!-- v-for -->
+                            <li :class="{'uk-active': value.sort === item.sort}" v-for="item in select.sort" @click="sortMethod(item.sort)">
+                                <a class="uk-text-small" href="javascript:void(0);">{{ item.name }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="uk-text-center">
+                    <button class="uk-button uk-button-link uk-text-bold" type="button">{{pageCountName}} <span uk-icon="icon: chevron-down; ratio: 0.8"></span> </button>
+                    <div id="page_item_count" uk-dropdown="pos: bottom">
+                        <ul class="uk-nav uk-dropdown-nav">
+                            <!-- v-for -->
+                            <li :class="{'uk-active': value.page_item_count === item.count}" v-for="item in select.page_item_count" @click="pageCountMethod(item.count)">
+                                <a class="uk-text-small" href="javascript:void(0);">{{ item.name }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-text-right web">
                 <div class="uk-inline uk-margin-right">
                     <button class="uk-button uk-button-link uk-text-bold" type="button">{{sortName}} <span uk-icon="icon: chevron-down; ratio: 0.8"></span> </button>
                     <div uk-dropdown="pos: bottom-right">
@@ -31,9 +58,9 @@
                     </div>
                 </div>
             </div>
-            <div class="uk-flex uk-flex-wrap">
+            <div id="product_list" class="uk-flex uk-flex-wrap">
                 <!-- v-for -->
-                <div class="uk-width-1-3 uk-margin-small-top" v-for="item in list">
+                <div class="uk-width-1-2 uk-width-1-3@m uk-margin-small-top" v-for="item in list">
                     <div class="uk-card uk-card-body item-img">
                         <a :href="'/product-info/' + item.id" class="uk-text-decoration-none">
                             <img :src="item.img" />
@@ -170,6 +197,9 @@
             },
             __getData(type = null) {
                 return new Promise(resolve => {
+                    UIkit.dropdown('#sort').hide();
+                    UIkit.dropdown('#page_item_count').hide();
+
                     let url = type === 'method' ? this.origin_api + '/1' : this.origin_api + '/' + this.page;
                     if (this.value.sort || this.value.page_item_count) {
                         url += '?';
@@ -214,15 +244,39 @@
             height: 30vmin;
             width: 100%;
             object-fit: cover;
+
+            @media (max-width: 960px) {
+                height: 60vmin;
+            }
+        }
+    }
+
+    $mobile_padding: 2px;
+
+    #product_list {
+        @media (max-width: 960px) {
+            > div:nth-child(odd) {
+                padding-right: $mobile_padding;
+            }
+
+            > div:nth-child(even) {
+                padding-left: $mobile_padding;
+            }
         }
     }
 
     .uk-card-body {
         padding: 20px;
+        @media (max-width: 960px) {
+            padding: 0;
+        }
     }
 
     .uk-button-link {
         font-size: 16px;
+        @media (max-width: 960px) {
+            font-size: .875rem;
+        }
     }
 
     .uk-button-link:hover {
