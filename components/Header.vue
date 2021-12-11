@@ -77,10 +77,22 @@
                             <a href="/register" class="uk-link-heading">會員註冊</a>
                         </div>
                         <div class="item">
-                            <a href="/news" class="uk-link-heading">最新消息</a>
+                            <button class="uk-button uk-button-text" type="button" uk-toggle="target: #toggle-news; animation: uk-animation-fade">最新消息</button>
+                            <div id="toggle-news" class="uk-padding-small offcanvas-toggle" hidden>
+                                <!-- v-for -->
+                                <div v-for="item in $store.state.news_types_list">
+                                    <a :href="'/news/' + item.id" class="uk-link-heading">{{ item.name }}</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="item">
-                            <a href="/cooking" class="uk-link-heading">烹飪教學</a>
+                            <button class="uk-button uk-button-text" type="button" uk-toggle="target: #toggle-cooking; animation: uk-animation-fade">烹飪教學</button>
+                            <div id="toggle-cooking" class="uk-padding-small offcanvas-toggle" hidden>
+                                <!-- v-for -->
+                                <div v-for="item in $store.state.cooking_types_list">
+                                    <a :href="'/cooking/' + item.id" class="uk-link-heading">{{ item.name }}</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="item">
                             <a href="/about" class="uk-link-heading">關於海龍王</a>
@@ -88,7 +100,10 @@
                         <div class="item">
                             <button class="uk-button uk-button-text" type="button" uk-toggle="target: #toggle-directory; animation: uk-animation-fade">線上購物</button>
                             <div id="toggle-directory" class="uk-padding-small offcanvas-toggle" hidden>
-                                Animation
+                                <!-- v-for -->
+                                <div v-for="item in $store.state.directory_list">
+                                    <a :href="'/directory/' + item.id" class="uk-link-heading">{{ item.name }}</a>
+                                </div>
                             </div>
                         </div>
                         <div class="item">
@@ -483,6 +498,18 @@
 
             .item {
                 margin: 30px 20px;
+
+                > div {
+                    a {
+                        font-size: 20px;
+                        font-weight: bold;
+                        color: #161b61;
+                    }
+                }
+
+                > div > div + div {
+                    margin-top: 5px;
+                }
             }
 
             .uk-button-text {

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const state = () => ({
   loading: false,
   to_top: false,
@@ -109,6 +111,12 @@ export const actions = {
       commit('clearExpiredTime');
       commit('clearLoginMember');
     }
+
+    await axios.get(process.env.API_URL + '/api/menu').then(res => {
+      dispatch('setNewsTypesList', res.data.news_types_list);
+      dispatch('setCookingTypesList', res.data.cooking_types_list);
+      dispatch('setDirectoryList', res.data.directory_list);
+    });
   },
   async setNewsTypesList({ commit }, result) {
     commit('setNewsTypesList', result)

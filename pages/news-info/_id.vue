@@ -39,11 +39,6 @@
                 },
             }
         },
-        async fetch({$axios, store, params}) {
-            await $axios.get(process.env.API_URL + '/api/news-type/list/all').then(res => {
-              store.dispatch('setNewsTypesList', res.data);
-            });
-        },
         asyncData({app, $axios, store, route, redirect}) {
             let id = route.params.id;
             if (!id) {

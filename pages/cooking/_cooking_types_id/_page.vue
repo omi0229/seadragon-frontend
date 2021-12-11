@@ -68,11 +68,6 @@
                 page_item_count: 10,
             }
         },
-        async fetch ({ $axios, store, params }) {
-            await $axios.get(process.env.API_URL + '/api/cooking-type/list/all').then(res => {
-                store.dispatch('setCookingTypesList', res.data);
-            });
-        },
         asyncData({$axios, store, route}) {
             let cooking_types_id = route.params.cooking_types_id;
             if(!cooking_types_id) {

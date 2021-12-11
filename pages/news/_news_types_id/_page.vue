@@ -54,11 +54,6 @@
                 page_item_count: 10,
             }
         },
-        async fetch ({ $axios, store, params }) {
-            await $axios.get(process.env.API_URL + '/api/news-type/list/all').then(res => {
-              store.dispatch('setNewsTypesList', res.data);
-            });
-        },
         async asyncData({$axios, store, route}) {
             let news_types_id = route.params.news_types_id;
             if(!news_types_id) {

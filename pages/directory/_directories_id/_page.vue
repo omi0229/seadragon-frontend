@@ -61,14 +61,15 @@
             <div id="product_list" class="uk-flex uk-flex-wrap">
                 <!-- v-for -->
                 <div class="uk-width-1-2 uk-width-1-3@m uk-margin-small-top" v-for="item in list">
-                    <div class="uk-card uk-card-body item-img">
+                    <div class="uk-card uk-card-body item">
                         <a :href="'/product-info/' + item.id" class="uk-text-decoration-none">
-                            <img :src="item.img" />
+                            <img class="web" :src="item.img" />
+                            <img class="mobile" :src="item.mobile_img" />
                         </a>
-                        <div class="uk-text-center uk-margin-small uk-text-emphasis uk-text-large">
+                        <div class="uk-text-center margin uk-text-emphasis">
                             <a :href="'/product-info/' + item.id" class="uk-link-heading uk-text-decoration-none">{{item.product.title}}</a>
                         </div>
-                        <div class="uk-text-center uk-text-danger uk-text-bold uk-text-large">
+                        <div class="uk-text-center uk-text-danger uk-text-bold">
                             <!-- v-if -->
                             <span v-if="item.product.sales_status !== 0 && item.product_specification.data.length > 0">
                                 ${{ item.product_specification.data[0].selling_price }}
@@ -125,11 +126,6 @@
                   ]
                 }
             }
-        },
-        async fetch ({ $axios, store, params }) {
-            await $axios.get(process.env.API_URL + '/api/directory/menu').then(res => {
-                store.dispatch('setDirectoryList', res.data);
-            });
         },
         asyncData({$axios, store, route}) {
             let directories_id = route.params.directories_id;
@@ -239,7 +235,15 @@
     }
 
 
-    .item-img {
+    .item {
+        font-size: 1.5rem;
+        line-height: 1.5;
+        margin: 10px 0;
+
+        @media (max-width: 960px) {
+            font-size: 18px;
+        }
+
         img {
             height: 30vmin;
             width: 100%;
@@ -249,12 +253,29 @@
                 height: 60vmin;
             }
         }
+
+        .margin {
+            margin: 10px 0;
+            @media (max-width: 960px) {
+                margin: 0;
+            }
+
+            a {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+        }
     }
 
     $mobile_padding: 2px;
 
     #product_list {
         @media (max-width: 960px) {
+            margin-bottom: 30px;
+
             > div:nth-child(odd) {
                 padding-right: $mobile_padding;
             }

@@ -91,11 +91,6 @@
                 price: null,
             }
         },
-        async fetch({$axios, store, params}) {
-            await $axios.get(process.env.API_URL + '/api/directory/menu').then(res => {
-                store.dispatch('setDirectoryList', res.data);
-            });
-        },
         asyncData({app, $axios, route, redirect}) {
             let id = route.params.id;
             if (!id) {
