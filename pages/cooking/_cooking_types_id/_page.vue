@@ -11,7 +11,7 @@
         <div>
             <div class="uk-flex uk-flex-wrap">
                 <!-- v-for -->
-                <div class="uk-width-1-3 uk-margin-small-top" v-for="item in list">
+                <div class="uk-width-1-1 uk-width-1-3@m uk-margin-small-top" v-for="item in list">
                     <div class="uk-card uk-card-body item-img">
                         <template v-if="item.target === 1">
                             <a :href="'https://www.youtube.com/watch?v=' + item.youtube_id" target="_blank" class="uk-text-decoration-none">
@@ -132,8 +132,12 @@
     }
 
     body > div > div > iframe {
-      width: 85vw;
-      height: 85vh;
+        aspect-ratio: 2 / 1;
+        width: 168vmin;
+
+        @media (max-width: 960px) {
+            width: 150vmin;
+        }
     }
 
     .item-img {
@@ -141,6 +145,10 @@
             height: 30vmin;
             width: 100%;
             object-fit: cover;
+
+            @media (max-width: 960px) {
+                height: initial;
+            }
         }
     }
 

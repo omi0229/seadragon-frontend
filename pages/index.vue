@@ -5,12 +5,16 @@
             <ul class="uk-slideshow-items">
                 <li v-for="item in list">
                     <template v-if="item.href">
-                        <a :href="item.href" :target="item.target === 1 ? '_blank' : '_top'" class="uk-text-decoration-none">
+                        <a :href="item.href" :target="item.target === 1 ? '_blank' : '_top'" class="uk-text-decoration-none web">
                             <img :src="item.web_img_path" alt="" uk-cover>
+                        </a>
+                        <a :href="item.href" :target="item.target === 1 ? '_blank' : '_top'" class="uk-text-decoration-none mobile">
+                            <img :src="item.mobile_img_path" alt="" uk-cover>
                         </a>
                     </template>
                     <template v-else>
-                        <img :src="item.web_img_path" alt="" uk-cover>
+                        <img :src="item.web_img_path" alt="" class="web" uk-cover>
+                        <img :src="item.mobile_img_path" alt="" class="mobile" uk-cover>
                     </template>
                 </li>
             </ul>
@@ -22,12 +26,13 @@
             <div class="uk-text-center uk-margin-large-top uk-margin-small-bottom uk-text-bolder size-26">最新消息</div>
             <div uk-slider="autoplay: true;autoplay-interval: 5000">
                 <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1">
-                    <ul class="uk-slider-items uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m">
+                    <ul class="uk-slider-items uk-child-width-1-1 uk-child-width-1-3@s uk-child-width-1-4@m">
                         <!-- v-for -->
                         <li class="carousel" v-for="item in carousel_list">
-                            <div class="uk-card cursor uk-padding-small" @click="toUrl('/news-info/', item.id)">
+                            <div class="uk-card cursor" @click="toUrl('/news-info/', item.id)">
                                 <div class="uk-card-media-top">
-                                    <img :src="item.web_img_path" alt="">
+                                    <img :src="item.web_img_path" alt="" class="web">
+                                    <img :src="item.mobile_img_path" alt="" class="mobile">
                                 </div>
                                 <div class="uk-padding-small">
                                     {{item.title}}
@@ -49,11 +54,10 @@
                     <div class="uk-text-center size-20">{{item.name}}</div>
                     <div class="uk-margin-top uk-flex uk-flex-wrap">
                         <!-- v-for -->
-                        <div class="uk-width-1-4 content" v-for="p_item in item.put_ons">
+                        <div class="uk-width-1-2 uk-width-1-4@m content" v-for="p_item in item.put_ons">
                             <div>
-                                <a :href="'/product-info/' + p_item.id" class="uk-link-heading">
-                                    <img :src="p_item.img" alt="">
-                                </a>
+                                <a :href="'/product-info/' + p_item.id" class="uk-link-heading web"> <img :src="p_item.img"> </a>
+                                <a :href="'/product-info/' + p_item.id" class="uk-link-heading mobile"> <img :src="p_item.mobile_img"> </a>
                             </div>
                             <div class="uk-text-center uk-margin-small-top size-20">
                                 <a :href="'/product-info/' + p_item.id" class="uk-link-heading">
@@ -189,6 +193,16 @@
   .content {
     padding: 30px;
     box-sizing: border-box;
+
+    @media (max-width: 960px) {
+      &:nth-child(odd){
+         padding: 10px 3px 10px 10px;
+      }
+
+      &:nth-child(even){
+         padding: 10px 10px 10px 3px;
+      }
+    }
   }
 }
 
@@ -196,6 +210,13 @@
 
   font-size: 20px;
   color: #000;
+
+  > div {
+    padding: 15px;
+    @media (max-width: 960px) {
+      padding: 0;
+    }
+  }
 
   img {
     height: 200px;

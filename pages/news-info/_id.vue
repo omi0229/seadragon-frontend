@@ -13,9 +13,10 @@
                 <div class="uk-text-small uk-text-muted"> 發布時間：{{ dateFormat(item.start_date) }}</div>
                 <hr/>
                 <div>
-                    <img :src="item.web_img_path" />
+                    <img :src="item.web_img_path" class="web" />
+                    <img :src="item.mobile_img_path" class="mobile" />
                 </div>
-                <div v-html="item.description"></div>
+                <div class="description" v-html="item.description"></div>
             </div>
         </div>
     </div>
@@ -92,11 +93,22 @@
 
     .container {
         padding: 25px 4vmin;
+
+        .description {
+            word-break: break-all;
+
+            @media (max-width: 960px) {
+                margin-top: 20px;
+            }
+        }
     }
 
     img {
-        height: 100%;
-        width: auto;
+        aspect-ratio: 3 / 2;
+        width: 100vw;
+        object-fit: cover;
+        //height: 100%;
+        //width: auto;
     }
 
 </style>

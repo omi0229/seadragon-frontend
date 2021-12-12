@@ -10,13 +10,13 @@
 
           <div class="uk-flex uk-margin-auto uk-flex-wrap" v-if="result.cooking.list.length > 0">
                 <!-- v-for -->
-                <div class="uk-width-1-3 uk-margin-small-top" v-for="item in result.cooking.list">
+                <div id="cooking_list" class="uk-width-1-1 uk-width-1-3@m uk-margin-small-top" v-for="item in result.cooking.list">
                     <div class="uk-card uk-card-body item-img">
                         <template v-if="item.target === 1">
                             <a :href="'https://www.youtube.com/watch?v=' + item.youtube_id" target="_blank" class="uk-text-decoration-none">
                                 <img :src="'https://img.youtube.com/vi/' + item.youtube_id + '/hqdefault.jpg'" />
                             </a>
-                            <div class="uk-margin-small uk-text-emphasis uk-text-large">
+                            <div class="uk-margin-small uk-text-emphasis">
                                 <a :href="'https://www.youtube.com/watch?v=' + item.youtube_id" target="_blank" class="uk-link-heading uk-text-decoration-none">{{item.title}}</a>
                             </div>
                         </template>
@@ -24,7 +24,7 @@
                             <a :href="'#modal-media-youtube-' + item.youtube_id" class="uk-text-decoration-none" uk-toggle>
                                 <img :src="'https://img.youtube.com/vi/' + item.youtube_id + '/hqdefault.jpg'" />
                             </a>
-                            <div class="uk-margin-small-top uk-text-emphasis uk-text-large">
+                            <div class="uk-margin-small-top uk-text-emphasis">
                                 <a :href="'#modal-media-youtube-' + item.youtube_id" class="uk-link-heading uk-text-decoration-none" uk-toggle>{{item.title}}</a>
                             </div>
                             <div :id="'modal-media-youtube-' + item.youtube_id" class="uk-flex-top uk-modal" uk-modal>
@@ -51,15 +51,16 @@
 
           <div class="uk-flex uk-margin-auto uk-flex-wrap" v-if="result.product.list.length > 0">
               <!-- v-for -->
-              <div class="uk-width-1-3 uk-margin-small-top" v-for="item in result.product.list">
+              <div id="product_list" class="uk-width-1-2 uk-width-1-3@m uk-margin-small-top" v-for="item in result.product.list">
                   <div class="uk-card uk-card-body item-img">
                       <a :href="'/product-info/' + item.id" class="uk-text-decoration-none">
-                          <img :src="item.img" />
+                          <img class="web" :src="item.img"/>
+                          <img class="mobile" :src="item.mobile_img"/>
                       </a>
-                      <div class="uk-text-center uk-margin-small uk-text-emphasis uk-text-large">
+                      <div class="uk-text-center margin uk-text-emphasis">
                           <a :href="'/product-info/' + item.id" class="uk-link-heading uk-text-decoration-none">{{item.product.title}}</a>
                       </div>
-                      <div class="uk-text-center uk-text-danger uk-text-bold uk-text-large">
+                      <div class="uk-text-center uk-text-danger uk-text-bold">
                           <!-- v-if -->
                           <span v-if="item.product.sales_status !== 0 && item.product_specification.data.length > 0">
                               ${{ item.product_specification.data[0].selling_price }}
@@ -81,10 +82,10 @@
 </template>
 
 <script>
-    import SearchMenu from '~/components/SearchMenu';
-    import Pagination from "~/components/Pagination";
+import SearchMenu from '~/components/SearchMenu';
+import Pagination from "~/components/Pagination";
 
-    export default {
+export default {
         layout: 'default',
         components: { Pagination, SearchMenu },
         data() {
@@ -117,6 +118,8 @@
             };
         },
         async mounted() {
+            this.$store.commit('enabledLoading');
+
             await this.$axios.get(process.env.API_URL + '/api/search/all/' + this.keywords).then(res => {
                 this.result = res.data;
             });
@@ -155,6 +158,16 @@
   max-width: calc(100% - 200px);
   flex-basis: calc(100% - 200px);
 
+  @media (max-width: 960px) {
+    padding: 25px 4vmin;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    flex-basis: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .not-find {
     padding: 20px 0;
     color: #c30d23;
@@ -166,15 +179,100 @@
 }
 
 body > div > div > iframe {
-  width: 85vw;
-  height: 85vh;
+  aspect-ratio: 2 / 1;
+  width: 168vmin;
+
+  @media (max-width: 960px) {
+    width: 150vmin;
+  }
 }
 
-.item-img {
-  img {
-    height: 30vmin;
-    width: 100%;
-    object-fit: cover;
+#cooking_list {
+  .item-img {
+    font-size: 1.5rem;
+
+    @media (max-width: 960px) {
+      font-size: 18px;
+    }
+
+    img {
+      height: 30vmin;
+      width: 100%;
+      object-fit: cover;
+
+      @media (max-width: 960px) {
+        height: initial;
+      }
+    }
+
+    a {
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+}
+
+#product_list {
+
+    @media (max-width: 960px) {
+      margin-bottom: 20px;
+    }
+
+  .item-img {
+    font-size: 1.5rem;
+
+    @media (max-width: 960px) {
+      font-size: 18px;
+    }
+
+    img {
+      height: 30vmin;
+      width: 100%;
+      object-fit: cover;
+
+      @media (max-width: 960px) {
+        height: 60vmin;
+      }
+    }
+
+    .margin {
+      margin: 10px 0;
+      @media (max-width: 960px) {
+        margin: 0;
+      }
+
+      a {
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
+
+  $mobile_padding: 2px;
+
+  @media (max-width: 960px) {
+    > div:nth-child(odd) {
+      padding-right: $mobile_padding;
+    }
+
+    > div:nth-child(even) {
+      padding-left: $mobile_padding;
+    }
+  }
+}
+
+.uk-card-body {
+  padding: 20px;
+  @media (max-width: 960px) {
+    padding: 0;
   }
 }
 

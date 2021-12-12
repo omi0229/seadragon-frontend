@@ -48,6 +48,13 @@
   min-width: calc(100% - 200px);
   max-width: calc(100% - 200px);
   flex-basis: calc(100% - 200px);
+
+  @media (max-width: 960px) {
+    width: 95%;
+    min-width: 95%;
+    max-width: 95%;
+    flex-basis: 95%;
+  }
 }
 
 </style>

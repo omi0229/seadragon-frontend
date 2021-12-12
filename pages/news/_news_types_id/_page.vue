@@ -9,15 +9,17 @@
           </ul>
           <div>
               <!-- v-for -->
-              <div class="uk-flex uk-margin-large-bottom" v-for="item in list">
-                  <div class="uk-width-2-5 news-img uk-text-center" v-if="item.web_img_path">
-                      <a :href="'/news-info/' + item.id" :target="item.target === 1 ? '_blank' : '_top'" class="uk-text-decoration-none">
+              <div class="uk-flex uk-flex-wrap uk-margin-large-bottom" v-for="item in list">
+                  <div class="uk-width-1-1 uk-width-2-5@m news-img uk-text-center">
+                      <a :href="'/news-info/' + item.id" :target="item.target === 1 ? '_blank' : '_top'" class="uk-text-decoration-none web">
                           <img :src="item.web_img_path" />
                       </a>
+                      <a :href="'/news-info/' + item.id" :target="item.target === 1 ? '_blank' : '_top'" class="uk-text-decoration-none mobile">
+                          <img :src="item.mobile_img_path" />
+                      </a>
                   </div>
-                  <div class="uk-width-2-5 news-img cursor" @click="toUrl(item.id)" v-else></div>
-                  <div class="uk-width-3-5 uk-padding uk-padding-remove-vertical">
-                      <div class="uk-margin-top uk-margin-bottom uk-text-muted">
+                  <div class="uk-width-1-1 uk-width-3-5@m uk-padding uk-padding-remove-vertical">
+                      <div class="uk-text-muted date">
                           {{ dateFormat(item.start_date) }}
                       </div>
                       <div class="uk-text-emphasis uk-text-lead">
@@ -107,9 +109,6 @@
                     UIkit.scroll('#footer').scrollTo('#header');
                 });
             },
-            toUrl(id) {
-                location.href = '/news-info/' + id;
-            },
         }
     }
 </script>
@@ -118,6 +117,13 @@
 
     .container {
         padding: 25px 4vmin;
+
+        .date {
+            margin: 20px 0;
+            @media (max-width: 960px) {
+                margin: 10px 0 0;
+            }
+        }
     }
 
     $img-height: 270px;

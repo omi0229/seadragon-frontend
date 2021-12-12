@@ -9,20 +9,34 @@
                 <li><a :href="'/product-info/' + info.id">{{ info.product.title }}</a></li>
             </ul>
             <div>
-                <div class="uk-flex">
-                    <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
-                        <img :src="info.img" />
-                        <div class="uk-flex uk-child-width-1-5 uk-margin-small-top">
+                <div class="uk-flex uk-flex-wrap">
+                    <div class="uk-width-1-1 uk-width-1-2@m img uk-padding-remove-vertical">
+                        <img :src="info.img" class="web" />
+                        <img :src="info.mobile_img" class="mobile" />
+                        <div class="uk-flex uk-margin-small-top">
                             <!-- v-for -->
-                            <div class="thumbnail" v-for="item in info.web_img_list">
+                            <div class="thumbnail uk-width-1-5 web" v-for="item in info.web_img_list">
                                 <a data-fancybox :href="item.path">
                                     <img :src="item.path" />
                                 </a>
                             </div>
+                            <div class="mobile" uk-slider="autoplay: true;autoplay-interval: 5000">
+                                <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1">
+                                    <div class="uk-slider-items uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m">
+                                        <!-- v-for -->
+                                        <div class="thumbnail" v-for="item in info.mobile_img_list">
+                                            <a data-fancybox :href="item.path">
+                                                <img :src="item.path" />
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="uk-width-1-2 uk-padding-small uk-padding-remove-vertical">
-                        <div class="uk-text-lead uk-text-bold uk-margin-large-bottom">{{ info.product.title }}</div>
+                    <div class="uk-width-1-1 uk-width-1-2@m info">
+                        <div class="uk-text-lead uk-text-bold title">{{ info.product.title }}</div>
                         <template v-if="info.product.sales_status !== 0">
                             <div class="uk-text-large uk-margin-small-bottom">
                                 <template v-if="info.product.specification.length > 0">
@@ -53,17 +67,17 @@
                             </div>
                             <!-- v-if -->
                             <div class="uk-margin-bottom" v-if="haveInventory">
-                                <button class="uk-button uk-button-secondary uk-button-large uk-border-rounded uk-flex uk-flex-middle" @click="addCart">
+                                <button class="uk-button uk-button-secondary uk-button-large uk-border-rounded add-cart-button" @click="addCart">
                                     <span class="uk-margin-small-right" uk-icon="icon: cart; ratio: 2"></span> 加入購物車
                                 </button>
                             </div>
                         </template>
-                        <div v-html="info.product.description_html"></div>
+                        <div class="description" v-html="info.product.description_html"></div>
                     </div>
                 </div>
-                <div class="padding-x-15px uk-margin-large-top uk-text-large">產品內文</div>
+                <div class="content-title uk-margin-large-top uk-text-large">產品介紹</div>
                 <hr/>
-                <div class="uk-padding-small" v-html="info.product.content"></div>
+                <div class="content" v-html="info.product.content"></div>
             </div>
         </div>
     </div>
@@ -229,21 +243,81 @@
 
 <style scoped lang="scss">
 
-    .container {
-        padding: 25px 0;
+.container {
+  padding: 25px 0;
 
-      img {
-        height: 60vmin;
-        width: 100%;
-        object-fit: cover;
-      }
+  @media (max-width: 960px) {
+    padding: 25px 15px;
+  }
 
-      .thumbnail {
-        img {
-          height: 80px;
-        }
-      }
+  .img {
+    padding: 15px;
 
+    @media (max-width: 960px) {
+      padding: 0;
     }
+  }
+
+  .info {
+    padding: 0 15px;
+
+    @media (max-width: 960px) {
+      padding: 0;
+    }
+  }
+
+  .title {
+    margin-bottom: 40px;
+
+    @media (max-width: 960px) {
+      margin-bottom: 0;
+    }
+  }
+
+  .add-cart-button {
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 960px) {
+      margin: 0 auto;
+      padding: 2% 20%;
+      font-size: 20px;
+    }
+  }
+
+  .description {
+    word-break: break-all;
+  }
+
+  .content-title {
+    padding: 0 15px;
+
+    @media (max-width: 960px) {
+      padding: 0;
+    }
+  }
+
+  .content {
+    padding: 15px;
+    word-break: break-all;
+
+    @media (max-width: 960px) {
+      padding: 0;
+    }
+  }
+
+  img {
+    height: 60vmin;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .thumbnail {
+    img {
+      height: 80px;
+    }
+  }
+
+}
 
 </style>

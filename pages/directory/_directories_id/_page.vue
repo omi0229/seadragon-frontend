@@ -234,7 +234,6 @@
         padding: 25px 4vmin;
     }
 
-
     .item {
         font-size: 1.5rem;
         line-height: 1.5;

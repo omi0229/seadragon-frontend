@@ -30,6 +30,10 @@
   padding: 1% 15px;
   border-right: 1px solid #999;
 
+  @media (max-width: 960px) {
+    display: none;
+  }
+
   > div {
     padding: 5px 0;
   }

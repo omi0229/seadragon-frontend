@@ -47,14 +47,26 @@
         </div>
         <div class="mobile">
             <div class="mobile-top-block"></div>
-            <div class="uk-flex uk-flex-middle uk-flex-between mobile-top-block mobile-top-fixed">
-                <div class="uk-text-left uk-width-1-5" uk-toggle="target: #offcanvas-overlay">
-                    <span uk-icon="icon: menu; ratio: 1.2"></span>
+            <div class="mobile-top-block mobile-top-fixed">
+                <div class="uk-flex uk-flex-middle uk-flex-between">
+                    <div class="uk-text-left uk-width-1-5" uk-toggle="target: #offcanvas-overlay">
+                        <span uk-icon="icon: menu; ratio: 1.2"></span>
+                    </div>
+                    <div class="uk-text-center uk-width-3-5"><a href="/"><img src="/S__111558660.jpg" class="logo" /></a></div>
+                    <div class="uk-text-right  uk-width-1-5 uk-position-relative">
+                        <span uk-icon="icon: cart; ratio: 1.2" class="cursor" :class="{ 'cart-icon-margin': $store.state.cart_count <= 0 }" @click="showCart"></span>
+                        <span class="uk-badge uk-position-absolute" v-show="$store.state.cart_count > 0">{{ $store.state.cart_count }}</span>
+                    </div>
                 </div>
-                <div class="uk-text-center uk-width-3-5"><a href="/"><img src="/S__111558660.jpg" class="logo" /></a></div>
-                <div class="uk-text-right  uk-width-1-5 uk-position-relative">
-                    <span uk-icon="icon: cart; ratio: 1.2" class="cursor" :class="{ 'cart-icon-margin': $store.state.cart_count <= 0 }" @click="showCart"></span>
-                    <span class="uk-badge uk-position-absolute" v-show="$store.state.cart_count > 0">{{ $store.state.cart_count }}</span>
+                <div class="uk-flex uk-flex-middle uk-flex-center">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search ..." maxlength="40" @keyup.enter="search" v-model="keywords">
+                        <div class="input-group-append cursor" @click="search">
+                            <span class="input-group-text bg-secondary text-white">
+                                <span uk-icon="search"></span>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -108,6 +120,14 @@
                         </div>
                         <div class="item">
                             <a href="/shopping-explanation" class="uk-link-heading">購物說明</a>
+                        </div>
+                        <div class="input-group item">
+                            <input type="text" class="form-control" placeholder="Search ..." maxlength="40" @keyup.enter="search" v-model="keywords">
+                            <div class="input-group-append cursor" @click="search">
+                                <span class="input-group-text bg-secondary text-white">
+                                    <span uk-icon="search"></span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -452,7 +472,11 @@
         }
 
         .mobile-top-block {
-            height: 70px;
+            height: 120px;
+
+            > div:first-child {
+                height: 70px;
+            }
         }
 
         .mobile-top-fixed {
@@ -527,17 +551,23 @@
                 border-bottom: 0;
                 border-left: 0.3em solid transparent;
             }
+
+            .input-group {
+                @media (max-width: 960px) {
+                  width: initial;
+                }
+            }
         }
     }
 
     #modal-register {
-      label {
-        margin-bottom: 0 !important;
-      }
+        label {
+            margin-bottom: 0 !important;
+        }
     }
 
     #modal-logout .uk-modal-dialog {
-      width: 400px;
+        width: 400px;
     }
 
 </style>
