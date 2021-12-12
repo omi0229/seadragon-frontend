@@ -82,14 +82,24 @@
                         <button class="uk-offcanvas-close" type="button" uk-close></button>
                     </div>
                     <div class="uk-text-bold uk-text-large">
+                        <template v-if="$store.state.member.id">
+                            <div class="item">
+                                <button class="uk-button uk-button-text" type="button" @click="openLogout">登出</button>
+                            </div>
+                            <div class="item">
+                                <a href="/account/basic" class="uk-link-heading">會員中心</a>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="item">
+                                <button class="uk-button uk-button-text" type="button" @click="openLogin">會員登入</button>
+                            </div>
+                            <div class="item">
+                                <a href="/register" class="uk-link-heading">會員註冊</a>
+                            </div>
+                        </template>
                         <div class="item">
-                            <a href="#modal-login" class="uk-link-heading">會員登入</a>
-                        </div>
-                        <div class="item">
-                            <a href="/register" class="uk-link-heading">會員註冊</a>
-                        </div>
-                        <div class="item">
-                            <button class="uk-button uk-button-text" type="button" uk-toggle="target: #toggle-news; animation: uk-animation-fade">最新消息</button>
+                            <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-news; animation: uk-animation-fade">最新消息</button>
                             <div id="toggle-news" class="uk-padding-small offcanvas-toggle" hidden>
                                 <!-- v-for -->
                                 <div v-for="item in $store.state.news_types_list">
@@ -98,7 +108,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <button class="uk-button uk-button-text" type="button" uk-toggle="target: #toggle-cooking; animation: uk-animation-fade">烹飪教學</button>
+                            <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-cooking; animation: uk-animation-fade">烹飪教學</button>
                             <div id="toggle-cooking" class="uk-padding-small offcanvas-toggle" hidden>
                                 <!-- v-for -->
                                 <div v-for="item in $store.state.cooking_types_list">
@@ -110,7 +120,7 @@
                             <a href="/about" class="uk-link-heading">關於海龍王</a>
                         </div>
                         <div class="item">
-                            <button class="uk-button uk-button-text" type="button" uk-toggle="target: #toggle-directory; animation: uk-animation-fade">線上購物</button>
+                            <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-directory; animation: uk-animation-fade">線上購物</button>
                             <div id="toggle-directory" class="uk-padding-small offcanvas-toggle" hidden>
                                 <!-- v-for -->
                                 <div v-for="item in $store.state.directory_list">
@@ -164,21 +174,21 @@
 
         <div id="modal-login" uk-modal="bg-close: false">
               <div class="uk-modal-dialog uk-modal-body">
-                  <h2 class="uk-modal-title uk-text-center">會員登入</h2>
+                  <h2 class="uk-modal-title uk-text-cen`ter">會員登入</h2>
                   <div>
-                      <div class="uk-flex uk-flex-middle">
-                          <label for="cellphone" class="uk-width-1-4">帳號 (手機號碼)</label>
-                          <input id="cellphone" type="text" maxlength="10" class="uk-input uk-width-3-4" placeholder="請輸入您註冊的手機號碼" v-model="login.cellphone" />
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle">
+                          <label for="cellphone" class="uk-width-1-1 uk-width-1-4@m">帳號 (手機號碼)</label>
+                          <input id="cellphone" type="text" maxlength="10" class="uk-input uk-width-1-1 uk-width-3-4@m" placeholder="請輸入您註冊的手機號碼" v-model="login.cellphone" />
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <label for="password" class="uk-width-1-4">密碼</label>
-                          <input id="password" type="password" maxlength="50" class="uk-input uk-width-3-4" placeholder="請輸入密碼" v-model="login.password" />
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <label for="password" class="uk-width-1-1 uk-width-1-4@m">密碼</label>
+                          <input id="password" type="passw  ord" maxlength="50" class="uk-input uk-width-1-1 uk-width-3-4@m" placeholder="請輸入密碼" v-model="login.password" />
                       </div>
-                      <div class="uk-margin uk-flex uk-flex-middle">
-                          <div class="uk-width-1-4">
-                              <label class="uk-text-small" for="captcha">驗證碼</label>
+                      <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                          <div class="uk-width-1-1 uk-width-1-4@m">
+                              <label for="captcha">驗證碼</label>
                           </div>
-                          <div class="uk-width-3-4 uk-flex uk-flex-middle">
+                          <div class="uk-width-1-1 uk-width-3-4@m uk-flex uk-flex-middle">
                               <div class="uk-width-1-4" @click="refreshCode">
                                   <Captcha elementId="login-graphic-captcha" :identifyCode="captcha.answers" :contentHeight="30" :contentWidth="120"></Captcha>
                               </div>
@@ -187,18 +197,28 @@
                               </div>
                           </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle">
-                          <div class="uk-width-1-4"></div>
-                          <div class="uk-width-3-4 uk-flex uk-flex-middle uk-text-danger">
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle">
+                          <div class="uk-width-1-1 uk-width-1-4@m"></div>
+                          <div class="uk-width-1-1 uk-width-3-4@m uk-flex uk-flex-middle uk-text-danger">
                               (驗證碼看不清時,請重新點擊驗證碼圖片)
                           </div>
                       </div>
                   </div>
-                  <p class="uk-text-right">
+                  <p class="uk-text-right web">
                       <button class="uk-button uk-button-small uk-button-danger" type="button" @click="forget">忘記密碼</button>
                       <button class="uk-button uk-button-small uk-button-primary" type="button" @click="register">會員註冊</button>
                       <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
                       <button class="uk-button uk-button-small uk-button-primary" type="button" @click="memberLogin">登入</button>
+                  </p>
+                  <p class="mobile">
+                      <div class="uk-text-right">
+                          <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
+                          <button class="uk-button uk-button-small uk-button-primary" type="button" @click="memberLogin">登入</button>
+                      </div>
+                      <div class="uk-text-right uk-margin-top">
+                          <button class="uk-button uk-button-small uk-button-danger" type="button" @click="forget">忘記密碼</button>
+                          <button class="uk-button uk-button-small uk-button-primary" type="button" @click="register">會員註冊</button>
+                      </div>
                   </p>
               </div>
           </div>
@@ -286,6 +306,12 @@
         for (let i = 0; i < l; i++) {
           this.captcha.answers += randomNum(0, 9);
         }
+      },
+      openLogin() {
+          UIkit.modal('#modal-login').show();
+      },
+      openLogout() {
+          UIkit.modal('#modal-logout').show();
       },
       memberLogin() {
         if (!this.login.cellphone) {
@@ -379,6 +405,10 @@
         label {
             margin-bottom: 0;
             min-width: 90px;
+        }
+
+        @media (max-width: 960px) {
+            margin-bottom: 5px;
         }
     }
 
@@ -541,7 +571,7 @@
                 font-size: 24px;
             }
 
-            .uk-button-text::after {
+            .uk-button-text.arrow::after {
                 display: inline-block;
                 margin-left: 0.5em;
                 vertical-align: 0.255em;
