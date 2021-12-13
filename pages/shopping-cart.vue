@@ -8,19 +8,25 @@
 
           <div class="form-content uk-flex uk-flex-column uk-margin-auto">
               <div class="uk-flex uk-flex-middle uk-flex-center">
-                  <div class="uk-text-large uk-text-bold uk-text-primary">
+                  <div class="process uk-text-bold uk-text-primary">
                       購物明細
                   </div>
-                  <div class="uk-padding-small uk-padding-remove-vertical" :class="{'uk-text-primary': step > 1}">
+                  <div class="uk-padding-small uk-padding-remove-vertical web" :class="{'uk-text-primary': step > 1}">
                       <span uk-icon="icon: chevron-right; ratio: 1.5"></span>
                   </div>
-                  <div class="uk-text-large" :class="{'uk-text-bold': step > 1, 'uk-text-primary': step > 1}">
+                  <div class="uk-padding-small uk-padding-remove-vertical mobile" :class="{'uk-text-primary': step > 1}">
+                      <span uk-icon="icon: chevron-right; ratio: 1.2"></span>
+                  </div>
+                  <div class="process" :class="{'uk-text-bold': step > 1, 'uk-text-primary': step > 1}">
                       付款方式
                   </div>
-                  <div class="uk-padding-small uk-padding-remove-vertical" :class="{'uk-text-primary': step > 2}">
+                  <div class="uk-padding-small uk-padding-remove-vertical web" :class="{'uk-text-primary': step > 2}">
                       <span uk-icon="icon: chevron-right; ratio: 1.5"></span>
                   </div>
-                  <div class="uk-text-large" :class="{'uk-text-bold': step > 2, 'uk-text-primary': step > 2}">
+                  <div class="uk-padding-small uk-padding-remove-vertical mobile" :class="{'uk-text-primary': step > 2}">
+                      <span uk-icon="icon: chevron-right; ratio: 1.2"></span>
+                  </div>
+                  <div class="process" :class="{'uk-text-bold': step > 2, 'uk-text-primary': step > 2}">
                       最後確認
                   </div>
               </div>
@@ -46,19 +52,44 @@
                               <!-- v-for -->
                               <tr v-for="(item, key) in list">
                                   <td class="uk-text-center"><img :src="item.img" /></td>
-                                  <td class="uk-text-middle">{{ item.product_specification.product.title }}</td>
-                                  <td class="uk-text-middle">{{ item.product_specification.name }}</td>
-                                  <td class="uk-text-center uk-text-middle">
-                                      <div class="uk-inline">
-                                          <a class="uk-form-icon" uk-icon="icon: minus; ratio: 0.7" @click.stop.prevent="addCount(-1, key)"></a>
-                                          <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: plus; ratio: 0.7" @click.stop.prevent="addCount(1, key)"></a>
-                                          <input class="uk-input uk-text-center" type="text" maxlength="4" placeholder="數量" v-model.number="item.count">
+                                  <td class="uk-text-middle">
+                                      <div class="uk-flex uk-flex-middle">
+                                          <div class="uk-width-1-4 mobile">商品</div>
+                                          <div class="uk-width-3-4 uk-width-1-1@m">{{ item.product_specification.product.title }}</div>
                                       </div>
-                                      <div class="uk-text-danger" v-if="item.product_specification.inventory < item.count">剩餘庫存數：{{ item.product_specification.inventory }}</div>
                                   </td>
-                                  <td class="uk-text-center uk-text-middle">{{ item.product_specification.selling_price.toLocaleString() }}</td>
-                                  <td class="uk-text-center uk-text-middle">{{ (item.count * item.product_specification.selling_price).toLocaleString() }}</td>
-                                  <td class="uk-text-center uk-text-middle"><button class="uk-button-danger" @click="removeProduct(item.id)">移除</button></td>
+                                  <td class="uk-text-middle">
+                                      <div class="uk-flex uk-flex-middle">
+                                          <div class="uk-width-1-4 mobile">規格</div>
+                                          <div class="uk-width-3-4 uk-width-1-1@m">{{ item.product_specification.name }}</div>
+                                      </div>
+                                  </td>
+                                  <td class="uk-text-middle reponsive-td">
+                                      <div class="uk-flex uk-flex-middle">
+                                          <div class="uk-width-1-4 mobile">數量</div>
+                                          <div class="uk-width-3-4 uk-width-1-1@m">
+                                              <div class="uk-inline">
+                                                  <a class="uk-form-icon" uk-icon="icon: minus; ratio: 0.7" @click.stop.prevent="addCount(-1, key)"></a>
+                                                  <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: plus; ratio: 0.7" @click.stop.prevent="addCount(1, key)"></a>
+                                                  <input class="uk-input uk-text-center" type="text" maxlength="4" placeholder="數量" v-model.number="item.count">
+                                              </div>
+                                              <div class="uk-text-danger" v-if="item.product_specification.inventory < item.count">剩餘庫存數：{{ item.product_specification.inventory }}</div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  <td class="uk-text-middle reponsive-td">
+                                      <div class="uk-flex uk-flex-middle">
+                                          <div class="uk-width-1-4 mobile">價格</div>
+                                          <div class="uk-width-3-4 uk-width-1-1@m">{{ item.product_specification.selling_price.toLocaleString() }}</div>
+                                      </div>
+                                  </td>
+                                  <td class="uk-text-middle reponsive-td">
+                                      <div class="uk-flex uk-flex-middle">
+                                          <div class="uk-width-1-4 mobile">小計</div>
+                                          <div class="uk-width-3-4 uk-width-1-1@m">{{ (item.count * item.product_specification.selling_price).toLocaleString() }}</div>
+                                      </div>
+                                  </td>
+                                  <td class="uk-text-middle reponsive-remove"><button class="uk-button-danger" @click="removeProduct(item.id)">移除</button></td>
                               </tr>
                           </tbody>
                       </table>
@@ -85,56 +116,56 @@
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">訂購人資訊</h4>
                   <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
-                      <div class="uk-flex uk-flex-middle">
-                          <div class="uk-width-1-6">姓名</div>
-                          <div class="uk-width-1-3">
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">姓名</div>
+                          <div class="uk-width-1-1 uk-width-1-3@m">
                               <input class="uk-input uk-form-small" maxlength="20" placeholder="請輸入姓名" disabled v-model="name" />
                           </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6">行動電話</div>
-                          <div class="uk-width-1-3">
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">行動電話</div>
+                          <div class="uk-width-1-1 uk-width-1-3@m">
                               <input class="uk-input uk-form-small" maxlength="10" placeholder="請輸入行動電話" disabled v-model="cellphone" />
                           </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6">市內電話</div>
-                          <div class="uk-width-1-3">
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">市內電話</div>
+                          <div class="uk-width-1-1 uk-width-1-3@m">
                               <input class="uk-input uk-form-small" maxlength="20" placeholder="請輸入市內電話" v-model="form.telephone" />
                           </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6">E-mail</div>
-                          <div class="uk-width-1-3">
-                            <input class="uk-input uk-form-small" maxlength="200" placeholder="請輸入E-mail" v-model="form.email" />
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">E-mail</div>
+                          <div class="uk-width-1-1 uk-width-1-3@m">
+                              <input class="uk-input uk-form-small" maxlength="200" placeholder="請輸入E-mail" v-model="form.email" />
                           </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <label class="uk-width-1-6">郵遞區號</label>
-                          <div class="uk-flex uk-flex-middle uk-width-5-6">
-                            <div class="uk-width-1-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <label class="uk-width-1-1 uk-width-1-6@m form-margin">郵遞區號</label>
+                          <div class="uk-flex uk-flex-middle uk-width-1-1 uk-width-5-6@m">
+                            <div class="uk-width-1-3 uk-width-1-4@m uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
                                 <select class="uk-select uk-form-small" v-model="form.country" @change="selectCountry">
                                     <option value="">請選擇城市</option>
                                     <!-- v-for -->
                                     <option :value="item.id" v-for="item in select.counties">{{ item.name }}</option>
                                 </select>
                             </div>
-                            <div class="uk-width-1-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
+                            <div class="uk-width-1-3 uk-width-1-4@m uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
                                 <select class="uk-select uk-form-small" v-model="form.city" @change="selectCity">
                                     <option value="">請選擇地區</option>
                                     <!-- v-for -->
                                     <option :value="item.city" v-for="item in select.cities">{{ item.city }}</option>
                                 </select>
                             </div>
-                            <div class="uk-width-1-4">
+                            <div class="uk-width-1-3 uk-width-1-4@m">
                                 <input class="uk-input uk-form-small" type="text" placeholder="郵遞區號" v-model="form.zipcode" disabled>
                             </div>
                           </div>
                       </div>
-                      <div class="uk-margin-top uk-flex uk-flex-middle">
-                          <label class="uk-width-1-6" for="form_address">地址</label>
-                          <div class="uk-flex uk-flex-middle uk-width-5-6">
-                              <input type="text" id="form_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入通訊地址" v-model="form.address">
+                      <div class="uk-margin-top uk-flex uk-flex-wrap uk-flex-middle">
+                          <label class="uk-width-1-1 uk-width-1-6@m form-margin" for="form_address">地址</label>
+                          <div class="uk-width-1-1 uk-width-5-6@m">
+                              <input type="text" id="form_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入通訊地址" v-model="form.address">
                           </div>
                       </div>
                       <div class="uk-margin-top uk-flex uk-flex-middle">
@@ -148,49 +179,49 @@
                           <input id="is_orderer" type="checkbox" class="uk-checkbox uk-margin-remove-top" v-model="value.is_orderer">
                           <label for="is_orderer" class="uk-margin-left">同訂購人資料</label>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6">姓名</div>
-                          <div class="uk-width-1-3">
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">姓名 <span class="uk-text-danger">*</span></div>
+                          <div class="uk-width-1-1 uk-width-1-3@m">
                               <input class="uk-input uk-form-small" maxlength="5" placeholder="請輸入姓名" v-model="receiver.name" />
                           </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6">行動電話</div>
-                          <div class="uk-width-1-3">
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">行動電話 <span class="uk-text-danger">*</span></div>
+                          <div class="uk-width-1-1 uk-width-1-3@m">
                               <input class="uk-input uk-form-small" maxlength="10" placeholder="請輸入行動電話" v-model="receiver.cellphone" />
                           </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6">E-mail</div>
-                          <div class="uk-width-1-3">
-                            <input class="uk-input uk-form-small" maxlength="200" placeholder="請輸入E-mail" v-model="receiver.email" />
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">E-mail</div>
+                          <div class="uk-width-1-1 uk-width-1-3@m">
+                              <input class="uk-input uk-form-small" maxlength="200" placeholder="請輸入E-mail" v-model="receiver.email" />
                           </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <label class="uk-width-1-6">郵遞區號</label>
-                          <div class="uk-flex uk-flex-middle uk-width-5-6">
-                            <div class="uk-width-1-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
-                                <select class="uk-select uk-form-small" v-model="receiver.country" @change="selectCountry('receiver')">
-                                    <option value="">請選擇城市</option>
-                                    <!-- v-for -->
-                                    <option :value="item.id" v-for="item in select.main_island_counties">{{ item.name }}</option>
-                                </select>
-                            </div>
-                            <div class="uk-width-1-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
-                                <select class="uk-select uk-form-small" v-model="receiver.city" @change="selectCity('receiver')">
-                                    <option value="">請選擇地區</option>
-                                    <!-- v-for -->
-                                    <option :value="item.city" v-for="item in select.main_island_cities">{{ item.city }}</option>
-                                </select>
-                            </div>
-                            <div class="uk-width-1-4">
-                                <input class="uk-input uk-form-small" type="text" placeholder="郵遞區號" v-model="receiver.zipcode" disabled>
-                            </div>
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <label class="uk-width-1-1 uk-width-1-6@m form-margin">郵遞區號 <span class="uk-text-danger">*</span></label>
+                          <div class="uk-flex uk-flex-wrap uk-flex-middle uk-width-1-1 uk-width-5-6@m">
+                              <div class="uk-width-1-3 uk-width-1-4@m uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
+                                  <select class="uk-select uk-form-small" v-model="receiver.country" @change="selectCountry('receiver')">
+                                      <option value="">請選擇城市</option>
+                                      <!-- v-for -->
+                                      <option :value="item.id" v-for="item in select.main_island_counties">{{ item.name }}</option>
+                                  </select>
+                              </div>
+                              <div class="uk-width-1-3 uk-width-1-4@m uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
+                                  <select class="uk-select uk-form-small" v-model="receiver.city" @change="selectCity('receiver')">
+                                      <option value="">請選擇地區</option>
+                                      <!-- v-for -->
+                                      <option :value="item.city" v-for="item in select.main_island_cities">{{ item.city }}</option>
+                                  </select>
+                              </div>
+                              <div class="uk-width-1-3 uk-width-1-4@m">
+                                  <input class="uk-input uk-form-small" type="text" placeholder="郵遞區號" v-model="receiver.zipcode" disabled>
+                              </div>
                           </div>
                       </div>
-                      <div class="uk-margin-top uk-flex uk-flex-middle">
-                          <label class="uk-width-1-6" for="register_address">地址</label>
-                          <div class="uk-flex uk-flex-middle uk-width-5-6">
+                      <div class="uk-margin-top uk-flex uk-flex-wrap uk-flex-middle">
+                          <label class="uk-width-1-1 uk-width-1-6@m form-margin" for="register_address">地址 <span class="uk-text-danger">*</span></label>
+                          <div class="uk-width-1-1 uk-width-5-6@m">
                               <input type="text" id="register_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入通訊地址" v-model="receiver.address">
                           </div>
                       </div>
@@ -206,15 +237,15 @@
                       </div>
                       <div class="uk-margin-top">
                           <label><input class="uk-radio" type="radio" value="2" v-model="receiver.invoice_method"> 公司戶收銀發票</label>
-                          <div class="uk-flex uk-flex-middle uk-margin-small-top" v-show="receiver.invoice_method === '2'">
-                              <div class="uk-width-1-6">統一編號</div>
-                              <div class="uk-width-1-3">
+                          <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-small-top" v-show="receiver.invoice_method === '2'">
+                              <div class="uk-width-1-1 uk-width-1-6@m form-margin">統一編號 <span class="uk-text-danger">*</span></div>
+                              <div class="uk-width-1-1 uk-width-1-3@m">
                                   <input class="uk-input uk-form-small" maxlength="8" placeholder="請輸入統一編號" v-model="receiver.invoice_tax_id_number" />
                               </div>
                           </div>
-                          <div class="uk-flex uk-flex-middle uk-margin-top" v-show="receiver.invoice_method === '2'">
-                              <div class="uk-width-1-6">發票抬頭</div>
-                              <div class="uk-width-1-3">
+                          <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top" v-show="receiver.invoice_method === '2'">
+                              <div class="uk-width-1-1 uk-width-1-6@m form-margin">發票抬頭 <span class="uk-text-danger">*</span></div>
+                              <div class="uk-width-1-1 uk-width-1-3@m">
                                   <input class="uk-input uk-form-small" maxlength="100" placeholder="請輸入發票抬頭" v-model="receiver.invoice_name" />
                               </div>
                           </div>
@@ -242,14 +273,40 @@
                           <!-- v-for -->
                           <tr v-for="(item, key) in list">
                               <td class="uk-text-center"><img :src="item.img" /></td>
-                              <td class="uk-text-middle">{{ item.product_specification.product.title }}</td>
-                              <td class="uk-text-middle">{{ item.product_specification.name }}</td>
-                              <td class="uk-text-center uk-text-middle"> {{ item.count }} </td>
-                              <td class="uk-text-center uk-text-middle">{{ item.product_specification.selling_price.toLocaleString() }}</td>
-                              <td class="uk-text-center uk-text-middle">{{ (item.count * item.product_specification.selling_price).toLocaleString() }}</td>
+                              <td class="uk-text-middle">
+                                  <div class="uk-flex uk-flex-middle">
+                                      <div class="uk-width-1-4 mobile">商品</div>
+                                      <div class="uk-width-3-4 uk-width-1-1@m">{{ item.product_specification.product.title }}</div>
+                                  </div>
+                              </td>
+                              <td class="uk-text-middle">
+                                  <div class="uk-flex uk-flex-middle">
+                                      <div class="uk-width-1-4 mobile">規格</div>
+                                      <div class="uk-width-3-4 uk-width-1-1@m">{{ item.product_specification.name }}</div>
+                                  </div>
+                              </td>
+                              <td class="uk-text-middle reponsive-td">
+                                  <div class="uk-flex uk-flex-middle">
+                                      <div class="uk-width-1-4 mobile">數量</div>
+                                      <div class="uk-width-3-4 uk-width-1-1@m">{{ item.count }}</div>
+                                  </div>
+                              </td>
+                              <td class="uk-text-middle reponsive-td">
+                                  <div class="uk-flex uk-flex-middle">
+                                      <div class="uk-width-1-4 mobile">價格</div>
+                                      <div class="uk-width-3-4 uk-width-1-1@m">{{ item.product_specification.selling_price.toLocaleString() }}</div>
+                                  </div>
+                              </td>
+                              <td class="uk-text-middle reponsive-td">
+                                  <div class="uk-flex uk-flex-middle">
+                                      <div class="uk-width-1-4 mobile">小計</div>
+                                      <div class="uk-width-3-4 uk-width-1-1@m">{{ (item.count * item.product_specification.selling_price).toLocaleString() }}</div>
+                                  </div>
+                              </td>
                           </tr>
                       </tbody>
                   </table>
+                  <hr class="mobile">
                   <div class="uk-flex uk-flex-middle uk-flex-right">
                       <div class="uk-width-5-6 uk-text-right">小計：</div>
                       <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ shoppingCartPrice.toLocaleString() }}</div>
@@ -264,59 +321,59 @@
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">付款方式與寄送資料</h4>
                   <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
-                      <div class="uk-flex uk-flex-middle">
-                          <div class="uk-width-1-6"> 配送方式 </div>
-                          <div class="uk-width-5-6"> 宅配到府 </div>
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin"> 配送方式 </div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> 宅配到府 </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6"> 付款方式 </div>
-                          <div class="uk-width-5-6">
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin"> 付款方式 </div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold">
                               <!-- v-if -->
                               <span v-if="receiver.payment_method === '1'">信用卡</span>
                               <span v-else-if="receiver.payment_method === '2'">ATM</span>
                           </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6"> 收件者 </div>
-                          <div class="uk-width-5-6"> {{ receiver.name }} </div>
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin"> 收件者 </div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ receiver.name }} </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6"> 聯絡電話 </div>
-                          <div class="uk-width-5-6"> {{ receiver.cellphone }} </div>
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin"> 聯絡電話 </div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ receiver.cellphone }} </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6"> E-mail </div>
-                          <div class="uk-width-5-6"> {{ receiver.email }} </div>
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin"> E-mail </div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ receiver.email }} </div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6">寄送地址</div>
-                          <div class="uk-width-5-6"> {{ receiver.zipcode }} {{ receiver.country }}{{ receiver.city }}{{ receiver.address }}</div>
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">寄送地址</div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ receiver.zipcode }} {{ receiver.country }}{{ receiver.city }}{{ receiver.address }}</div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-6">發票類型</div>
-                          <div class="uk-width-5-6">
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">發票類型</div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold">
                               <template v-if="receiver.invoice_method === '1'">個人收銀發票</template>
                               <template v-if="receiver.invoice_method === '2'">公司戶收銀發票</template>
                           </div>
                       </div>
                       <!-- v-if -->
-                      <div class="uk-flex uk-flex-middle uk-margin-top" v-if="receiver.invoice_method === '2'">
-                          <div class="uk-width-1-6">統一編號</div>
-                          <div class="uk-width-5-6"> {{ receiver.invoice_tax_id_number }} </div>
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top" v-if="receiver.invoice_method === '2'">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">統一編號</div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ receiver.invoice_tax_id_number }} </div>
                       </div>
                       <!-- v-if -->
-                      <div class="uk-flex uk-flex-middle uk-margin-top" v-if="receiver.invoice_method === '2'">
-                          <div class="uk-width-1-6">發票抬頭</div>
-                          <div class="uk-width-5-6"> {{ receiver.invoice_name }} </div>
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top" v-if="receiver.invoice_method === '2'">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">發票抬頭</div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ receiver.invoice_name }} </div>
                       </div>
                       <!-- v-if -->
-                      <div class="uk-flex uk-margin-top" v-if="receiver.bookmark">
-                          <div class="uk-width-1-6">備註</div>
-                          <div class="uk-width-5-6" v-html="receiver.bookmark"></div>
+                      <div class="uk-flex uk-flex-wrap uk-margin-top" v-if="receiver.bookmark">
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">備註</div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold bookmark" v-html="receiver.bookmark"></div>
                       </div>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">訂購注意事項</h4>
-                  <div class="uk-card uk-card-default uk-padding uk-text-bold uk-margin-small-top">
+                  <div class="uk-card uk-card-default uk-padding uk-text-bold uk-margin-small-top notice">
                       <p>非常感謝您訂購 海龍王 的商品！</p>
                       <p>訂單送出後，我們將在24HR內簡訊送出一份完整的訂購需求。</p>
                       <p>因商品流動問題，如遇缺貨，客服將主動與您電話聯繫。</p>
@@ -740,8 +797,24 @@ label {
   max-width: calc(100% - 200px);
   flex-basis: calc(100% - 200px);
 
+  @media (max-width: 960px) {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    flex-basis: 100%;
+  }
+
   .form-content {
     max-width: 1000px;
+  }
+
+  .process {
+    font-size: 1.5rem;
+    line-height: 1.5;
+
+    @media (max-width: 960px) {
+      font-size: 18px;
+    }
   }
 
   tr {
@@ -749,6 +822,10 @@ label {
       width: 100%;
       height: 100px;
       object-fit: cover;
+
+      @media (max-width: 960px) {
+        height: auto;
+      }
     }
   }
 
@@ -770,8 +847,59 @@ label {
     }
   }
 
+  .reponsive-td {
+    text-align: center;
+
+    @media (max-width: 960px) {
+      text-align: initial;
+    }
+  }
+
+  .reponsive-remove {
+    text-align: center;
+
+    @media (max-width: 960px) {
+      text-align: right;
+    }
+
+    button {
+      @media (max-width: 960px) {
+        padding: 5px 20px;
+      }
+    }
+  }
+
+  .form-margin {
+    @media (max-width: 960px) {
+      margin-bottom: 5px;
+    }
+  }
+
   h4:not(:first-child) {
     margin-top: 35px;
+  }
+
+  .bookmark {
+    word-break: break-all;
+  }
+
+
+  .notice {
+    @media (max-width: 960px) {
+      font-size: 14px;
+    }
+
+    p {
+      @media (max-width: 960px) {
+        margin-bottom: 5px;
+      }
+    }    
+
+    p:not(:first-child) {
+      @media (max-width: 960px) {
+        margin-top: 5px;
+      }
+    }
   }
 }
 

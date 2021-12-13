@@ -179,7 +179,7 @@
 
         <div id="modal-login" uk-modal="bg-close: false">
               <div class="uk-modal-dialog uk-modal-body">
-                  <h2 class="uk-modal-title uk-text-cen`ter">會員登入</h2>
+                  <h2 class="uk-modal-title uk-text-center">會員登入</h2>
                   <div>
                       <div class="uk-flex uk-flex-wrap uk-flex-middle">
                           <label for="cellphone" class="uk-width-1-1 uk-width-1-4@m">帳號 (手機號碼)</label>

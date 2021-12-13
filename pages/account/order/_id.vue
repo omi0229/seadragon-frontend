@@ -265,6 +265,28 @@
                 },
             }
         },
+        async asyncData({$axios, store, route, redirect}) {
+            let path_array = route.path.split('/');
+            if (path_array.length !== 4) {
+                redirect('/');
+            }
+
+            let config = {
+                headers: {
+                    Authorization: 'Bearer ' + store.state.member.token
+                }
+            };
+
+            return $axios.get(process.env.API_URL + '/api/order/info/' + path_array[3], config).then(res => {
+                if (!res.data.data) {
+                    redirect('/')
+                    return false;
+                }
+                return {
+                    info: res.data.data,
+                };
+            })
+        },
         computed: {
           orderDate() {
             return date => {
@@ -356,18 +378,11 @@
         async mounted() {
           let path_array = location.pathname.split('/');
           if (path_array.length !== 4) {
-            location.href = '/';
+              location.href = '/';
           }
 
           await this.$axios.get(process.env.API_URL + '/api/order/get/payment_url', this.config).then(res => {
-            this.url.payment = res.data;
-          });
-
-          this.order_id = path_array[3];
-          this.getOrderInfo(this.order_id).then(res => {
-            !res.data.data ? location.href = '/' : this.info = res.data.data;
-            this.payment_method = this.info.payment_method.toString();
-            this.$store.commit('disabledLoading');
+              this.url.payment = res.data;
           });
         },
         methods: {
