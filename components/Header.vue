@@ -87,7 +87,12 @@
                                 <button class="uk-button uk-button-text" type="button" @click="openLogout">登出</button>
                             </div>
                             <div class="item">
-                                <a href="/account/basic" class="uk-link-heading">會員中心</a>
+                                <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-member; animation: uk-animation-fade">會員中心</button>
+                                <div id="toggle-member" class="uk-padding-small offcanvas-toggle" hidden>
+                                    <div> <a href="/account/basic" class="uk-link-heading">基本資料</a> </div>
+                                    <div> <a href="/account/password" class="uk-link-heading">變更密碼</a> </div>
+                                    <div> <a href="/account/record" class="uk-link-heading">訂單紀錄</a> </div>
+                                </div>
                             </div>
                         </template>
                         <template v-else>

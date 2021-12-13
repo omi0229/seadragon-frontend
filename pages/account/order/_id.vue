@@ -6,7 +6,7 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="#">會員中心</a></li>
                 <li><a href="/account/record">訂單紀錄</a></li>
-                <li><a :href="'/account/order/' + order_id"> {{ info.merchant_trade_no }} </a></li>
+                <li class="web"><a :href="'/account/order/' + order_id"> {{ info.merchant_trade_no }} </a></li>
             </ul>
 
             <div class="form-content uk-margin-auto">
@@ -18,114 +18,114 @@
                     <li>
                         <h4 class="uk-text-bold uk-margin-remove-bottom">訂單資料</h4>
                         <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
-                            <div class="uk-flex uk-flex-middle">
-                                <div class="uk-width-1-6"> 訂單編號 </div>
-                                <div class="uk-width-5-6"> {{ info.merchant_trade_no }} </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 訂單編號 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.merchant_trade_no }} </div>
                             </div>
-                            <div class="uk-flex uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-6"> 訂單金額 </div>
-                                <div class="uk-width-5-6 uk-text-bold uk-text-danger"> $ {{ orderTotal(info.freight, info.order_products) }} </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 訂單金額 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold uk-text-danger"> $ {{ orderTotal(info.freight, info.order_products) }} </div>
                             </div>
-                            <div class="uk-flex uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-6"> 付款狀態 </div>
-                                <div class="uk-width-5-6 uk-text-bold" :class="info.payment_status ? 'uk-text-primary' : 'uk-text-danger'"> {{ paymentStatusFormat(info.payment_status) }} </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 付款狀態 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold" :class="info.payment_status ? 'uk-text-primary' : 'uk-text-danger'"> {{ paymentStatusFormat(info.payment_status) }} </div>
                             </div>
-                            <div class="uk-flex uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-6"> 付款方式 </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 付款方式 </div>
                                 <!-- v-if -->
-                                <div class="uk-width-5-6" v-if="info.payment_status !== 0"> {{ paymentFormat(info.payment_method) }} </div>
-                                <div class="uk-width-5-6" v-else>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold" v-if="info.payment_status !== 0"> {{ paymentFormat(info.payment_method) }} </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold pay" v-else>
                                     <label class="uk-margin-remove-bottom"><input class="uk-radio" type="radio" value="1" v-model="payment_method"> 信用卡</label>
                                     <label class="uk-margin-remove-bottom uk-margin-small-left"><input class="uk-radio" type="radio" value="2" v-model="payment_method"> ATM</label>
                                 </div>
                             </div>
                             <!-- v-if -->
-                            <div class="uk-flex uk-flex-middle uk-margin-top" v-if="info.payment_status === 0 && (payment_method === '1' || (payment_method === '2' && !info.vAccount))">
-                                <div class="uk-width-1-6"> </div>
-                                <div class="uk-width-5-6"> <button class="uk-button-small uk-button-primary" @click="confirm"> 前往付款 </button></div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle go-pay" v-if="info.payment_status === 0 && (payment_method === '1' || (payment_method === '2' && !info.vAccount))">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m"> <button class="uk-button-small uk-button-primary" @click="confirm"> 前往付款 </button></div>
                             </div>
                             <!-- v-if -->
-                            <div class="uk-flex uk-flex-middle uk-margin-top" v-if="atmDelay">
-                                <div class="uk-width-1-6"> </div>
-                                <div class="uk-width-5-6"> <button class="uk-button-small uk-button-primary" @click="confirm"> 重新取號 </button></div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle go-pay" v-if="atmDelay">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m"> <button class="uk-button-small uk-button-primary" @click="confirm"> 重新取號 </button></div>
                             </div>
                             <!-- v-if -->
-                            <div class="uk-flex uk-flex-middle uk-margin-top" v-if="info.payment_method === 2">
-                                <div class="uk-width-1-6"> 取號狀態 </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top" v-if="info.payment_method === 2">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 取號狀態 </div>
                                 <!-- v-if -->
-                                <div class="uk-width-5-6 uk-text-bold" v-if="info.vAccount"> 已取號 </div>
-                                <div class="uk-width-5-6 uk-text-bold" v-else> 未取號 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold" v-if="info.vAccount"> 已取號 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold" v-else> 未取號 </div>
                             </div>
-                            <div class="uk-padding-small uk-margin-top" style="border: 1px solid #e1e1e1;" v-if="info.vAccount">
+                            <div class="atm-pay-info" v-if="info.vAccount">
                                 <div class="uk-text-primary">ATM繳費資訊</div>
                                 <!-- v-if -->
-                                <div class="uk-flex uk-flex-middle uk-margin-top">
-                                    <div class="uk-width-1-6"> 繳費虛擬帳號 </div>
+                                <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                    <div class="uk-width-1-1 uk-width-1-6@m"> 繳費虛擬帳號 </div>
                                     <!-- v-if -->
-                                    <div class="uk-width-5-6 uk-text-bold"> {{ info.vAccount }} </div>
+                                    <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.vAccount }} </div>
                                 </div>
                                 <!-- v-if -->
-                                <div class="uk-flex uk-flex-middle uk-margin-top">
-                                    <div class="uk-width-1-6"> 繳費銀行代碼 </div>
-                                    <div class="uk-width-5-6 uk-text-bold"> {{ info.BankCode }} </div>
+                                <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                    <div class="uk-width-1-1 uk-width-1-6@m"> 繳費銀行代碼 </div>
+                                    <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.BankCode }} </div>
                                 </div>
                                 <!-- v-if -->
-                                <div class="uk-flex uk-flex-middle uk-margin-top">
-                                    <div class="uk-width-1-6"> 繳費期限 </div>
-                                    <div class="uk-width-5-6 uk-text-bold uk-text-danger"> {{ info.ExpireDate }} </div>
+                                <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                    <div class="uk-width-1-1 uk-width-1-6@m"> 繳費期限 </div>
+                                    <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold uk-text-danger"> {{ info.ExpireDate }} </div>
                                 </div>
                             </div>
-                            <div class="uk-flex uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-6"> 處理狀態 </div>
-                                <div class="uk-width-5-6 uk-text-bold" :class="orderStatusColor(info.order_status)"> {{ orderStatusFormat(info.order_status) }} </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 處理狀態 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold" :class="orderStatusColor(info.order_status)"> {{ orderStatusFormat(info.order_status) }} </div>
                             </div>
-                            <div class="uk-flex uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-6"> 訂單日期 </div>
-                                <div class="uk-width-5-6"> {{ orderDate(info.created_at) }} </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 訂單日期 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ orderDate(info.created_at) }} </div>
                             </div>
-                            <div class="uk-flex uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-6"> 配送方式 </div>
-                                <div class="uk-width-5-6"> 宅配到府 </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 配送方式 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> 宅配到府 </div>
                             </div>
-                            <div class="uk-flex uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-6"> 收件者 </div>
-                                <div class="uk-width-5-6"> {{ info.name }} </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 收件者 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.name }} </div>
                             </div>
-                            <div class="uk-flex uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-6"> 聯絡電話 </div>
-                                <div class="uk-width-5-6"> {{ info.cellphone }} </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 聯絡電話 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.cellphone }} </div>
                             </div>
-                            <div class="uk-flex uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-6"> E-mail </div>
-                                <div class="uk-width-5-6"> {{ info.email }} </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> E-mail </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.email }} </div>
                             </div>
-                            <div class="uk-flex uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-6">寄送地址</div>
-                                <div class="uk-width-5-6"> {{ info.zipcode }} {{ info.country }}{{ info.city }}{{ info.address }}</div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m">寄送地址</div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.zipcode }} {{ info.country }}{{ info.city }}{{ info.address }}</div>
                             </div>
-                            <div class="uk-flex uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-6">發票類型</div>
-                                <div class="uk-width-5-6">
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m">發票類型</div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold">
                                     <template v-if="info.invoice_method === 1">個人收銀發票</template>
                                     <template v-if="info.invoice_method === 2">公司戶收銀發票</template>
                                 </div>
                             </div>
                             <!-- v-if -->
-                            <div class="uk-flex uk-flex-middle uk-margin-top" v-if="info.invoice_method === 2">
-                                <div class="uk-width-1-6">統一編號</div>
-                                <div class="uk-width-5-6"> {{ info.invoice_tax_id_number }} </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top" v-if="info.invoice_method === 2">
+                                <div class="uk-width-1-1 uk-width-1-6@m">統一編號</div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.invoice_tax_id_number }} </div>
                             </div>
                             <!-- v-if -->
-                            <div class="uk-flex uk-flex-middle uk-margin-top" v-if="info.invoice_method === 2">
-                                <div class="uk-width-1-6">發票抬頭</div>
-                                <div class="uk-width-5-6"> {{ info.invoice_name }} </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top" v-if="info.invoice_method === 2">
+                                <div class="uk-width-1-1 uk-width-1-6@m">發票抬頭</div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.invoice_name }} </div>
                             </div>
                             <!-- v-if -->
-                            <div class="uk-flex uk-margin-top" v-if="info.bookmark">
-                                <div class="uk-width-1-6">備註</div>
-                                <div class="uk-width-5-6" v-html="info.bookmark"></div>
+                            <div class="uk-flex uk-flex-wrap uk-margin-top" v-if="info.bookmark">
+                                <div class="uk-width-1-1 uk-width-1-6@m">備註</div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold" v-html="info.bookmark"></div>
                             </div>
-                  </div>
+                        </div>
                     </li>
                     <li>
                         <h4 class="uk-text-bold uk-margin-remove-bottom">購物明細</h4>
@@ -144,14 +144,40 @@
                                 <!-- v-for -->
                                 <tr v-for="item in info.order_products">
                                     <td class="uk-text-center"><img :src="item.img" /></td>
-                                    <td class="uk-text-middle">{{ item.product.title }}</td>
-                                    <td class="uk-text-middle">{{ item.product_specifications.name }}</td>
-                                    <td class="uk-text-center uk-text-middle">{{ item.count }}</td>
-                                    <td class="uk-text-center uk-text-middle">{{ item.price.toLocaleString() }}</td>
-                                    <td class="uk-text-center uk-text-middle">{{ (item.count * item.price).toLocaleString() }}</td>
+                                    <td class="uk-text-middle">
+                                        <div class="uk-flex uk-flex-middle">
+                                            <div class="uk-width-1-4 mobile">商品</div>
+                                            <div class="uk-width-3-4 uk-width-1-1@m">{{ item.product.title }}</div>
+                                        </div>
+                                    </td>
+                                    <td class="uk-text-middle">
+                                        <div class="uk-flex uk-flex-middle">
+                                            <div class="uk-width-1-4 mobile">規格</div>
+                                            <div class="uk-width-3-4 uk-width-1-1@m">{{ item.product_specifications.name }}</div>
+                                        </div>
+                                    </td>
+                                    <td class="uk-text-middle reponsive-td">
+                                        <div class="uk-flex uk-flex-middle uk-flex-center">
+                                            <div class="uk-width-1-4 mobile">數量</div>
+                                            <div class="uk-width-3-4 uk-width-1-1@m">{{ item.count }}</div>
+                                        </div>
+                                    </td>
+                                    <td class="uk-text-middle reponsive-td">
+                                        <div class="uk-flex uk-flex-middle uk-flex-center">
+                                            <div class="uk-width-1-4 mobile">價格</div>
+                                            <div class="uk-width-3-4 uk-width-1-1@m">{{ item.price.toLocaleString() }}</div>
+                                        </div>
+                                    </td>
+                                    <td class="uk-text-middle reponsive-td">
+                                        <div class="uk-flex uk-flex-middle uk-flex-center">
+                                            <div class="uk-width-1-4 mobile">小計</div>
+                                            <div class="uk-width-3-4 uk-width-1-1@m">{{ (item.count * item.price).toLocaleString() }}</div>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                           </table>
+                          <hr class="mobile">
                           <div class="uk-flex uk-flex-middle uk-flex-right">
                               <div class="uk-width-5-6 uk-text-right">小計：</div>
                               <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(0, info.order_products).toLocaleString() }}</div>
@@ -391,6 +417,13 @@
   max-width: calc(100% - 200px);
   flex-basis: calc(100% - 200px);
 
+  @media (max-width: 960px) {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    flex-basis: 100%;
+  }
+
   .form-content {
     max-width: 1000px;
     margin-top: 25px;
@@ -404,6 +437,10 @@
         width: 100%;
         height: 100px;
         object-fit: cover;
+
+        @media (max-width: 960px) {
+          height: auto;
+        }
       }
     }
 
@@ -425,6 +462,33 @@
       }
     }
 
+    .reponsive-td {
+      text-align: center;
+      @media (max-width: 960px) {
+        text-align: initial;
+      }
+    }
+
+  }
+
+  .pay {
+    @media (max-width: 960px) {
+      margin-top: 5px;
+    }
+  }
+
+  .go-pay {
+    margin-top: 20px;
+
+    @media (max-width: 960px) {
+      margin-top: 10px;
+    }
+  }
+
+  .atm-pay-info {
+    padding: 15px;
+    margin-top: 20px;
+    border: 1px solid #e1e1e1;
   }
 }
 

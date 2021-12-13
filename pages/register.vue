@@ -123,7 +123,7 @@
 
 <script>
     import { filter, find } from 'lodash';
-    import { init, passwordRule, emailRule, randomNum } from '~/plugins/app.js';
+    import { passwordRule, emailRule, randomNum } from '~/plugins/app.js';
     import twzipcode from 'twzipcode-data'
     import Captcha from '~/components/Captcha';
     import RegisterMenu from '~/components/RegisterMenu';
@@ -341,49 +341,6 @@
 
 <style scoped lang="scss">
 
-label {
-  margin-bottom: 0;
-  min-width: 90px;
-
-  @media (max-width: 960px) {
-    margin-bottom: 5px;
-  }
-}
-
-.container {
-  padding: 25px 4vmin 75px;
-  width: calc(100% - 15vmin);
-  min-width: calc(100% - 200px);
-  max-width: calc(100% - 200px);
-  flex-basis: calc(100% - 200px);
-
-  @media (max-width: 960px) {
-    width: 95%;
-    min-width: 95%;
-    max-width: 95%;
-    flex-basis: 95%;
-  }
-
-  .form-content {
-    max-width: 1000px;
-    padding-left: 20vmin;
-    padding-right: 20vmin;
-
-    @media (max-width: 960px) {
-      padding-left: 0;
-      padding-right: 0;
-    }
-  }
-
-  .submit-button {
-    @media (max-width: 960px) {
-      margin-top: 20px;
-    }
-  }
-}
-
-.uk-modal-dialog {
-  width: 400px;
-}
+@import '~@/assets/scss/form.scss';
 
 </style>

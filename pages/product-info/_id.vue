@@ -318,6 +318,18 @@
     }
   }
 
+  .uk-slider {
+    @media (max-width: 960px) {
+      width: 100%;
+    }
+
+    img {
+      @media (max-width: 960px) {
+        height: initial;
+        aspect-ratio: 2 / 1;
+      }
+    }
+  }
 }
 
 </style>

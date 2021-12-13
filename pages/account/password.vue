@@ -13,23 +13,23 @@
                   <h2 class="uk-modal-title uk-margin-top">變更密碼</h2>
               </div>
               <div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="old_password">舊密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="password" id="old_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入舊密碼" v-model="old_password">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="old_password">舊密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="password" id="old_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入舊密碼" v-model="old_password">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_password">密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="password" id="register_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入密碼" v-model="password">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_password">密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="password" id="register_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入密碼" v-model="password">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_return_password">確認密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="password" id="register_return_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請確認密碼" v-model="return_password">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_return_password">確認密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="password" id="register_return_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請確認密碼" v-model="return_password">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <div class="uk-width-1-4">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <div class="uk-width-1-1 uk-width-1-4@m">
                           <label class="uk-text-small" for="register_captcha">驗證碼</label>
                       </div>
-                      <div class="uk-width-3-4 uk-flex uk-flex-middle">
+                      <div class="uk-width-1-1 uk-width-3-4@m uk-flex uk-flex-middle">
                           <div class="uk-width-1-4" @click="refreshCode">
                               <Captcha :identifyCode="captcha.answers" :contentHeight="30" :contentWidth="120"></Captcha>
                           </div>
@@ -38,14 +38,14 @@
                           </div>
                       </div>
                   </div>
-                  <div class="uk-flex uk-flex-middle">
-                      <div class="uk-width-1-4"></div>
-                      <div class="uk-width-3-4 uk-flex uk-flex-middle uk-text-danger">
+                  <div class="uk-flex uk-flex-wrap uk-flex-middle">
+                      <div class="uk-width-1-1 uk-width-1-4@m"></div>
+                      <div class="uk-width-1-1 uk-width-3-4@m uk-flex uk-flex-middle uk-text-danger">
                           (驗證碼看不清時,請重新點擊驗證碼圖片)
                       </div>
                   </div>
               </div>
-              <div class="uk-text-right">
+              <div class="uk-text-right submit-button">
                   <button class="uk-button uk-button-small uk-button-primary uk-padding uk-padding-remove-vertical" type="button" @click="register">送出</button>
               </div>
           </div>
@@ -69,9 +69,7 @@
 </template>
 
 <script>
-    import Cookies from 'js-cookie';
-    import { filter, find } from 'lodash';
-    import { init, loginAuth, passwordRule, randomNum, notification } from '~/plugins/app.js';
+    import { loginAuth, passwordRule, randomNum, notification } from '~/plugins/app.js';
     import Captcha from '~/components/Captcha';
     import AccountMenu from '~/components/AccountMenu';
 
@@ -170,27 +168,6 @@
 
 <style scoped lang="scss">
 
-label {
-  margin-bottom: 0;
-  min-width: 90px;
-}
-
-.container {
-  padding: 25px 4vmin 75px;
-  width: calc(100% - 15vmin);
-  min-width: calc(100% - 200px);
-  max-width: calc(100% - 200px);
-  flex-basis: calc(100% - 200px);
-
-  .form-content {
-    max-width: 1000px;
-    padding-left: 20vmin;
-    padding-right: 20vmin;
-  }
-}
-
-.uk-modal-dialog {
-  width: 400px;
-}
+@import '~@/assets/scss/form.scss';
 
 </style>

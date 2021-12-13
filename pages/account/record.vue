@@ -17,24 +17,24 @@
               <h2 class="uk-modal-title uk-margin-top">訂單紀錄</h2>
               <div>
                   <div class="uk-text-danger"> 請輸入欲查詢的日期區間，最大區間以六個月內為限。 </div>
-                  <div class="uk-flex uk-flex-middle">
-                      <div class="uk-width-1-3">
+                  <div class="uk-flex uk-flex-wrap uk-flex-middle inquire">
+                      <div class="uk-width-1-1 uk-width-1-3@m">
                           <div class="uk-inline">
                               <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: future" href="javascript:void(0)" @click="toNow('start')"></a>
                               <input class="start-date uk-input" type="text" />
                           </div>
                       </div>
-                      <div class="uk-text-center record-width width-5"> 至 </div>
-                      <div class="uk-width-1-3">
+                      <div class="uk-text-center record-width width-5 web"> 至 </div>
+                      <div class="uk-width-1-1 uk-width-1-3@m">
                           <div class="uk-inline">
                               <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: future" href="javascript:void(0)" @click="toNow('end')"></a>
                               <input class="end-date uk-input" type="text" />
                           </div>
                       </div>
-                      <div class="uk-text-center record-width width-10"> <button class="uk-button-primary inquire-button" @click="inquireMethod">查詢</button> </div>
+                      <div class="record-width inquire-button"> <button class="uk-button-primary" @click="inquireMethod">查詢</button> </div>
                   </div>
                   <template v-if="list.length > 0">
-                      <table class="uk-table uk-table-striped uk-table-hover">
+                      <table class="uk-table uk-table-striped uk-table-hover web">
                           <thead>
                           <tr>
                               <th>訂單編號</th>
@@ -55,13 +55,35 @@
                               <td class="uk-text-center uk-text-bold">{{ orderTotal(item.freight, item.order_products) }}</td>
                               <td class="uk-text-center uk-text-bold" :class="item.payment_status ? 'uk-text-primary' : 'uk-text-danger'">{{ paymentStatusFormat(item.payment_status) }}</td>
                               <td class="uk-text-center uk-text-bold" :class="orderStatusColor(item.order_status)">{{ orderStatusFormat(item.order_status) }}</td>
-                            <td class="uk-text-center"> <button class="uk-button-primary" @click="orderContent(item.id)">內容</button> </td>
+                              <td class="uk-text-center"> <button class="uk-button-primary" @click="orderContent(item.id)">內容</button> </td>
                           </tr>
                           </tbody>
                       </table>
+
+                      <div class="mobile">
+                          <ul uk-accordion>
+                              <li :class="{'uk-open': key === 0}" v-for="(item, key) in list">
+                                  <div class="uk-accordion-title">
+                                      <span class="uk-text-muted uk-text-default">{{ item.merchant_trade_no }}</span>
+                                      <span class="uk-margin-small-right uk-margin-small-left"></span>
+                                      <span :class="orderStatusColor(item.order_status)">{{ orderStatusFormat(item.order_status) }}</span>
+                                  </div>
+                                  <div class="uk-accordion-content">
+                                      <div>訂單編號：{{ item.merchant_trade_no }}</div>
+                                      <div>訂購日期：{{ orderDate(item.created_at) }}</div>
+                                      <div>付款方式：{{ paymentFormat(item.payment_method) }}</div>
+                                      <div>訂單金額：{{ orderTotal(item.freight, item.order_products) }}</div>
+                                      <div>付款狀態：<span :class="item.payment_status ? 'uk-text-primary' : 'uk-text-danger'">{{ paymentStatusFormat(item.payment_status) }}</span></div>
+                                      <div>處理狀態：<span :class="orderStatusColor(item.order_status)">{{ orderStatusFormat(item.order_status) }}</span></div>
+                                      <div class="uk-text-right"> <button class="uk-button-primary" @click="orderContent(item.id)">內容</button> </div>
+                                  </div>
+                              </li>
+                          </ul>
+                      </div>
+
                   </template>
                   <template v-else>
-                      <div class="uk-text-center uk-margin-top">
+                      <div class="uk-text-center empty">
                           <h3 class="uk-text-danger uk-text-bold">此時段無任何訂單</h3>
                           <a href="/"><h4 class="uk-text-primary uk-text-bold">回首頁</h4></a>
                       </div>
@@ -75,7 +97,7 @@
 
 <script>
     import moment from 'moment';
-    import { init, loginAuth, notification } from '~/plugins/app.js';
+    import { loginAuth, notification } from '~/plugins/app.js';
     import AccountMenu from '~/components/AccountMenu';
 
     export default {
@@ -160,7 +182,7 @@
                             return 'uk-text-default';
                         case 2:
                         case 3:
-                            return 'uk-text-primary';
+                            return 'uk-text-default uk-text-primary';
                         default:
                             return '';
                     }
@@ -236,11 +258,6 @@
 
 <style scoped lang="scss">
 
-label {
-  margin-bottom: 0;
-  min-width: 90px;
-}
-
 .container {
   padding: 25px 4vmin 75px;
   width: calc(100% - 15vmin);
@@ -248,8 +265,23 @@ label {
   max-width: calc(100% - 200px);
   flex-basis: calc(100% - 200px);
 
+  @media (max-width: 960px) {
+    width: 95%;
+    min-width: 95%;
+    max-width: 95%;
+    flex-basis: 95%;
+  }
+
   .form-content {
     max-width: 1000px;
+
+    .empty {
+      margin-top: 35px;
+
+      @media (max-width: 960px) {
+        margin-top: 50px;
+      }
+    }
   }
 
   .record-width {
@@ -263,12 +295,57 @@ label {
     }
   }
 
+  .inquire {
+    @media (max-width: 960px) {
+      margin-bottom: 35px;
+    }
+
+    > div {
+      @media (max-width: 960px) {
+        margin-top: 10px;
+      }
+    }
+  }
+
   .inquire-button {
-    padding: 5px 20px;
+    width: 10%;
+    min-width: 100px;
+    text-align: center;
+
+    @media (max-width: 960px) {
+      width: 100%;
+      text-align: right;
+    }
+
+    button {
+      padding: 5px 20px;
+    }
+  }
+
+  .uk-accordion {
+    button {
+      padding: 5px 20px;
+    }
   }
 
   .uk-inline {
     width: 100%;
+  }
+
+  .uk-accordion-title {
+    @media (max-width: 960px) {
+      border: 1px solid #e6e6e6;
+      padding: 10px;
+      background-color: #fafafa;
+    }
+  }
+
+  .uk-accordion-content {
+    @media (max-width: 960px) {
+      border: 1px solid #e6e6e6;
+      padding: 10px;
+      margin-top: 0;
+    }
   }
 }
 
