@@ -182,7 +182,7 @@
                       </div>
                       <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                           <label for="password" class="uk-width-1-1 uk-width-1-4@m">密碼</label>
-                          <input id="password" type="passw  ord" maxlength="50" class="uk-input uk-width-1-1 uk-width-3-4@m" placeholder="請輸入密碼" v-model="login.password" />
+                          <input id="password" type="password" maxlength="50" class="uk-input uk-width-1-1 uk-width-3-4@m" placeholder="請輸入密碼" v-model="login.password" />
                       </div>
                       <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
                           <div class="uk-width-1-1 uk-width-1-4@m">
@@ -210,7 +210,7 @@
                       <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
                       <button class="uk-button uk-button-small uk-button-primary" type="button" @click="memberLogin">登入</button>
                   </p>
-                  <p class="mobile">
+                  <div class="mobile mobile-margin">
                       <div class="uk-text-right">
                           <button class="uk-button uk-button-small uk-button-default uk-modal-close" type="button">取消</button>
                           <button class="uk-button uk-button-small uk-button-primary" type="button" @click="memberLogin">登入</button>
@@ -219,7 +219,7 @@
                           <button class="uk-button uk-button-small uk-button-danger" type="button" @click="forget">忘記密碼</button>
                           <button class="uk-button uk-button-small uk-button-primary" type="button" @click="register">會員註冊</button>
                       </div>
-                  </p>
+                  </div>
               </div>
           </div>
 
@@ -409,6 +409,10 @@
 
         @media (max-width: 960px) {
             margin-bottom: 5px;
+        }
+
+        .mobile-margin {
+          margin: 20px 0;
         }
     }
 

@@ -16,19 +16,19 @@
                   <h4 class="uk-text-danger uk-text-bold">請輸入行動電話、姓名及驗證碼，送出資料後將發送簡訊至手機。</h4>
               </div>
               <div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_phone">行動電話 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入行動電話 ( 帳號 )" v-model="form.cellphone">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_phone">行動電話 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入行動電話 ( 帳號 )" v-model="form.cellphone">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_name">姓名 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="text" id="register_name" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入姓名" v-model="form.name">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_name">姓名 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="text" id="register_name" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入姓名" v-model="form.name">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <div class="uk-width-1-4">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <div class="uk-width-1-1 uk-width-1-4@m">
                           <label class="uk-text-small" for="register_captcha">驗證碼</label>
                       </div>
-                      <div class="uk-width-3-4 uk-flex uk-flex-middle">
+                      <div class="uk-width-1-1 uk-width-3-4@m uk-flex uk-flex-middle">
                           <div class="uk-width-1-4" @click="refreshCode">
                               <Captcha :identifyCode="captcha.answers" :contentHeight="30" :contentWidth="120"></Captcha>
                           </div>
@@ -37,14 +37,14 @@
                           </div>
                       </div>
                   </div>
-                  <div class="uk-flex uk-flex-middle">
-                      <div class="uk-width-1-4"></div>
-                      <div class="uk-width-3-4 uk-flex uk-flex-middle uk-text-danger">
+                  <div class="uk-flex uk-flex-wrap uk-flex-middle">
+                      <div class="uk-width-1-1 uk-width-1-4@m"></div>
+                      <div class="uk-width-1-1 uk-width-3-4@m uk-flex uk-flex-middle uk-text-danger">
                           (驗證碼看不清時,請重新點擊驗證碼圖片)
                       </div>
                   </div>
               </div>
-              <div class="uk-text-right">
+              <div class="uk-text-right submit-button">
                   <button class="uk-button uk-button-small uk-button-primary uk-padding uk-padding-remove-vertical" type="button" @click="confirm" :disabled="seconds > 0">送出 <span v-show="seconds > 0">({{seconds}})</span></button>
               </div>
           </div>
@@ -184,6 +184,10 @@
 label {
   margin-bottom: 0;
   min-width: 90px;
+
+  @media (max-width: 960px) {
+    margin-bottom: 5px;
+  }
 }
 
 .container {
@@ -193,10 +197,28 @@ label {
   max-width: calc(100% - 200px);
   flex-basis: calc(100% - 200px);
 
+  @media (max-width: 960px) {
+    width: 95%;
+    min-width: 95%;
+    max-width: 95%;
+    flex-basis: 95%;
+  }
+
   .form-content {
     max-width: 1000px;
     padding-left: 20vmin;
     padding-right: 20vmin;
+
+    @media (max-width: 960px) {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  .submit-button {
+    @media (max-width: 960px) {
+      margin-top: 20px;
+    }
   }
 }
 

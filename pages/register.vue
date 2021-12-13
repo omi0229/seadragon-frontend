@@ -13,59 +13,59 @@
                   <h2 class="uk-modal-title uk-margin-top">會員註冊</h2>
               </div>
               <div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_phone">行動電話 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入行動電話 ( 帳號 )" v-model="form.cellphone">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_phone">行動電話 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入行動電話 ( 帳號 )" v-model="form.cellphone">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
                       <label class="uk-text-small uk-width-1-4" for="register_password">密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="password" id="register_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入密碼" v-model="form.password">
+                      <input type="password" id="register_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入密碼" v-model="form.password">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_return_password">確認密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="password" id="register_return_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請確認密碼" v-model="form.return_password">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_return_password">確認密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="password" id="register_return_password" maxlength="50" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請確認密碼" v-model="form.return_password">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_name">姓名 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="text" id="register_name" maxlength="5" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入姓名" v-model="form.name">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_name">姓名 <span class="uk-text-bold uk-text-danger">*</span></label>
+                      <input type="text" id="register_name" maxlength="5" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入姓名" v-model="form.name">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_email">電子信箱</label>
-                      <input type="text" id="register_email" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入電子信箱" v-model="form.email">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_email">電子信箱</label>
+                      <input type="text" id="register_email" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入電子信箱" v-model="form.email">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_telephone">市內電話</label>
-                      <input type="text" id="register_telephone" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入市內電話" v-model="form.telephone">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_telephone">市內電話</label>
+                      <input type="text" id="register_telephone" maxlength="20" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入市內電話" v-model="form.telephone">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_address">郵遞區號</label>
-                      <div class="uk-width-1-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_address">郵遞區號</label>
+                      <div class="uk-width-1-3 uk-width-1-4@m uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
                           <select class="uk-select uk-form-small" v-model="form.country" @change="selectCountry">
                               <option value="">請選擇城市</option>
                               <!-- v-for -->
                               <option :value="item.id" v-for="item in select.counties">{{ item.name }}</option>
                           </select>
                       </div>
-                      <div class="uk-width-1-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
+                      <div class="uk-width-1-3 uk-width-1-4@m uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
                           <select class="uk-select uk-form-small" v-model="form.city" @change="selectCity">
                               <option value="">請選擇地區</option>
                               <!-- v-for -->
                               <option :value="item.city" v-for="item in select.cities">{{ item.city }}</option>
                           </select>
                       </div>
-                      <div class="uk-width-1-4 ">
+                      <div class="uk-width-1-3 uk-width-1-4@m ">
                           <input class="uk-input uk-form-small" type="text" placeholder="郵遞區號" v-model="form.zipcode" disabled>
                       </div>
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <label class="uk-text-small uk-width-1-4" for="register_address">通訊地址</label>
-                      <input type="text" id="register_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入通訊地址" v-model="form.address">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_address">通訊地址</label>
+                      <input type="text" id="register_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入通訊地址" v-model="form.address">
                   </div>
-                  <div class="uk-margin uk-flex uk-flex-middle">
-                      <div class="uk-width-1-4">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                      <div class="uk-width-1-1 uk-width-1-4@m">
                           <label class="uk-text-small" for="register_captcha">驗證碼</label>
                       </div>
-                      <div class="uk-width-3-4 uk-flex uk-flex-middle">
+                      <div class="uk-width-1-1 uk-width-3-4@m uk-flex uk-flex-middle">
                           <div class="uk-width-1-4" @click="refreshCode">
                               <Captcha :identifyCode="captcha.answers" :contentHeight="30" :contentWidth="120"></Captcha>
                           </div>
@@ -74,14 +74,14 @@
                           </div>
                       </div>
                   </div>
-                  <div class="uk-flex uk-flex-middle">
-                      <div class="uk-width-1-4"></div>
-                      <div class="uk-width-3-4 uk-flex uk-flex-middle uk-text-danger">
+                  <div class="uk-flex uk-flex-wrap uk-flex-middle">
+                      <div class="uk-width-1-1 uk-width-1-4@m"></div>
+                      <div class="uk-width-1-1 uk-width-3-4@m uk-flex uk-flex-middle uk-text-danger">
                           (驗證碼看不清時,請重新點擊驗證碼圖片)
                       </div>
                   </div>
               </div>
-              <div class="uk-text-right">
+              <div class="uk-text-right submit-button">
                   <button class="uk-button uk-button-small uk-button-primary uk-padding uk-padding-remove-vertical" type="button" @click="register">註冊</button>
               </div>
           </div>
@@ -344,6 +344,10 @@
 label {
   margin-bottom: 0;
   min-width: 90px;
+
+  @media (max-width: 960px) {
+    margin-bottom: 5px;
+  }
 }
 
 .container {
@@ -353,10 +357,28 @@ label {
   max-width: calc(100% - 200px);
   flex-basis: calc(100% - 200px);
 
+  @media (max-width: 960px) {
+    width: 95%;
+    min-width: 95%;
+    max-width: 95%;
+    flex-basis: 95%;
+  }
+
   .form-content {
     max-width: 1000px;
     padding-left: 20vmin;
     padding-right: 20vmin;
+
+    @media (max-width: 960px) {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  .submit-button {
+    @media (max-width: 960px) {
+      margin-top: 20px;
+    }
   }
 }
 
