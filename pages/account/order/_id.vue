@@ -23,14 +23,6 @@
                                 <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.merchant_trade_no }} </div>
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-1 uk-width-1-6@m"> 訂單金額 </div>
-                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold uk-text-danger"> $ {{ orderTotal(info.freight, info.order_products) }} </div>
-                            </div>
-                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
-                                <div class="uk-width-1-1 uk-width-1-6@m"> 付款狀態 </div>
-                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold" :class="info.payment_status ? 'uk-text-primary' : 'uk-text-danger'"> {{ paymentStatusFormat(info.payment_status) }} </div>
-                            </div>
-                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 付款方式 </div>
                                 <!-- v-if -->
                                 <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold" v-if="info.payment_status !== 0"> {{ paymentFormat(info.payment_method) }} </div>
@@ -74,6 +66,14 @@
                                     <div class="uk-width-1-1 uk-width-1-6@m"> 繳費期限 </div>
                                     <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold uk-text-danger"> {{ info.ExpireDate }} </div>
                                 </div>
+                            </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 訂單金額 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold uk-text-danger"> $ {{ orderTotal(info.freight, info.order_products) }} </div>
+                            </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 付款狀態 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold" :class="info.payment_status ? 'uk-text-primary' : 'uk-text-danger'"> {{ paymentStatusFormat(info.payment_status) }} </div>
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 處理狀態 </div>
@@ -284,6 +284,7 @@
                 }
                 return {
                     info: res.data.data,
+                    payment_method: res.data.data.payment_method.toString(),
                 };
             })
         },
@@ -384,6 +385,9 @@
           await this.$axios.get(process.env.API_URL + '/api/order/get/payment_url', this.config).then(res => {
               this.url.payment = res.data;
           });
+
+          this.$store.commit('disabledLoading');
+
         },
         methods: {
           getOrderInfo(order_id) {
