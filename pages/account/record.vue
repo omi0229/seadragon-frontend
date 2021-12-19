@@ -192,8 +192,9 @@
                 return (freight, list, discount_record) => {
                     let price = 0;
 
-                    // 有使用優惠代碼
                     list.forEach(v => { price += v.price * v.count });
+
+                    // 有使用優惠代碼
                     if (discount_record && discount_record.discount_codes) {
                         if (price > discount_record.discount_codes.full_amount) {
                             price -= discount_record.discount_codes.discount;

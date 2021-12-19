@@ -188,7 +188,7 @@
                           </div>
                           <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.discount_record">
                               <div class="uk-width-5-6 uk-text-right">優惠代碼折扣：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">- $ {{ info.discount_record.discount_codes.discount }}</div>
+                              <div class="uk-width-1-6 uk-text-right uk-text-danger">- $ {{ info.discount_record.discount_codes.discount.toLocaleString() }}</div>
                           </div>
                           <div class="uk-flex uk-flex-middle uk-flex-right">
                               <div class="uk-width-5-6 uk-text-right">運費<span v-if="info.freight_name">({{ info.freight_name }})</span>：</div>
@@ -292,6 +292,7 @@
                     return false;
                 }
                 return {
+                    order_id: path_array[3],
                     info: res.data.data,
                     payment_method: res.data.data.payment_method.toString(),
                 };
@@ -422,7 +423,12 @@
           send() {
               UIkit.modal('#modal-confirm').hide();
               this.$store.commit('enabledLoading');
-              let data = { order_id: this.order_id, list: this.info.order_products, payment_method: this.payment_method};
+              let data = {
+                order_id: this.order_id,
+                list: this.info.order_products,
+                payment_method: this.payment_method,
+                discount_codes: this.info.discount_record && this.info.discount_record.discount_codes ? this.info.discount_record.discount_codes.fixed_name : null,
+              };
               this.$axios.post(process.env.API_URL + '/api/order/payment', data, this.config).then(res => {
                   if (res.data.status) {
                       for (const [key, value] of Object.entries(res.data.ecpay)) {
