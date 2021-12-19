@@ -230,6 +230,32 @@
                           <p>2. 商品的寄送「海龍王」有最終的決定權，請務必詳細填寫。</p>
                       </div>
                   </div>
+                  <h4 class="uk-text-bold uk-margin-remove-bottom">優惠代碼</h4>
+                  <div class="uk-margin-small-top">
+                      <div class="uk-flex uk-flex-middle">
+                          <div class="uk-width-1-3 uk-width-1-6@m">使用優惠代碼</div>
+                          <div class="uk-width-2-3 uk-width-1-3@m"><input class="uk-input uk-form-small" maxlength="13" placeholder="請輸入優惠代碼" v-model="discount_codes" @keyup.enter="discountMethod('enter')" @focusout="discountMethod('focusout')" /></div>
+                      </div>
+                      <div class="uk-margin-small-top" v-show="discount_codes">
+                          優惠項目
+                          <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
+                              <template v-if="discount.status === true">
+                                  <div>優惠名稱：<span class="uk-text-bold">{{ discount.info.title }}</span></div>
+                                  <div class="uk-margin-small-top">目前訂單總金額為：<span class="uk-text-danger">{{　shoppingCartPrice }}</span>元</div>
+                                  <div>需滿 <span class="uk-text-danger">{{ discount.info.full_amount }}</span> 元可折扣</div>
+                                  <template v-if="shoppingCartPrice >= discount.info.full_amount">
+                                      <div>您已達到折扣條件，折扣完總金額為 <span class="uk-text-danger">{{ shoppingCartDiscountPrice }}</span> 元</div>
+                                  </template>
+                                  <template v-else>
+                                      <div>未達到折扣條件，尚差 <span class="uk-text-danger">{{ discount.info.full_amount - shoppingCartPrice }}</span> 元</div>
+                                  </template>
+                              </template>
+                              <template v-else>
+                                  <span class="uk-text-danger">無此優惠代碼</span>
+                              </template>
+                          </div>
+                      </div>
+                  </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">發票資訊</h4>
                   <div class="uk-margin-small-top">
                       <div>
@@ -311,13 +337,17 @@
                       <div class="uk-width-5-6 uk-text-right">小計：</div>
                       <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ shoppingCartPrice.toLocaleString() }}</div>
                   </div>
+                  <div class="uk-flex uk-flex-middle uk-flex-right" v-if="discount.status && shoppingCartPrice >= discount.info.full_amount">
+                      <div class="uk-width-5-6 uk-text-right">優惠代碼折扣：</div>
+                      <div class="uk-width-1-6 uk-text-right uk-text-danger"> - $ {{ discount.info.discount.toLocaleString() }}</div>
+                  </div>
                   <div class="uk-flex uk-flex-middle uk-flex-right">
                       <div class="uk-width-5-6 uk-text-right">運費<span v-if="receiver.freight_name">({{receiver.freight_name}})</span>：</div>
                       <div class="uk-width-1-6 uk-text-right uk-text-danger"> $ {{ freight }}</div>
                   </div>
                   <div class="uk-flex uk-flex-middle uk-flex-right">
                       <div class="uk-width-5-6 uk-text-right">本訂單需付款總金額：</div>
-                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ (shoppingCartPrice + receiver.freight).toLocaleString() }}</div>
+                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ allTotal }}</div>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">付款方式與寄送資料</h4>
                   <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
@@ -462,6 +492,15 @@
                   invoice_name: '',
                   bookmark: '',
                 },
+                discount_codes: '', // 優惠代碼
+                discount: {
+                    status: false,
+                    info: {
+                        title: '',
+                        full_amount: 0,
+                        discount: 0,
+                    },
+                },
                 select: {
                   counties: [],
                   cities: [],
@@ -526,6 +565,16 @@
 
             return this.receiver.freight;
           },
+          shoppingCartDiscountPrice() {
+            return this.discount.status ? this.shoppingCartPrice - this.discount.info.discount : this.shoppingCartPrice;
+          },
+          allTotal() {
+            if (this.discount.status && this.shoppingCartPrice >= this.discount.info.full_amount) {
+              return (this.shoppingCartDiscountPrice + this.receiver.freight).toLocaleString();
+            } else {
+              return (this.shoppingCartPrice + this.receiver.freight).toLocaleString();
+            }
+          }
         },
         async mounted() {
           this.select.counties = this.origin_zipcode.counties;
@@ -747,11 +796,11 @@
               form: this.form,
               receiver: this.receiver,
               synchronize: this.value.synchronize,
+              discount_codes: this.discount_codes,
             }
 
             this.ECPay = [];
             this.$axios.post(process.env.API_URL + '/api/order/create', obj, this.config).then(res => {
-
               if (obj.synchronize) {
                 let user = JSON.parse(Cookies.get('user'));
                 user.zipcode = obj.form.zipcode;
@@ -778,6 +827,28 @@
             });
 
             UIkit.modal('#modal-confirm').hide();
+          },
+          async discountMethod(event) {
+              if(this.discount_codes.trim()) {
+                  if (event === 'enter') {
+                      this.$store.commit('enabledLoading');
+                  }
+                  await this.$axios.post(process.env.API_URL + '/api/discount-code/search', { discount_codes: this.discount_codes }, this.config).then(res => {
+                      this.discount.status = res.data.status;
+                      if(this.discount.status) {
+                          this.discount.info.title = res.data.data.title;
+                          this.discount.info.full_amount = res.data.data.full_amount;
+                          this.discount.info.discount = res.data.data.discount;
+                      } else {
+                          this.discount.info.title = '';
+                          this.discount.info.full_amount = 0;
+                          this.discount.info.discount = 0;
+                      }
+                      if (event === 'enter') {
+                          this.$store.commit('disabledLoading');
+                      }
+                  });
+              }
           },
         },
     }
@@ -893,7 +964,7 @@ label {
       @media (max-width: 960px) {
         margin-bottom: 5px;
       }
-    }    
+    }
 
     p:not(:first-child) {
       @media (max-width: 960px) {

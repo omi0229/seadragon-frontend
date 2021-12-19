@@ -52,7 +52,7 @@
                               <td>{{ item.merchant_trade_no }}</td>
                               <td>{{ orderDate(item.created_at) }}</td>
                               <td class="uk-text-center uk-text-bold">{{ paymentFormat(item.payment_method) }}</td>
-                              <td class="uk-text-center uk-text-bold">{{ orderTotal(item.freight, item.order_products) }}</td>
+                              <td class="uk-text-center uk-text-bold">{{ orderTotal(item.freight, item.order_products, item.discount_record) }}</td>
                               <td class="uk-text-center uk-text-bold" :class="item.payment_status ? 'uk-text-primary' : 'uk-text-danger'">{{ paymentStatusFormat(item.payment_status) }}</td>
                               <td class="uk-text-center uk-text-bold" :class="orderStatusColor(item.order_status)">{{ orderStatusFormat(item.order_status) }}</td>
                               <td class="uk-text-center"> <button class="uk-button-primary" @click="orderContent(item.id)">內容</button> </td>
@@ -72,7 +72,7 @@
                                       <div>訂單編號：{{ item.merchant_trade_no }}</div>
                                       <div>訂購日期：{{ orderDate(item.created_at) }}</div>
                                       <div>付款方式：{{ paymentFormat(item.payment_method) }}</div>
-                                      <div>訂單金額：{{ orderTotal(item.freight, item.order_products) }}</div>
+                                      <div>訂單金額：{{ orderTotal(item.freight, item.order_products, item.discount_record) }}</div>
                                       <div>付款狀態：<span :class="item.payment_status ? 'uk-text-primary' : 'uk-text-danger'">{{ paymentStatusFormat(item.payment_status) }}</span></div>
                                       <div>處理狀態：<span :class="orderStatusColor(item.order_status)">{{ orderStatusFormat(item.order_status) }}</span></div>
                                       <div class="uk-text-right"> <button class="uk-button-primary" @click="orderContent(item.id)">內容</button> </div>
@@ -189,10 +189,19 @@
                 }
             },
             orderTotal() {
-                return (freight, list) => {
+                return (freight, list, discount_record) => {
                     let price = 0;
+
+                    // 有使用優惠代碼
                     list.forEach(v => { price += v.price * v.count });
+                    if (discount_record && discount_record.discount_codes) {
+                        if (price > discount_record.discount_codes.full_amount) {
+                            price -= discount_record.discount_codes.discount;
+                        }
+                    }
+
                     price += freight;
+
                     return price.toLocaleString();
                 }
             },

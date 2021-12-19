@@ -69,11 +69,15 @@
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 訂單金額 </div>
-                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold uk-text-danger"> $ {{ orderTotal(info.freight, info.order_products) }} </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold uk-text-danger"> $ {{ orderTotal(info.freight, info.order_products, info.discount_record) }} </div>
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 付款狀態 </div>
                                 <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold" :class="info.payment_status ? 'uk-text-primary' : 'uk-text-danger'"> {{ paymentStatusFormat(info.payment_status) }} </div>
+                            </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 優惠代碼 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.discount_record ? info.discount_record.discount_codes.title : '無' }} </div>
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 處理狀態 </div>
@@ -180,7 +184,11 @@
                           <hr class="mobile">
                           <div class="uk-flex uk-flex-middle uk-flex-right">
                               <div class="uk-width-5-6 uk-text-right">小計：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(0, info.order_products).toLocaleString() }}</div>
+                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(0, info.order_products, info.discount_record).toLocaleString() }}</div>
+                          </div>
+                          <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.discount_record">
+                              <div class="uk-width-5-6 uk-text-right">優惠代碼折扣：</div>
+                              <div class="uk-width-1-6 uk-text-right uk-text-danger">- $ {{ info.discount_record.discount_codes.discount }}</div>
                           </div>
                           <div class="uk-flex uk-flex-middle uk-flex-right">
                               <div class="uk-width-5-6 uk-text-right">運費<span v-if="info.freight_name">({{ info.freight_name }})</span>：</div>
@@ -188,7 +196,7 @@
                           </div>
                           <div class="uk-flex uk-flex-middle uk-flex-right">
                               <div class="uk-width-5-6 uk-text-right">本訂單需付款總金額：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(info.freight, info.order_products).toLocaleString() }}</div>
+                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(info.freight, info.order_products, info.discount_record).toLocaleString() }}</div>
                           </div>
                     </li>
                 </ul>
@@ -252,6 +260,7 @@
                     payment_status: null,
                     order_status: null,
                     order_products: [],
+                    discount_record: null,
                 },
                 payment_method: '1',
                 config: {
@@ -358,10 +367,19 @@
             }
           },
           orderTotal() {
-              return (freight, list) => {
+              return (freight, list, discount_record) => {
                   let price = 0;
                   list.forEach(v => { price += v.price * v.count });
+
+                  // 有使用優惠代碼
+                  if (discount_record) {
+                      if (price > discount_record.discount_codes.full_amount) {
+                          price -= discount_record.discount_codes.discount;
+                      }
+                  }
+
                   price += freight;
+
                   return price.toLocaleString();
               }
           },
