@@ -3,10 +3,18 @@
         <div class="web">
             <div class="top uk-flex uk-flex-between">
                 <div class="top-left uk-flex-1 uk-padding-small uk-flex uk-height-1-1 header-padding">
-                    <img src="/images/icon/t-youtube.png" class="uk-border-circle uk-margin-small-right"/>
-                    <img src="/images/icon/facebook.png" class="uk-border-circle uk-margin-small-right"/>
-                    <img src="/images/icon/ig.png" class="uk-border-circle uk-margin-small-right"/>
-                    <img src="/images/icon/line.png" class="uk-border-circle"/>
+                    <a :href="$store.state.config.link_youtube ? $store.state.config.link_youtube : 'javascript:void(0)'" :target="$store.state.config.link_youtube ? '_blank' : '_self'" class="uk-link-reset">
+                        <img src="/images/icon/t-youtube.png" class="uk-border-circle uk-margin-small-right"/>
+                    </a>
+                    <a :href="$store.state.config.link_facebook ? $store.state.config.link_facebook : 'javascript:void(0)'" :target="$store.state.config.link_facebook ? '_blank' : '_self'" class="uk-link-reset">
+                        <img src="/images/icon/facebook.png" class="uk-border-circle uk-margin-small-right"/>
+                    </a>
+                    <a :href="$store.state.config.link_instagram ? $store.state.config.link_instagram : 'javascript:void(0)'" :target="$store.state.config.link_instagram ? '_blank' : '_self'" class="uk-link-reset">
+                        <img src="/images/icon/ig.png" class="uk-border-circle uk-margin-small-right"/>
+                    </a>
+                    <a :href="$store.state.config.link_line ? $store.state.config.link_line : 'javascript:void(0)'" :target="$store.state.config.link_line ? '_blank' : '_self'" class="uk-link-reset">
+                        <img src="/images/icon/line.png" class="uk-border-circle uk-margin-small-right"/>
+                    </a>
                 </div>
                 <a href="/"><img src="/S__111558660.jpg"/></a>
                 <div class="uk-flex-1 uk-flex uk-flex-right uk-height-1-1 header-padding">
@@ -74,12 +82,22 @@
                 <div class="uk-offcanvas-bar">
                     <div class="top">
                         <div class="top-left uk-flex-1 uk-padding-small uk-flex header-padding">
-                            <img src="/images/icon/t-youtube.png" class="uk-border-circle uk-margin-small-right"/>
-                            <img src="/images/icon/facebook.png" class="uk-border-circle uk-margin-small-right"/>
-                            <img src="/images/icon/ig.png" class="uk-border-circle uk-margin-small-right"/>
-                            <img src="/images/icon/line.png" class="uk-border-circle"/>
+                            <a :href="$store.state.config.link_youtube ? $store.state.config.link_youtube : 'javascript:void(0)'" :target="$store.state.config.link_youtube ? '_blank' : '_self'" class="uk-link-reset">
+                                <img src="/images/icon/t-youtube.png" class="uk-border-circle uk-margin-small-right"/>
+                            </a>
+                            <a :href="$store.state.config.link_facebook ? $store.state.config.link_facebook : 'javascript:void(0)'" :target="$store.state.config.link_facebook ? '_blank' : '_self'" class="uk-link-reset">
+                                <img src="/images/icon/facebook.png" class="uk-border-circle uk-margin-small-right"/>
+                            </a>
+                            <a :href="$store.state.config.link_instagram ? $store.state.config.link_instagram : 'javascript:void(0)'" :target="$store.state.config.link_instagram ? '_blank' : '_self'" class="uk-link-reset">
+                                <img src="/images/icon/ig.png" class="uk-border-circle uk-margin-small-right"/>
+                            </a>
+                            <a :href="$store.state.config.link_line ? $store.state.config.link_line : 'javascript:void(0)'" :target="$store.state.config.link_line ? '_blank' : '_self'" class="uk-link-reset">
+                                <img src="/images/icon/line.png" class="uk-border-circle uk-margin-small-right"/>
+                            </a>
                         </div>
-                        <button class="uk-offcanvas-close" type="button" uk-close></button>
+                        <div>
+                            <button class="uk-offcanvas-close" type="button" uk-close></button>
+                        </div>
                     </div>
                     <div class="uk-text-bold uk-text-large">
                         <template v-if="$store.state.member.id">

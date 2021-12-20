@@ -3,6 +3,7 @@ import axios from 'axios';
 export const state = () => ({
   loading: false,
   to_top: false,
+  config: null,
   cart_count: 0,
   news_types_list: [],
   cooking_types_list: [],
@@ -38,6 +39,9 @@ export const mutations = {
   },
   disabledToTop(state) {
     state.to_top = false;
+  },
+  setConfig(state, result) {
+    state.config = result;
   },
   setCartCount(state, result) {
     state.cart_count = result;
@@ -117,6 +121,30 @@ export const actions = {
       dispatch('setCookingTypesList', res.data.cooking_types_list);
       dispatch('setDirectoryList', res.data.directory_list);
     });
+
+    await axios.get(process.env.API_URL + '/api/config').then(res => {
+        let config = {
+          basic_title: '',
+          basic_phone: '',
+          basic_address: '',
+          basic_email: '',
+          basic_company: '',
+          seo_keyword: '',
+          seo_description: '',
+          link_youtube: '',
+          link_facebook: '',
+          link_instagram: '',
+          link_line: '',
+        };
+
+        res.data.forEach(v => {
+          if (v.config_value) {
+            eval('config.' + v.config_name + ' = `' + v.config_value + '`');
+          }
+        });
+
+        dispatch('setConfig', config);
+    });
   },
   async setNewsTypesList({ commit }, result) {
     commit('setNewsTypesList', result)
@@ -126,6 +154,9 @@ export const actions = {
   },
   async setDirectoryList({ commit }, result) {
     commit('setDirectoryList', result)
+  },
+  async setConfig({ commit }, result) {
+    commit('setConfig', result)
   },
 }
 

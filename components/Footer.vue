@@ -2,22 +2,22 @@
     <div id="footer" class="uk-flex uk-flex-column">
         <div class="uk-flex uk-flex-middle uk-flex-center uk-flex-right@m icon">
           <div class="uk-margin-small-left uk-margin-small-right">
-            <a href="#" target="_blank">
+            <a :href="$store.state.config.link_youtube ? $store.state.config.link_youtube : 'javascript:void(0)'" :target="$store.state.config.link_youtube ? '_blank' : '_self'">
               <img src="/images/icon/f-youtube.png"/>
             </a>
           </div>
           <div class="uk-margin-small-left uk-margin-small-right">
-            <a href="#" target="_blank">
+            <a :href="$store.state.config.link_facebook ? $store.state.config.link_facebook : 'javascript:void(0)'" :target="$store.state.config.link_facebook ? '_blank' : '_self'">
               <img src="/images/icon/f-facebook.png"/>
             </a>
           </div>
           <div class="uk-margin-small-left uk-margin-small-right">
-            <a href="#" target="_blank">
+            <a :href="$store.state.config.link_instagram ? $store.state.config.link_instagram : 'javascript:void(0)'" :target="$store.state.config.link_instagram ? '_blank' : '_self'">
               <img src="/images/icon/f-ig.png"/>
             </a>
           </div>
           <div class="uk-margin-small-left uk-margin-small-right">
-            <a href="#" target="_blank">
+            <a :href="$store.state.config.link_line ? $store.state.config.link_line : 'javascript:void(0)'" :target="$store.state.config.link_line ? '_blank' : '_self'">
               <img src="/images/icon/f-line.png"/>
             </a>
           </div>
@@ -52,14 +52,14 @@
             <div class="uk-flex uk-flex-middle uk-flex-wrap uk-flex-center@m">
                 <div class="email">
                     <div> Email： </div>
-                    <div> dragon-king-market@hotmail.com </div>
+                    <div> {{ $store.state.config.basic_email }} </div>
                 </div>
                 <div class="service">
                     <div> 客服專線： </div>
-                    <div> 0903080848 </div>
+                    <div> {{ $store.state.config.basic_phone }} </div>
                 </div>
             </div>
-            <div>Copyright © 2021 海龍王市集有限公司</div>
+            <div>Copyright © {{ $store.state.config.basic_company }} </div>
         </div>
     </div>
 </template>

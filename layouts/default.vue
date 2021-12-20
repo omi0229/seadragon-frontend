@@ -12,6 +12,17 @@
 
 <script>
     export default {
+        head({$store, $route}) {
+            if ($route.name !== 'product-info-id') {
+                return {
+                    title: $store.state.config.basic_title || '海龍王',
+                    meta: [
+                        {hid: 'keywords', name: 'keywords', content: $store.state.config.seo_keyword || '海龍王'},
+                        {hid: 'description', name: 'description', content: $store.state.config.seo_description || '海龍王'},
+                    ],
+                };
+            }
+        },
         mounted() {
             let scroll = document.getElementsByTagName('body');
             if (scroll[0]) {
