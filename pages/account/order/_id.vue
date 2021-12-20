@@ -184,7 +184,7 @@
                           <hr class="mobile">
                           <div class="uk-flex uk-flex-middle uk-flex-right">
                               <div class="uk-width-5-6 uk-text-right">小計：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(0, info.order_products, info.discount_record).toLocaleString() }}</div>
+                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(0, info.order_products, null).toLocaleString() }}</div>
                           </div>
                           <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.discount_record">
                               <div class="uk-width-5-6 uk-text-right">優惠代碼折扣：</div>
@@ -368,13 +368,13 @@
             }
           },
           orderTotal() {
-              return (freight, list, discount_record) => {
+              return (freight, list, discount_record = null) => {
                   let price = 0;
                   list.forEach(v => { price += v.price * v.count });
 
                   // 有使用優惠代碼
-                  if (discount_record) {
-                      if (price > discount_record.discount_codes.full_amount) {
+                  if (discount_record && discount_record.discount_codes) {
+                      if (price >= discount_record.discount_codes.full_amount) {
                           price -= discount_record.discount_codes.discount;
                       }
                   }
