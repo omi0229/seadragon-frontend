@@ -24,7 +24,7 @@
         </div>
         <div class="uk-flex uk-flex-wrap">
             <div class="uk-width-1-1 uk-width-1-4@m uk-text-center logo">
-                <a href="/"><img src="/S__111558660.jpg" /></a>
+                <a href="/"><img src="/footer_logo.png" /></a>
             </div>
             <div class="uk-width-1-1 uk-width-3-4@m uk-flex uk-flex-middle uk-flex-wrap uk-text-bold uk-text-large menu">
                 <div>
@@ -124,6 +124,7 @@
 
   hr {
     border-top: 1px solid #a2a2a2;
+    margin-top: 0;
   }
 
   background-color: rgb(243, 243, 243);
@@ -148,7 +149,7 @@
     }
 
     img {
-      height: 150px;
+      height: 300px;
     }
   }
 
@@ -158,7 +159,7 @@
     }
 
     > div {
-      margin: 0 10px;
+      margin: 0 20px;
 
       @media (max-width: 960px) {
         margin: 5px 0;
