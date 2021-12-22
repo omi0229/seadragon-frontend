@@ -149,6 +149,10 @@
   hr {
     border-top: 1px solid #a2a2a2;
     margin-top: 0;
+
+    @media (max-width: 960px) {
+      margin-top: 20px;
+    }
   }
 
   background-color: rgb(243, 243, 243);
