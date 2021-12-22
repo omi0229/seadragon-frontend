@@ -196,7 +196,7 @@ body > div > div > iframe {
     }
 
     img {
-      height: 30vmin;
+      height: 35vmin;
       width: 100%;
       object-fit: cover;
 
@@ -230,7 +230,7 @@ body > div > div > iframe {
     }
 
     img {
-      height: 30vmin;
+      height: 35vmin;
       width: 100%;
       object-fit: cover;
 

@@ -231,6 +231,8 @@
 <style scoped lang="scss">
 
     .container {
+        max-width: 100%;
+        width: 100%;
         padding: 25px 4vmin;
     }
 
@@ -244,7 +246,7 @@
         }
 
         img {
-            height: 30vmin;
+            height: 35vmin;
             width: 100%;
             object-fit: cover;
 

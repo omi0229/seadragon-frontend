@@ -1,32 +1,34 @@
 <template>
     <div id="footer" class="uk-flex uk-flex-column">
-        <div class="uk-flex uk-flex-middle uk-flex-center uk-flex-right@m icon">
-          <div class="uk-margin-small-left uk-margin-small-right">
-            <a :href="$store.state.config.link_youtube ? $store.state.config.link_youtube : 'javascript:void(0)'" :target="$store.state.config.link_youtube ? '_blank' : '_self'">
-              <img src="/images/icon/f-youtube.png"/>
-            </a>
-          </div>
-          <div class="uk-margin-small-left uk-margin-small-right">
-            <a :href="$store.state.config.link_facebook ? $store.state.config.link_facebook : 'javascript:void(0)'" :target="$store.state.config.link_facebook ? '_blank' : '_self'">
-              <img src="/images/icon/f-facebook.png"/>
-            </a>
-          </div>
-          <div class="uk-margin-small-left uk-margin-small-right">
-            <a :href="$store.state.config.link_instagram ? $store.state.config.link_instagram : 'javascript:void(0)'" :target="$store.state.config.link_instagram ? '_blank' : '_self'">
-              <img src="/images/icon/f-ig.png"/>
-            </a>
-          </div>
-          <div class="uk-margin-small-left uk-margin-small-right">
-            <a :href="$store.state.config.link_line ? $store.state.config.link_line : 'javascript:void(0)'" :target="$store.state.config.link_line ? '_blank' : '_self'">
-              <img src="/images/icon/f-line.png"/>
-            </a>
-          </div>
+        <div class="mobile">
+            <div class="uk-flex uk-flex-middle uk-flex-center uk-flex-right@m icon">
+                <div class="uk-margin-small-left uk-margin-small-right">
+                    <a :href="$store.state.config.link_youtube ? $store.state.config.link_youtube : 'javascript:void(0)'" :target="$store.state.config.link_youtube ? '_blank' : '_self'">
+                      <img src="/images/icon/f-youtube.png"/>
+                    </a>
+                </div>
+                <div class="uk-margin-small-left uk-margin-small-right">
+                    <a :href="$store.state.config.link_facebook ? $store.state.config.link_facebook : 'javascript:void(0)'" :target="$store.state.config.link_facebook ? '_blank' : '_self'">
+                      <img src="/images/icon/f-facebook.png"/>
+                    </a>
+                </div>
+                <div class="uk-margin-small-left uk-margin-small-right">
+                    <a :href="$store.state.config.link_instagram ? $store.state.config.link_instagram : 'javascript:void(0)'" :target="$store.state.config.link_instagram ? '_blank' : '_self'">
+                      <img src="/images/icon/f-ig.png"/>
+                    </a>
+                </div>
+                <div class="uk-margin-small-left uk-margin-small-right">
+                    <a :href="$store.state.config.link_line ? $store.state.config.link_line : 'javascript:void(0)'" :target="$store.state.config.link_line ? '_blank' : '_self'">
+                      <img src="/images/icon/f-line.png"/>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="uk-flex uk-flex-wrap">
+        <div class="uk-flex uk-flex-wrap uk-position-relative">
             <div class="uk-width-1-1 uk-width-1-4@m uk-text-center logo">
                 <a href="/"><img src="/footer_logo.png" /></a>
             </div>
-            <div class="uk-width-1-1 uk-width-3-4@m uk-flex uk-flex-middle uk-flex-wrap uk-text-bold uk-text-large menu">
+            <div class="uk-width-1-1 uk-width-3-4@m uk-flex uk-flex-middle uk-flex-wrap uk-text-bold uk-text-large uk-position-relative menu">
                 <div>
                     <a href="/" class="uk-link-heading">首頁</a>
                 </div>
@@ -44,6 +46,28 @@
                 </div>
                 <div>
                     <a href="/shopping-explanation" class="uk-link-heading">購物說明</a>
+                </div>
+            </div>
+            <div class="uk-flex uk-flex-middle uk-flex-center uk-flex-right@m uk-position-top-right icon web">
+                <div class="uk-margin-small-left uk-margin-small-right">
+                    <a :href="$store.state.config.link_youtube ? $store.state.config.link_youtube : 'javascript:void(0)'" :target="$store.state.config.link_youtube ? '_blank' : '_self'">
+                        <img src="/images/icon/f-youtube.png"/>
+                    </a>
+                </div>
+                <div class="uk-margin-small-left uk-margin-small-right">
+                    <a :href="$store.state.config.link_facebook ? $store.state.config.link_facebook : 'javascript:void(0)'" :target="$store.state.config.link_facebook ? '_blank' : '_self'">
+                        <img src="/images/icon/f-facebook.png"/>
+                    </a>
+                </div>
+                <div class="uk-margin-small-left uk-margin-small-right">
+                    <a :href="$store.state.config.link_instagram ? $store.state.config.link_instagram : 'javascript:void(0)'" :target="$store.state.config.link_instagram ? '_blank' : '_self'">
+                        <img src="/images/icon/f-ig.png"/>
+                    </a>
+                </div>
+                <div class="uk-margin-small-left uk-margin-small-right">
+                    <a :href="$store.state.config.link_line ? $store.state.config.link_line : 'javascript:void(0)'" :target="$store.state.config.link_line ? '_blank' : '_self'">
+                        <img src="/images/icon/f-line.png"/>
+                    </a>
                 </div>
             </div>
         </div>
@@ -144,12 +168,8 @@
   }
 
   .logo {
-    @media (max-width: 960px) {
-      margin-top: 20px;
-    }
-
     img {
-      height: 300px;
+      height: 280px;
     }
   }
 
