@@ -51,13 +51,16 @@
 
           <div class="uk-flex uk-margin-auto uk-flex-wrap" v-if="result.product.list.length > 0">
               <!-- v-for -->
-              <div id="product_list" class="uk-width-1-2 uk-width-1-3@m uk-margin-small-top" v-for="item in result.product.list">
-                  <div class="uk-card uk-card-body item-img">
-                      <a :href="'/product-info/' + item.id" class="uk-text-decoration-none">
-                          <img class="web" :src="item.img"/>
-                          <img class="mobile" :src="item.mobile_img"/>
+              <div id="product_list" class="uk-width-1-2 uk-width-1-3@m uk-margin-small-top content" v-for="item in result.product.list">
+                  <div class="uk-card uk-card-body content-imag item-img">
+                      <a :href="'/product-info/' + item.id" class="uk-text-decoration-none product-style web">
+                          <img :src="item.img"/>
+                          <div>加入購物車</div>
                       </a>
-                      <div class="uk-text-center margin uk-text-emphasis">
+                      <a :href="'/product-info/' + item.id" class="uk-text-decoration-none mobile">
+                          <img :src="item.mobile_img"/>
+                      </a>
+                      <div class="uk-text-center content-title margin uk-text-emphasis">
                           <a :href="'/product-info/' + item.id" class="uk-link-heading uk-text-decoration-none">{{item.product.title}}</a>
                       </div>
                       <div class="uk-text-center uk-text-danger uk-text-bold">
@@ -67,6 +70,9 @@
                               <span v-show="item.product_specification.data[0].unit">/</span>
                               {{ item.product_specification.data[0].unit }}
                           </span>
+                      </div>
+                      <div class="mobile content-link">
+                          <a :href="'/product-info/' + item.id" class="uk-text-center uk-text-decoration-none">加入購物車</a>
                       </div>
                   </div>
               </div>
@@ -176,6 +182,46 @@ export default {
     font-family: 'Noto Sans TC', '微軟正黑體', 'Microsoft JhengHei', sans-serif;
     text-align: center;
   }
+
+  .content {
+    .content-image {
+      position: relative;
+      z-index: 0;
+    }
+
+    .content-title {
+      padding-top: 5px;
+      position: relative;
+      background: #fff;
+      max-height: 66.4px;
+      z-index: 1;
+
+      a {
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+    }
+
+    .content-link {
+      padding: 15px 20px 0;
+      box-sizing: border-box;
+
+      > a {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        font-family: 'Montserrat', 'Noto Sans TC', 'Noto Sans SC', 'Mitr', 'Athiti', sans-serif;
+        color: #fff;
+        background-color: #338fb8;
+        padding: 12px;
+      }
+    }
+  }
+
 }
 
 body > div > div > iframe {

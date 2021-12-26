@@ -66,6 +66,7 @@
         height: 50px;
         background-color: #E9E9E9;
         transition: opacity 0.3s;
+        z-index: 2;
 
         &.opacity-0 {
             opacity: 0;

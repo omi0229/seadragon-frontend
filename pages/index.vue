@@ -55,14 +55,15 @@
                     <div class="uk-margin-top uk-flex uk-flex-wrap">
                         <!-- v-for -->
                         <div class="uk-width-1-2 uk-width-1-4@m content" v-for="p_item in item.put_ons">
-                            <div>
-                                <a :href="'/product-info/' + p_item.id" class="uk-link-heading web"> <img :src="p_item.img"> </a>
+                            <div class="content-image">
+                                <a :href="'/product-info/' + p_item.id" class="uk-link-reset product-style web">
+                                    <img :src="p_item.img">
+                                    <div>加入購物車</div>
+                                </a>
                                 <a :href="'/product-info/' + p_item.id" class="uk-link-heading mobile"> <img :src="p_item.mobile_img"> </a>
                             </div>
-                            <div class="uk-text-center uk-margin-small-top size-20">
-                                <a :href="'/product-info/' + p_item.id" class="uk-link-heading">
-                                    {{p_item.product.title}}
-                                </a>
+                            <div class="uk-text-center size-20 content-title">
+                                <a :href="'/product-info/' + p_item.id" class="uk-link-heading"> {{p_item.product.title}} </a>
                             </div>
                             <div class="uk-text-center uk-text-danger uk-text-bold size-20">
                                 <span v-if="p_item.product_specification.data.length > 0">
@@ -70,6 +71,9 @@
                                     <span v-show="p_item.product_specification.data[0].unit">/</span>
                                     {{ p_item.product_specification.data[0].unit }}
                                 </span>
+                            </div>
+                            <div class="mobile content-link">
+                                <a :href="'/product-info/' + p_item.id" class="uk-text-center uk-text-decoration-none">加入購物車</a>
                             </div>
                         </div>
                     </div>
@@ -128,13 +132,18 @@
             });
 
             return {
-              list: list,
-              carousel_list: carousel_list,
-              put_on_list: put_on_list,
+                list: list,
+                carousel_list: carousel_list,
+                put_on_list: put_on_list,
             };
         },
         async mounted() {
           loginAuth(this.$store);
+
+          // 領取優惠劵API
+          await this.$axios.get(process.env.API_URL + '/api/coupon/get').then(res => {
+            console.log(res.data);
+          });
 
           this.$store.commit('disabledLoading');
 
@@ -196,13 +205,51 @@
 
     @media (max-width: 960px) {
       &:nth-child(odd){
-         padding: 10px 3px 10px 10px;
+         padding: 20px 3px 10px 10px;
       }
 
       &:nth-child(even){
-         padding: 10px 10px 10px 3px;
+         padding: 20px 10px 10px 3px;
       }
     }
+
+    .content-image {
+      position: relative;
+      z-index: 0;
+    }
+
+    .content-title {
+      padding-top: 5px;
+      position: relative;
+      background: #fff;
+      max-height: 66.4px;
+      z-index: 1;
+
+      a {
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+    }
+
+    .content-link {
+      padding: 15px 20px 0;
+      box-sizing: border-box;
+
+      > a {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        font-family: 'Montserrat', 'Noto Sans TC', 'Noto Sans SC', 'Mitr', 'Athiti', sans-serif;
+        color: #fff;
+        background-color: #338fb8;
+        padding: 12px;
+      }
+    }
+
   }
 }
 

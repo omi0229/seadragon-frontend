@@ -73,3 +73,34 @@ body {
   }
 
 }
+
+.product-style {
+  display: block;
+  position: relative;
+
+  @media (max-width: 960px) {
+    display: none;
+  }
+
+  > div {
+    text-align: center;
+    padding: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Montserrat', 'Noto Sans TC', 'Noto Sans SC', 'Mitr', 'Athiti', sans-serif;
+    position: absolute;
+    width: 100%;
+    background-color: #338fb8;
+    color: #fff;
+    left: 0;
+    bottom: 0;
+    transition: all 250ms ease-out;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  &:hover > div {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
