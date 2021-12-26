@@ -69,7 +69,7 @@
                         <a :href="'/product-info/' + item.id" class="uk-text-decoration-none mobile">
                             <img :src="item.mobile_img" />
                         </a>
-                        <div class="uk-text-center margin content-title uk-text-emphasis">
+                        <div class="uk-text-center padding content-title uk-text-emphasis">
                             <a :href="'/product-info/' + item.id" class="uk-link-heading uk-text-decoration-none">{{item.product.title}}</a>
                         </div>
                         <div class="uk-text-center uk-text-danger uk-text-bold">
@@ -252,6 +252,11 @@
                 background: #fff;
                 max-height: 66.4px;
                 z-index: 1;
+                margin-bottom: 10px;
+
+                @media (max-width: 960px) {
+                    margin-bottom: 0;
+                }
 
                 a {
                   word-break: break-all;
@@ -299,10 +304,10 @@
             }
         }
 
-        .margin {
-            margin: 10px 0;
+        .padding {
+            padding: 10px 0;
             @media (max-width: 960px) {
-                margin: 0;
+                padding: 0;
             }
 
             a {
