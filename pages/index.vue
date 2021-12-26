@@ -141,9 +141,9 @@
           loginAuth(this.$store);
 
           // 領取優惠劵API
-          await this.$axios.get(process.env.API_URL + '/api/coupon/get').then(res => {
-            console.log(res.data);
-          });
+          // await this.$axios.get(process.env.API_URL + '/api/coupon/get').then(res => {
+          //   console.log(res.data);
+          // });
 
           this.$store.commit('disabledLoading');
 
