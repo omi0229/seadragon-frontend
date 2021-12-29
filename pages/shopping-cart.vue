@@ -230,32 +230,32 @@
                           <p>2. 商品的寄送「海龍王」有最終的決定權，請務必詳細填寫。</p>
                       </div>
                   </div>
-                  <h4 class="uk-text-bold uk-margin-remove-bottom">優惠代碼</h4>
-                  <div class="uk-margin-small-top">
-                      <div class="uk-flex uk-flex-middle">
-                          <div class="uk-width-1-3 uk-width-1-6@m">使用優惠代碼</div>
-                          <div class="uk-width-2-3 uk-width-1-3@m"><input class="uk-input uk-form-small" maxlength="13" placeholder="請輸入優惠代碼" v-model="discount_codes" @keyup.enter="discountMethod('enter')" @focusout="discountMethod('focusout')" /></div>
-                      </div>
-                      <div class="uk-margin-small-top" v-show="discount_codes">
-                          優惠項目
-                          <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
-                              <template v-if="discount.status === true">
-                                  <div>優惠名稱：<span class="uk-text-bold">{{ discount.info.title }}</span></div>
-                                  <div class="uk-margin-small-top">目前訂單總金額為：<span class="uk-text-danger">{{　shoppingCartPrice }}</span>元</div>
-                                  <div>需滿 <span class="uk-text-danger">{{ discount.info.full_amount }}</span> 元可折扣</div>
-                                  <template v-if="shoppingCartPrice >= discount.info.full_amount">
-                                      <div>您已達到折扣條件，折扣完總金額為 <span class="uk-text-danger">{{ shoppingCartDiscountPrice }}</span> 元</div>
-                                  </template>
-                                  <template v-else>
-                                      <div>未達到折扣條件，尚差 <span class="uk-text-danger">{{ discount.info.full_amount - shoppingCartPrice }}</span> 元</div>
-                                  </template>
-                              </template>
-                              <template v-else>
-                                  <span class="uk-text-danger">無此優惠代碼</span>
-                              </template>
-                          </div>
-                      </div>
-                  </div>
+<!--                  <h4 class="uk-text-bold uk-margin-remove-bottom">優惠代碼</h4>-->
+<!--                  <div class="uk-margin-small-top">-->
+<!--                      <div class="uk-flex uk-flex-middle">-->
+<!--                          <div class="uk-width-1-3 uk-width-1-6@m">使用優惠代碼</div>-->
+<!--                          <div class="uk-width-2-3 uk-width-1-3@m"><input class="uk-input uk-form-small" maxlength="13" placeholder="請輸入優惠代碼" v-model="discount_codes" @keyup.enter="discountMethod('enter')" @focusout="discountMethod('focusout')" /></div>-->
+<!--                      </div>-->
+<!--                      <div class="uk-margin-small-top" v-show="discount_codes">-->
+<!--                          優惠項目-->
+<!--                          <div class="uk-card uk-card-default uk-padding uk-margin-small-top">-->
+<!--                              <template v-if="discount.status === true">-->
+<!--                                  <div>優惠名稱：<span class="uk-text-bold">{{ discount.info.title }}</span></div>-->
+<!--                                  <div class="uk-margin-small-top">目前訂單總金額為：<span class="uk-text-danger">{{　shoppingCartPrice }}</span>元</div>-->
+<!--                                  <div>需滿 <span class="uk-text-danger">{{ discount.info.full_amount }}</span> 元可折扣</div>-->
+<!--                                  <template v-if="shoppingCartPrice >= discount.info.full_amount">-->
+<!--                                      <div>您已達到折扣條件，折扣完總金額為 <span class="uk-text-danger">{{ shoppingCartDiscountPrice }}</span> 元</div>-->
+<!--                                  </template>-->
+<!--                                  <template v-else>-->
+<!--                                      <div>未達到折扣條件，尚差 <span class="uk-text-danger">{{ discount.info.full_amount - shoppingCartPrice }}</span> 元</div>-->
+<!--                                  </template>-->
+<!--                              </template>-->
+<!--                              <template v-else>-->
+<!--                                  <span class="uk-text-danger">無此優惠代碼</span>-->
+<!--                              </template>-->
+<!--                          </div>-->
+<!--                      </div>-->
+<!--                  </div>-->
                   <h4 class="uk-text-bold uk-margin-remove-bottom">發票資訊</h4>
                   <div class="uk-margin-small-top">
                       <div>
@@ -333,21 +333,39 @@
                       </tbody>
                   </table>
                   <hr class="mobile">
-                  <div class="uk-flex uk-flex-middle uk-flex-right">
-                      <div class="uk-width-5-6 uk-text-right">小計：</div>
-                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ shoppingCartPrice.toLocaleString() }}</div>
+                  <div class="uk-flex uk-flex-middle uk-flex-right uk-margin-small-top">
+                      <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">小計：</div>
+                      <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger">$ {{ shoppingCartPrice.toLocaleString() }}</div>
                   </div>
-                  <div class="uk-flex uk-flex-middle uk-flex-right" v-if="discount.status && shoppingCartPrice >= discount.info.full_amount">
-                      <div class="uk-width-5-6 uk-text-right">優惠代碼折扣：</div>
-                      <div class="uk-width-1-6 uk-text-right uk-text-danger"> - $ {{ discount.info.discount.toLocaleString() }}</div>
+                  <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
+                      <div class="uk-width-3-4 uk-width-5-6@m uk-text-right"><input class="uk-input uk-form-small discount" maxlength="13" placeholder="請輸入優惠代碼" v-model="discount_codes" @keyup.enter="discountMethod('enter')" @focusout="discountMethod('focusout')" /></div>
+                      <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> - $ {{ discount.status && shoppingCartPrice >= discount.info.full_amount ? discount.info.discount.toLocaleString() : 0}}</div>
                   </div>
-                  <div class="uk-flex uk-flex-middle uk-flex-right">
-                      <div class="uk-width-5-6 uk-text-right">運費<span v-if="receiver.freight_name">({{receiver.freight_name}})</span>：</div>
-                      <div class="uk-width-1-6 uk-text-right uk-text-danger"> $ {{ freight }}</div>
+                  <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
+                      <div class="uk-width-3-4 uk-width-5-6@m uk-text-right uk-flex uk-flex-middle uk-flex-right">
+                          <div>優惠劵：</div>
+                          <div>
+                              <select class="uk-select uk-form-small discount" v-model="coupon">
+                                  <template v-if="coupon_list.length <= 0">
+                                      <option value="" disabled v-if="coupon_list.length <= 0">無優惠劵項目</option>
+                                  </template>
+                                  <template v-else>
+                                      <option value="">請選擇優惠劵</option>
+                                      <!-- v-for -->
+                                      <option :value="item.id" v-for="item in coupon_list">{{ item.coupon.title }}</option>
+                                  </template>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> - $ {{ couponDiscount }}</div>
                   </div>
-                  <div class="uk-flex uk-flex-middle uk-flex-right">
-                      <div class="uk-width-5-6 uk-text-right">本訂單需付款總金額：</div>
-                      <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ allTotal }}</div>
+                  <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
+                      <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">運費<span v-if="receiver.freight_name">({{receiver.freight_name}})</span>：</div>
+                      <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> $ {{ freight }}</div>
+                  </div>
+                  <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
+                      <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">本訂單需付款總金額：</div>
+                      <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger">$ {{ allTotal }}</div>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">付款方式與寄送資料</h4>
                   <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
@@ -447,8 +465,8 @@
 
 <script>
     import Cookies from 'js-cookie';
-    import { find, filter } from 'lodash';
-    import { init, notification, getCartCount} from '~/plugins/app.js';
+    import { find, filter, map } from 'lodash';
+    import { notification, getCartCount} from '~/plugins/app.js';
     import twzipcode from 'twzipcode-data'
 
     export default {
@@ -501,6 +519,7 @@
                         discount: 0,
                     },
                 },
+                coupon: '', // 優惠劵
                 select: {
                   counties: [],
                   cities: [],
@@ -514,6 +533,7 @@
                 origin_zipcode,
                 ECPay: [],
                 freight_list: [],
+                coupon_list: [],
                 url: {
                     payment: '',
                 },
@@ -568,13 +588,22 @@
           shoppingCartDiscountPrice() {
             return this.discount.status ? this.shoppingCartPrice - this.discount.info.discount : this.shoppingCartPrice;
           },
+          couponDiscount() {
+            if (!this.coupon) {
+              return 0;
+            }
+
+            let info = find(this.coupon_list, {id: this.coupon});
+
+            return info.coupon.discount;
+          },
           allTotal() {
             if (this.discount.status && this.shoppingCartPrice >= this.discount.info.full_amount) {
-              return (this.shoppingCartDiscountPrice + this.receiver.freight).toLocaleString();
+              return (this.shoppingCartDiscountPrice - this.couponDiscount + this.receiver.freight).toLocaleString();
             } else {
-              return (this.shoppingCartPrice + this.receiver.freight).toLocaleString();
+              return (this.shoppingCartPrice - this.couponDiscount + this.receiver.freight).toLocaleString();
             }
-          }
+          },
         },
         async mounted() {
           this.select.counties = this.origin_zipcode.counties;
@@ -695,12 +724,22 @@
               }
 
               this.$store.commit('enabledLoading');
-              this.getShoppingCart().then(res => {
+              this.getShoppingCart().then(async res => {
+
                 let inventory_status = this.__inventorySum(res);
                 inventory_status ? this.step = 2 : notification('庫存不足', 'danger');
-                this.$store.commit('disabledLoading');
+
                 if (this.step === 2) {
-                  UIkit.scroll().scrollTo('#header');
+
+                  // 取得這次購物可使用的優惠劵清單
+                  await this.getCouponUse(this.$store.state.member.id, this.shoppingCartPrice, map(this.list, v => { return v.specifications_id })).then(res => {
+                    this.coupon_list = res.data.data;
+                    this.$store.commit('disabledLoading');
+                    UIkit.scroll().scrollTo('#header');
+                  });
+
+                } else {
+                  this.$store.commit('disabledLoading');
                 }
               })
             } else if (this.step === 2) {
@@ -720,6 +759,15 @@
                 UIkit.scroll().scrollTo('#header');
               }
             }
+          },
+          getCouponUse(member_id, all_total, product_list) { // 這次購物可使用的優惠劵
+            return new Promise(resolve => {
+              let obj = {member_id, all_total, product_list};
+
+              this.$axios.post(process.env.API_URL + '/api/member/coupon-use', obj, this.config).then(res => {
+                resolve(res);
+              })
+            })
           },
           __inventorySum(res) {
             let inventory_status = true
@@ -797,6 +845,7 @@
               receiver: this.receiver,
               synchronize: this.value.synchronize,
               discount_codes: this.discount_codes,
+              coupon: this.coupon,
             }
 
             this.ECPay = [];
@@ -954,7 +1003,6 @@ label {
     word-break: break-all;
   }
 
-
   .notice {
     @media (max-width: 960px) {
       font-size: 14px;
@@ -971,6 +1019,15 @@ label {
         margin-top: 5px;
       }
     }
+  }
+
+  .calculate-list {
+    margin-top: 5px;
+  }
+
+  .discount {
+    width: 150px;
+    min-width: 150px;
   }
 }
 

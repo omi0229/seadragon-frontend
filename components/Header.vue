@@ -376,6 +376,12 @@
                 }
               }, 1000);
 
+              // 領取優惠劵後的轉向
+              if (sessionStorage.getItem('coupon')) {
+                location.href = '/account/coupon';
+                return true;
+              }
+
               if (sessionStorage.getItem('to_url')) {
                 location.href = '/' + sessionStorage.getItem('to_url');
                 return true;

@@ -95,13 +95,39 @@
             </div>
         </div>
 
+        <div id="modal-coupon" class="uk-flex-top" uk-modal="bg-close: false">
+            <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div v-if="coupon.status">
+                    <h4 class="uk-text-bold">您有一張優惠劵可以領取！</h4>
+                    <div class="uk-background-primary coupon">
+                        <div class="uk-flex uk-flex-middle coupon-body">
+                            <div class="coupon-discount">
+                                $ {{ coupon.discount }}
+                            </div>
+                            <div>
+                                <div class="uk-text-large">{{ coupon.title }}</div>
+                                <div class="uk-text-small uk-margin-small-top">
+                                    <div class="size-12">使用條件：訂單滿{{ coupon.full_amount.toLocaleString() }}可使用</div>
+                                    <div class="size-12">有效期間：{{ coupon.start_date.substr(0, 10) }} - {{ coupon.end_date.substr(0, 10) }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-text-right uk-margin-small-top">
+                        <button class="btn btn-sm btn-info" @click="getCoupon">點我領取</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </template>
 
 <script>
     import { find } from 'lodash';
-    import { init, loginAuth, modalMessage } from '~/plugins/app.js';
+    import { loginAuth, modalMessage, notification } from '~/plugins/app.js';
     import Pagination from '~/components/Pagination';
 
     export default {
@@ -113,6 +139,15 @@
                 carousel_list: [],
                 put_on_list: [],
                 message: '',
+                coupon: {
+                    status: false,
+                    id: null,
+                    title: null,
+                    full_amount: null,
+                    discount: null,
+                    start_date: null,
+                    end_date: null,
+                },
             }
         },
         async asyncData({$axios, store, route}) {
@@ -141,9 +176,22 @@
           loginAuth(this.$store);
 
           // 領取優惠劵API
-          // await this.$axios.get(process.env.API_URL + '/api/coupon/get').then(res => {
-          //   console.log(res.data);
-          // });
+          let get_coupon_url = process.env.API_URL + '/api/coupon/get/' + localStorage.getItem('cart_id');
+          if (this.$store.state.member.id) {
+              get_coupon_url += '/' + this.$store.state.member.id;
+          }
+          await this.$axios.get(get_coupon_url).then(res => {
+              if (res.data.status) {
+                  this.coupon.status = true;
+                  this.coupon.id = res.data.data.id;
+                  this.coupon.title = res.data.data.title;
+                  this.coupon.full_amount = res.data.data.full_amount;
+                  this.coupon.discount = res.data.data.discount;
+                  this.coupon.start_date = res.data.data.start_date;
+                  this.coupon.end_date = res.data.data.end_date;
+                  UIkit.modal('#modal-coupon').show();
+              }
+          });
 
           this.$store.commit('disabledLoading');
 
@@ -187,9 +235,18 @@
                     UIkit.scroll('#put_ons_end_' + directory_id).scrollTo('#put_ons_start_' + directory_id);
                 });
             },
-            toUrl(url, id) {
-                location.href = url + id;
-            },
+          toUrl(url, id) {
+              location.href = url + id;
+          },
+          getCoupon() {
+              sessionStorage.setItem('coupon', this.coupon.id);
+              if (!(this.$store.state.member.id && this.$store.state.member.token)) {
+                  notification('請登入會員', 'warning');
+                  UIkit.modal('#modal-login').show();
+              } else {
+                  location.href = '/account/coupon';
+              }
+          },
         },
     }
 </script>
@@ -274,6 +331,24 @@
 
 .uk-modal-dialog {
   width: 400px;
+}
+
+.coupon {
+  padding: 10px;
+  border-radius: 10px;
+
+  .coupon-body {
+    padding: 10px 10px 10px 0;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    color: #fff;
+
+    .coupon-discount {
+      text-align: center;
+      flex-basis: 100px;
+      font-size: 30px;
+    }
+  }
 }
 
 </style>

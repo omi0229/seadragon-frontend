@@ -10,6 +10,9 @@
         <div>
           <a href="/account/record" class="uk-link-text uk-text-decoration-none">訂單紀錄</a>
         </div>
+        <div>
+          <a href="/account/coupon" class="uk-link-text uk-text-decoration-none">優惠劵</a>
+        </div>
     </div>
 
 </template>
