@@ -43,7 +43,7 @@
                   </div>
                   <!-- v-for -->
                   <div class="uk-margin-top uk-flex uk-child-width-1-1 uk-child-width-1-2@m uk-flex-wrap" v-if="list.length > 0">
-                      <div class="coupon-container" v-for="item in list">
+                      <div class="coupon-container cursor" v-for="item in list" @click="showInfo(item.id)">
                           <div class="coupon" :class="item.used_at ? 'bg-success' : 'uk-background-primary'">
                               <div class="uk-flex uk-flex-middle uk-position-relative coupon-body" :class="item.used_at ? 'used' : ''">
                                   <div class="coupon-discount">
@@ -68,11 +68,50 @@
           </div>
 
         </div>
+
+        <div id="modal-info" class="uk-flex-top" uk-modal="bg-close: false">
+            <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-title">優惠劵資訊</div>
+                <hr />
+                <div class="uk-modal-body coupon-body">
+                    <div class="uk-flex uk-flex-wrap uk-flex-middle">
+                        <div class="uk-width-1-1 uk-width-1-4@m"> 標題</div>
+                        <div class="uk-width-1-1 uk-width-3-4@m uk-text-bold"> {{ info.coupon.title }}</div>
+                    </div>
+                    <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-small-top">
+                        <div class="uk-width-1-1 uk-width-1-4@m"> 使用期限</div>
+                        <div class="uk-width-1-1 uk-width-3-4@m uk-text-bold"> {{ info.coupon.start_date.substr(0, 10) }} - {{ info.coupon.end_date.substr(0, 10) }}</div>
+                    </div>
+                    <div class="uk-flex uk-flex-wrap uk-margin-small-top">
+                        <div class="uk-width-1-1 uk-width-1-4@m"> 使用條件</div>
+                        <div class="uk-width-1-1 uk-width-3-4@m uk-text-bold">
+                            <div>1. 訂單金額滿 $ {{ info.coupon.full_amount }}</div>
+                            <div v-if="info.coupon.product_specifications.length > 0">
+                                <div>2. 訂單包含以下商品：</div>
+                                <div>
+                                    <!-- v-for -->
+                                    <span v-for="item in info.coupon.product_specifications">
+                                        {{ item.product.title }} - <span class="uk-text-primary">{{ item.name }}</span>,
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-small-top">
+                        <div class="uk-width-1-1 uk-width-1-4@m"> 折扣金額</div>
+                        <div class="uk-width-1-1 uk-width-3-4@m uk-text-bold"> {{ info.coupon.discount }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
 <script>
     import moment from 'moment';
+    import { find } from 'lodash';
     import { loginAuth, notification } from '~/plugins/app.js';
     import AccountMenu from '~/components/AccountMenu';
 
@@ -89,10 +128,20 @@
                     }
                 },
                 list: [],
+                info: {
+                    coupon: {
+                        title: '',
+                        start_date: '',
+                        end_date: '',
+                        full_amount: '',
+                        discount: '',
+                        product_specifications: [],
+                    }
+                },
                 value: {
                     start_date: null,
                     end_date: null,
-                    used: '',
+                    used: '0',
                 },
             }
         },
@@ -122,7 +171,7 @@
                 defaultDate: moment().format('Y-MM-DD')
             });
 
-            await this.getCouponList(this.id).then(res => {
+            await this.getCouponList(this.id, false, moment().add(-1, 'months').format('Y-MM-DD'), moment().format('Y-MM-DD')).then(res => {
                 this.list = res.data.data;
             })
 
@@ -131,21 +180,25 @@
         methods: {
           getCouponList(id, used = null, start_date = null, end_date = null) {
               return new Promise(resolve => {
+                  let url = process.env.API_URL + '/api/member/coupon-list/' + this.id;
 
-                let url = process.env.API_URL + '/api/member/coupon-list/' + this.id;
+                  if (used === false || used === true) {
+                      url += '/' + used;
+                  }
 
-                if (used === false || used === true) {
-                    url += '/' + used;
-                }
+                  if (start_date && end_date) {
+                      url += '?' + 'start_date=' + moment(start_date).format('Y-MM-DD') + '&end_date=' + moment(end_date).format('Y-MM-DD');
+                  }
 
-                if (start_date && end_date) {
-                    url += '?' + 'start_date=' + moment(start_date).format('Y-MM-DD') + '&end_date=' + moment(end_date).format('Y-MM-DD');
-                }
-
-                this.$axios.get(url, this.config).then(res => {
-                    resolve(res);
-                });
+                  this.$axios.get(url, this.config).then(res => {
+                      resolve(res);
+                  });
               })
+          },
+          showInfo(id) {
+              this.info = find(this.list, {id: id});
+              console.log(this.info);
+              UIkit.modal('#modal-info').show();
           },
           toNow(type) {
               type === 'start' ? this.value.start_date.setDate(moment().format('Y-MM-DD')) : this.value.end_date.setDate(moment().format('Y-MM-DD'));
@@ -294,6 +347,10 @@
     width: 100%;
   }
 
+}
+
+.coupon-body {
+  padding: 0 15px;
 }
 
 </style>

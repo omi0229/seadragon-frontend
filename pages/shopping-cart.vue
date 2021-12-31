@@ -345,7 +345,7 @@
                       <div class="uk-width-3-4 uk-width-5-6@m uk-text-right uk-flex uk-flex-middle uk-flex-right">
                           <div>優惠劵：</div>
                           <div>
-                              <select class="uk-select uk-form-small discount" v-model="coupon">
+                              <select class="uk-select uk-form-small discount" v-model="coupon_record_id">
                                   <template v-if="coupon_list.length <= 0">
                                       <option value="" disabled v-if="coupon_list.length <= 0">無優惠劵項目</option>
                                   </template>
@@ -519,7 +519,7 @@
                         discount: 0,
                     },
                 },
-                coupon: '', // 優惠劵
+                coupon_record_id: '', // 優惠劵
                 select: {
                   counties: [],
                   cities: [],
@@ -589,11 +589,11 @@
             return this.discount.status ? this.shoppingCartPrice - this.discount.info.discount : this.shoppingCartPrice;
           },
           couponDiscount() {
-            if (!this.coupon) {
+            if (!this.coupon_record_id) {
               return 0;
             }
 
-            let info = find(this.coupon_list, {id: this.coupon});
+            let info = find(this.coupon_list, {id: this.coupon_record_id});
 
             return info.coupon.discount;
           },
@@ -845,7 +845,7 @@
               receiver: this.receiver,
               synchronize: this.value.synchronize,
               discount_codes: this.discount_codes,
-              coupon: this.coupon,
+              coupon_record_id: this.coupon_record_id,
             }
 
             this.ECPay = [];

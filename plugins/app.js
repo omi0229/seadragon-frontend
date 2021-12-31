@@ -84,3 +84,27 @@ export const modalMessage = () => {
     resolve(message);
   });
 }
+
+// 計算訂單總額
+export const setOrderTotal = (freight, list, discount_record = null, coupon_record = null) => {
+    let price = 0;
+    list.forEach(v => { price += v.price * v.count });
+
+    // 有使用優惠代碼
+    if (discount_record && discount_record.discount_codes) {
+        if (price >= discount_record.discount_codes.full_amount) {
+            price -= discount_record.discount_codes.discount;
+        }
+    }
+
+    // 有使用優惠劵
+    if (coupon_record && coupon_record.coupon) {
+        if (price >= coupon_record.coupon.full_amount) {
+            price -= coupon_record.coupon.discount;
+        }
+    }
+
+    price += freight;
+
+    return price.toLocaleString();
+}

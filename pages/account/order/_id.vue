@@ -15,7 +15,7 @@
                     <li><a href="#">購物明細</a></li>
                 </ul>
                 <ul class="uk-switcher uk-margin">
-                    <li>
+                    <li class="uk-active">
                         <h4 class="uk-text-bold uk-margin-remove-bottom">訂單資料</h4>
                         <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
                             <div class="uk-flex uk-flex-wrap uk-flex-middle">
@@ -24,12 +24,7 @@
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 付款方式 </div>
-                                <!-- v-if -->
-                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold" v-if="info.payment_status !== 0"> {{ paymentFormat(info.payment_method) }} </div>
-                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold pay" v-else>
-                                    <label class="uk-margin-remove-bottom"><input class="uk-radio" type="radio" value="1" v-model="payment_method"> 信用卡</label>
-                                    <label class="uk-margin-remove-bottom uk-margin-small-left"><input class="uk-radio" type="radio" value="2" v-model="payment_method"> ATM</label>
-                                </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ paymentFormat(info.payment_method) }} </div>
                             </div>
                             <!-- v-if -->
                             <div class="uk-flex uk-flex-wrap uk-flex-middle go-pay" v-if="info.payment_status === 0 && (payment_method === '1' || (payment_method === '2' && !info.vAccount))">
@@ -37,10 +32,10 @@
                                 <div class="uk-width-1-1 uk-width-5-6@m"> <button class="uk-button-small uk-button-primary" @click="confirm"> 前往付款 </button></div>
                             </div>
                             <!-- v-if -->
-                            <div class="uk-flex uk-flex-wrap uk-flex-middle go-pay" v-if="atmDelay">
-                                <div class="uk-width-1-1 uk-width-1-6@m"> </div>
-                                <div class="uk-width-1-1 uk-width-5-6@m"> <button class="uk-button-small uk-button-primary" @click="confirm"> 重新取號 </button></div>
-                            </div>
+<!--                            <div class="uk-flex uk-flex-wrap uk-flex-middle go-pay" v-if="atmDelay">-->
+<!--                                <div class="uk-width-1-1 uk-width-1-6@m"> </div>-->
+<!--                                <div class="uk-width-1-1 uk-width-5-6@m"> <button class="uk-button-small uk-button-primary" @click="confirm"> 重新取號 </button></div>-->
+<!--                            </div>-->
                             <!-- v-if -->
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top" v-if="info.payment_method === 2">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 取號狀態 </div>
@@ -69,7 +64,7 @@
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 訂單金額 </div>
-                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold uk-text-danger"> $ {{ orderTotal(info.freight, info.order_products, info.discount_record) }} </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold uk-text-danger"> $ {{ orderTotal(info.freight, info.order_products, info.discount_record, info.coupon_record) }} </div>
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 付款狀態 </div>
@@ -78,6 +73,10 @@
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 優惠代碼 </div>
                                 <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.discount_record ? info.discount_record.discount_codes.title : '無' }} </div>
+                            </div>
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top" v-if="info.coupon_record">
+                                <div class="uk-width-1-1 uk-width-1-6@m"> 優惠劵 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.coupon_record ? info.coupon_record.coupon.title : '無' }} </div>
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 處理狀態 </div>
@@ -184,11 +183,15 @@
                           <hr class="mobile">
                           <div class="uk-flex uk-flex-middle uk-flex-right">
                               <div class="uk-width-5-6 uk-text-right">小計：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(0, info.order_products, null).toLocaleString() }}</div>
+                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(0, info.order_products).toLocaleString() }}</div>
                           </div>
                           <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.discount_record">
                               <div class="uk-width-5-6 uk-text-right">優惠代碼折扣：</div>
                               <div class="uk-width-1-6 uk-text-right uk-text-danger">- $ {{ info.discount_record.discount_codes.discount.toLocaleString() }}</div>
+                          </div>
+                          <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.coupon_record">
+                              <div class="uk-width-5-6 uk-text-right">優惠劵折扣：</div>
+                              <div class="uk-width-1-6 uk-text-right uk-text-danger">- $ {{ info.coupon_record.coupon.discount.toLocaleString() }}</div>
                           </div>
                           <div class="uk-flex uk-flex-middle uk-flex-right">
                               <div class="uk-width-5-6 uk-text-right">運費<span v-if="info.freight_name">({{ info.freight_name }})</span>：</div>
@@ -196,7 +199,7 @@
                           </div>
                           <div class="uk-flex uk-flex-middle uk-flex-right">
                               <div class="uk-width-5-6 uk-text-right">本訂單需付款總金額：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(info.freight, info.order_products, info.discount_record).toLocaleString() }}</div>
+                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(info.freight, info.order_products, info.discount_record, info.coupon_record).toLocaleString() }}</div>
                           </div>
                     </li>
                 </ul>
@@ -228,7 +231,7 @@
 
 <script>
     import moment from 'moment';
-    import { init, loginAuth, notification } from '~/plugins/app.js';
+    import { loginAuth, setOrderTotal } from '~/plugins/app.js';
     import AccountMenu from '~/components/AccountMenu';
 
     export default {
@@ -261,6 +264,7 @@
                     order_status: null,
                     order_products: [],
                     discount_record: null,
+                    coupon_record: null,
                 },
                 payment_method: '1',
                 config: {
@@ -368,34 +372,24 @@
             }
           },
           orderTotal() {
-              return (freight, list, discount_record = null) => {
-                  let price = 0;
-                  list.forEach(v => { price += v.price * v.count });
-
-                  // 有使用優惠代碼
-                  if (discount_record && discount_record.discount_codes) {
-                      if (price >= discount_record.discount_codes.full_amount) {
-                          price -= discount_record.discount_codes.discount;
-                      }
-                  }
-
-                  price += freight;
-
-                  return price.toLocaleString();
+              return (freight, list, discount_record = null, coupon_record = null) => {
+                  return setOrderTotal(freight, list, discount_record, coupon_record);
               }
           },
-          atmDelay() {
-            if (this.info.payment_status !== 1 && this.payment_method === '2' && this.info.vAccount) {
-              let ExpireDate = this.info.ExpireDate + ' 23:59:59';
-              if (moment().valueOf() > moment(ExpireDate).valueOf()) {
-                return true;
-              }
-              return false;
-            }
-            return false;
-          },
+          // atmDelay() {
+          //   if (this.info.payment_status !== 1 && this.payment_method === '2' && this.info.vAccount) {
+          //     let ExpireDate = this.info.ExpireDate + ' 23:59:59';
+          //     if (moment().valueOf() > moment(ExpireDate).valueOf()) {
+          //       return true;
+          //     }
+          //     return false;
+          //   }
+          //   return false;
+          // },
         },
         async mounted() {
+          loginAuth(this.$store, true);
+
           let path_array = location.pathname.split('/');
           if (path_array.length !== 4) {
               location.href = '/';
@@ -423,12 +417,15 @@
           send() {
               UIkit.modal('#modal-confirm').hide();
               this.$store.commit('enabledLoading');
+
               let data = {
-                order_id: this.order_id,
-                list: this.info.order_products,
-                payment_method: this.payment_method,
-                discount_codes: this.info.discount_record && this.info.discount_record.discount_codes ? this.info.discount_record.discount_codes.fixed_name : null,
+                  order_id: this.order_id,
+                  list: this.info.order_products,
+                  payment_method: this.payment_method,
+                  discount_codes: this.info.discount_record && this.info.discount_record.discount_codes ? this.info.discount_record.discount_codes.fixed_name : null,
+                  coupon_record_id: this.info.coupon_record ? this.info.coupon_record.id : null,
               };
+
               this.$axios.post(process.env.API_URL + '/api/order/payment', data, this.config).then(res => {
                   if (res.data.status) {
                       for (const [key, value] of Object.entries(res.data.ecpay)) {

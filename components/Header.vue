@@ -1,5 +1,5 @@
 <template>
-    <div id="header">
+    <div id="header" class="uk-position-relative">
         <div class="web">
             <div class="top uk-flex uk-flex-between">
                 <div class="top-left uk-flex-1 uk-padding-small uk-flex uk-height-1-1 header-padding">
@@ -446,6 +446,7 @@
     }
 
     #header {
+        z-index: 100;
 
         .top {
             height: 25vmin;
