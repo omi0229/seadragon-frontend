@@ -113,6 +113,7 @@
                   <div class="uk-margin-small-top">
                       <label><input class="uk-radio" type="radio" value="1" v-model="receiver.payment_method"> 信用卡</label>
                       <label><input class="uk-radio" type="radio" value="2" v-model="receiver.payment_method"> ATM</label>
+                      <label><input class="uk-radio" type="radio" value="3" v-model="receiver.payment_method"> Line Pay</label>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">訂購人資訊</h4>
                   <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
@@ -379,6 +380,7 @@
                               <!-- v-if -->
                               <span v-if="receiver.payment_method === '1'">信用卡</span>
                               <span v-else-if="receiver.payment_method === '2'">ATM</span>
+                              <span v-else-if="receiver.payment_method === '3'">Line Pay</span>
                           </div>
                       </div>
                       <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
@@ -859,16 +861,24 @@
                 Cookies.set('user', JSON.stringify(user));
               }
 
-              for (const [key, value] of Object.entries(res.data.ecpay)) {
-                this.ECPay.push({
-                  key: key,
-                  value: value,
-                })
-              }
+              if (this.receiver.payment_method === '3') { // Line Pay 付款
+                if (res.data.linepay && res.data.linepay.returnCode === '0000') {
+                  location.href = res.data.linepay.info.paymentUrl.web;
+                } else {
+                  notification('Line Pay 付款失敗', 'danger')
+                }
+              } else { // 綠界
+                for (const [key, value] of Object.entries(res.data.ecpay)) {
+                  this.ECPay.push({
+                    key: key,
+                    value: value,
+                  })
+                }
 
-              setTimeout(() => {
-                document.getElementById('form').submit();
-              }, 1000)
+                setTimeout(() => {
+                  document.getElementById('form').submit();
+                }, 1000)
+              }
 
               if (res.data.status) {
                 this.removeAllProduct(localStorage.getItem('cart_id'));
