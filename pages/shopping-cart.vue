@@ -892,7 +892,7 @@
                   if (event === 'enter') {
                       this.$store.commit('enabledLoading');
                   }
-                  await this.$axios.post(process.env.API_URL + '/api/discount-code/search', { discount_codes: this.discount_codes }, this.config).then(res => {
+                  await this.$axios.post(process.env.API_URL + '/api/discount-code/search', { member_id: this.$store.state.member.id, discount_codes: this.discount_codes }, this.config).then(res => {
                       this.discount.status = res.data.status;
                       if(this.discount.status) {
                           this.discount.info.title = res.data.data.title;

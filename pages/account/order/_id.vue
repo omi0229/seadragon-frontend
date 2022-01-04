@@ -315,6 +315,8 @@
                   return '信用卡';
                 case 2:
                   return 'ATM';
+                case 3:
+                  return 'Line Pay';
                 default:
                   return '';
               }
