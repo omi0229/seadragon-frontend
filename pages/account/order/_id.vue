@@ -27,7 +27,7 @@
                                 <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ paymentFormat(info.payment_method) }} </div>
                             </div>
                             <!-- v-if -->
-                            <div class="uk-flex uk-flex-wrap uk-flex-middle go-pay" v-if="info.payment_status === 0 && (payment_method === '1' || (payment_method === '2' && !info.vAccount))">
+                            <div class="uk-flex uk-flex-wrap uk-flex-middle go-pay" v-if="info.payment_status === 0 && (payment_method === '1' || (payment_method === '2' && !info.vAccount) || payment_method === '3')">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> </div>
                                 <div class="uk-width-1-1 uk-width-5-6@m"> <button class="uk-button-small uk-button-primary" @click="confirm"> 前往付款 </button></div>
                             </div>
@@ -231,7 +231,7 @@
 
 <script>
     import moment from 'moment';
-    import { loginAuth, setOrderTotal } from '~/plugins/app.js';
+    import { loginAuth, setOrderTotal, notification } from '~/plugins/app.js';
     import AccountMenu from '~/components/AccountMenu';
 
     export default {
@@ -430,15 +430,23 @@
 
               this.$axios.post(process.env.API_URL + '/api/order/payment', data, this.config).then(res => {
                   if (res.data.status) {
-                      for (const [key, value] of Object.entries(res.data.ecpay)) {
-                          this.ECPay.push({
-                              key: key,
-                              value: value,
-                          })
+                      if (this.payment_method === '3') { // Line Pay 付款
+                          if (res.data.linepay && res.data.linepay.returnCode === '0000') {
+                              location.href = res.data.linepay.info.paymentUrl.web;
+                          } else {
+                              notification('Line Pay 付款失敗', 'danger')
+                          }
+                      } else {
+                          for (const [key, value] of Object.entries(res.data.ecpay)) {
+                              this.ECPay.push({
+                                  key: key,
+                                  value: value,
+                              })
+                          }
+                          setTimeout(() => {
+                              document.getElementById('form').submit();
+                          }, 1000)
                       }
-                      setTimeout(() => {
-                          document.getElementById('form').submit();
-                      }, 1000)
                   }
               });
           },
