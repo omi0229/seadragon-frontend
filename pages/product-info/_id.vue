@@ -78,6 +78,31 @@
                 <div class="content-title uk-margin-large-top uk-text-large">產品介紹</div>
                 <hr/>
                 <div class="content" v-html="info.product.content"></div>
+                <template v-if="relation_product.length > 0">
+                    <div class="content-title uk-margin-large-top uk-text-large">相關產品</div>
+                    <hr/>
+                    <div uk-slider="autoplay: true;autoplay-interval: 5000">
+                        <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1">
+                            <ul class="uk-slider-items uk-child-width-1-1 uk-child-width-1-3@s uk-child-width-1-4@m">
+                                <!-- v-for -->
+                                <li class="carousel" v-for="item in relation_product">
+                                    <div class="uk-card cursor" @click="toUrl('/product-info/', item.id)">
+                                        <div class="uk-card-media-top">
+                                            <img :src="item.web_img_path" alt="" class="web">
+                                            <img :src="item.mobile_img_path" alt="" class="mobile">
+                                        </div>
+                                        <div class="uk-padding-small">
+                                            {{item.product.title}}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slider-item="previous"></a>
+                            <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slider-item="next"></a>
+                        </div>
+                        <ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul>
+                    </div>
+                </template>
             </div>
         </div>
     </div>
@@ -103,6 +128,7 @@
                     count: 1,
                 },
                 price: null,
+                relation_product: [],
             }
         },
         asyncData({app, $axios, route, redirect}) {
@@ -111,7 +137,7 @@
                 redirect('/directory');
             }
 
-            return $axios.get(process.env.API_URL + '/api/product-info/' + id).then(res => {
+            return $axios.get(process.env.API_URL + '/api/product-info/' + id).then(async res => {
 
                 if (!res.data) {
                     redirect('/directory');
@@ -145,9 +171,15 @@
                     price.unit = res.data.product.specification[0].unit;
                 }
 
+                let relation_product = [];
+                await $axios.get(process.env.API_URL + '/api/put-on-random/' + res.data.directories_id + '/4?put_ons_id=' + id).then(random => {
+                    relation_product = random.data;
+                })
+
                 return {
                     info: res.data,
                     price,
+                    relation_product,
                 };
             })
         },
@@ -236,6 +268,9 @@
                         this.$store.commit('disabledLoading');
                     });
                 }
+            },
+            toUrl(url, id) {
+                location.href = url + id;
             },
         }
     }
@@ -328,6 +363,25 @@
         height: initial;
         aspect-ratio: 2 / 1;
       }
+    }
+  }
+
+  .carousel {
+    font-size: 20px;
+    color: #000;
+
+    > div {
+      padding: 15px;
+      @media (max-width: 960px) {
+        padding: 0;
+      }
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
     }
   }
 }
