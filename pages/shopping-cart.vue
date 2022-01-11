@@ -193,7 +193,7 @@
                           </div>
                       </div>
                       <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
-                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">E-mail</div>
+                          <div class="uk-width-1-1 uk-width-1-6@m form-margin">E-mail <span class="uk-text-danger">*</span></div>
                           <div class="uk-width-1-1 uk-width-1-3@m">
                               <input class="uk-input uk-form-small" maxlength="200" placeholder="請輸入E-mail" v-model="receiver.email" />
                           </div>
@@ -231,32 +231,6 @@
                           <p>2. 商品的寄送「海龍王」有最終的決定權，請務必詳細填寫。</p>
                       </div>
                   </div>
-<!--                  <h4 class="uk-text-bold uk-margin-remove-bottom">優惠代碼</h4>-->
-<!--                  <div class="uk-margin-small-top">-->
-<!--                      <div class="uk-flex uk-flex-middle">-->
-<!--                          <div class="uk-width-1-3 uk-width-1-6@m">使用優惠代碼</div>-->
-<!--                          <div class="uk-width-2-3 uk-width-1-3@m"><input class="uk-input uk-form-small" maxlength="13" placeholder="請輸入優惠代碼" v-model="discount_codes" @keyup.enter="discountMethod('enter')" @focusout="discountMethod('focusout')" /></div>-->
-<!--                      </div>-->
-<!--                      <div class="uk-margin-small-top" v-show="discount_codes">-->
-<!--                          優惠項目-->
-<!--                          <div class="uk-card uk-card-default uk-padding uk-margin-small-top">-->
-<!--                              <template v-if="discount.status === true">-->
-<!--                                  <div>優惠名稱：<span class="uk-text-bold">{{ discount.info.title }}</span></div>-->
-<!--                                  <div class="uk-margin-small-top">目前訂單總金額為：<span class="uk-text-danger">{{　shoppingCartPrice }}</span>元</div>-->
-<!--                                  <div>需滿 <span class="uk-text-danger">{{ discount.info.full_amount }}</span> 元可折扣</div>-->
-<!--                                  <template v-if="shoppingCartPrice >= discount.info.full_amount">-->
-<!--                                      <div>您已達到折扣條件，折扣完總金額為 <span class="uk-text-danger">{{ shoppingCartDiscountPrice }}</span> 元</div>-->
-<!--                                  </template>-->
-<!--                                  <template v-else>-->
-<!--                                      <div>未達到折扣條件，尚差 <span class="uk-text-danger">{{ discount.info.full_amount - shoppingCartPrice }}</span> 元</div>-->
-<!--                                  </template>-->
-<!--                              </template>-->
-<!--                              <template v-else>-->
-<!--                                  <span class="uk-text-danger">無此優惠代碼</span>-->
-<!--                              </template>-->
-<!--                          </div>-->
-<!--                      </div>-->
-<!--                  </div>-->
                   <h4 class="uk-text-bold uk-margin-remove-bottom">發票資訊</h4>
                   <div class="uk-margin-small-top">
                       <div>
@@ -805,6 +779,17 @@
 
             if (!this.receiver.name) {
               return {'status': false, 'message': '請輸入收件人姓名'}
+            }
+
+            if (!this.receiver.email) {
+              return {'status': false, 'message': '請輸入E-mail'}
+            }
+
+            if (this.receiver.email) {
+              let emailRegxp = /^([\w]+)(.[\w]+)*@([\w]+)(.[\w]{2,3}){1,2}$/;
+              if (!emailRegxp.test(this.receiver.email)) {
+                return {'status': false, 'message': 'E-mail格式錯誤'}
+              }
             }
 
             if (!(this.receiver.country && this.receiver.city && this.receiver.zipcode && this.receiver.address)) {
