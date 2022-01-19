@@ -9,7 +9,7 @@
             </ul>
 
             <div class="mobile">
-                <div class="uk-flex uk-flex-wrap uk-margin-bottom">
+                <div class="uk-flex uk-flex-middle uk-flex-wrap uk-margin-bottom">
                     <div class="directory" v-for="item in $store.state.directory_list">
                         <a :href="'/directory/' + item.id" class="uk-link-text uk-text-decoration-none">{{ item.name }}</a>
                     </div>
@@ -296,6 +296,7 @@
             font-size: 14px;
             padding: 0 10px;
             margin: 5px 0;
+            max-width: 50%;
 
             &:not(:last-child) {
                 border-right: 1px solid #666;
