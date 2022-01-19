@@ -8,6 +8,14 @@
                 <li><a :href="'/directory/' + info.id">{{ info.name }}</a></li>
             </ul>
 
+            <div class="mobile">
+                <div class="uk-flex uk-flex-wrap uk-margin-bottom">
+                    <div class="directory" v-for="item in $store.state.directory_list">
+                        <a :href="'/directory/' + item.id" class="uk-link-text uk-text-decoration-none">{{ item.name }}</a>
+                    </div>
+                </div>
+            </div>
+
             <div class="mobile uk-text-bold uk-text-center uk-margin-small-bottom">{{ info.name }}</div>
             <div class="mobile uk-margin-bottom">
                 <div class="uk-text-center uk-margin-small-bottom">
@@ -281,6 +289,16 @@
                     background-color: #338fb8;
                     padding: 12px;
                 }
+            }
+        }
+
+        .directory {
+            font-size: 14px;
+            padding: 0 10px;
+            margin: 5px 0;
+
+            &:not(:last-child) {
+                border-right: 1px solid #666;
             }
         }
     }
