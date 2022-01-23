@@ -8,15 +8,17 @@
                 <li><a :href="'/directory/' + info.id">{{ info.name }}</a></li>
             </ul>
 
-            <div class="mobile">
-                <div class="uk-flex uk-flex-middle uk-flex-wrap uk-margin-bottom">
-                    <div class="directory" v-for="item in $store.state.directory_list">
-                        <a :href="'/directory/' + item.id" class="uk-link-text uk-text-decoration-none">{{ item.name }}</a>
-                    </div>
+            <div class="mobile uk-text-bold uk-text-center uk-margin-small-bottom">
+                <button class="uk-button uk-button-link uk-text-bold" type="button">{{ directoriesView }} <span uk-icon="icon: chevron-down; ratio: 0.8"></span> </button>
+                <div uk-dropdown="pos: bottom">
+                    <ul class="uk-nav uk-dropdown-nav">
+                        <!-- v-for -->
+                        <li :class="{'uk-active': directories_id === item.id}" v-for="item in $store.state.directory_list">
+                            <a class="uk-text-small" :href="'/directory/' + item.id">{{ item.name }}</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-
-            <div class="mobile uk-text-bold uk-text-center uk-margin-small-bottom">{{ info.name }}</div>
             <div class="mobile uk-margin-bottom">
                 <div class="uk-text-center uk-margin-small-bottom">
                     <button class="uk-button uk-button-link uk-text-bold" type="button">{{sortName}} <span uk-icon="icon: chevron-down; ratio: 0.8"></span> </button>
@@ -169,6 +171,10 @@
             },
             pageCountName() {
                 let info = find(this.select.page_item_count, ['count', this.value.page_item_count]);
+                return info.name;
+            },
+            directoriesView() {
+                let info = find(this.$store.state.directory_list, ['id', this.directories_id]);
                 return info.name;
             },
         },
