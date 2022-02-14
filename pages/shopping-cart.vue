@@ -398,13 +398,15 @@
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">訂購注意事項</h4>
                   <div class="uk-card uk-card-default uk-padding uk-text-bold uk-margin-small-top notice">
-                      <p>非常感謝您訂購 海龍王 的商品！</p>
-                      <p>訂單送出後，我們將在24HR內簡訊送出一份完整的訂購需求。</p>
-                      <p>因商品流動問題，如遇缺貨，客服將主動與您電話聯繫。</p>
-                      <p>如有訂購問題聯繫官方 LINE: ( 待補 ) 或</p>
-                      <p>來電 ( 待補 )，竭誠為您服務。</p>
-                      <p>訂單內容：請於會員中心的訂單查詢。</p>
-                      <p class="uk-margin-remove-bottom">※海龍王 仍保有決定是否接受訂單及出貨與否之權利。</p>
+                      <p>非常感謝您訂購海龍王水產市集的商品!</p>
+                      <p>訂單送出成立後，系統會於24小時內進行商品庫存確認，</p>
+                      <p>如遇缺貨，客服人員會主動與您電話聯繫。</p>
+                      <br />
+                      <p>如有商品或訂單相關問題，</p>
+                      <p>請加入官方<a href="https://lin.ee/omPdiFU" target="_blank">LINE@</a>，或搜尋ID:@560orams(務必輸入@)，聯繫客服為您處理。</p>
+                      <p>我的帳戶(會員中心)>訂單記錄(查看訂單)，查詢商品資訊、訂單消費紀錄、發票開立狀況、</p>
+                      <p>付款資訊及配送資訊及申請訂單取消狀態，日期搜尋最大區間以六個月內為限。</p>
+                      <p class="uk-margin-remove-bottom">※海龍王水產市集保有決定是否接受訂單及出貨與否之權利。</p>
                   </div>
               </div>
               <div class="uk-text-right uk-margin-top" v-if="list.length > 0">
