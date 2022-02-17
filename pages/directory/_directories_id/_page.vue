@@ -320,13 +320,7 @@
         }
 
         img {
-            height: 35vmin;
-            width: 100%;
-            object-fit: cover;
-
-            @media (max-width: 960px) {
-                height: 60vmin;
-            }
+          @include product-image;
         }
 
         .padding {

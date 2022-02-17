@@ -281,6 +281,10 @@
 .container {
   padding: 25px 0;
 
+  @media (min-width: 1200px) {
+    max-width: 70%;
+  }
+
   @media (max-width: 960px) {
     padding: 25px 15px;
   }
@@ -342,14 +346,12 @@
   }
 
   img {
-    height: 60vmin;
-    width: 100%;
-    object-fit: cover;
+    @include product-image;
   }
 
   .thumbnail {
     img {
-      height: 80px;
+      @include product-image;
     }
   }
 
@@ -360,8 +362,7 @@
 
     img {
       @media (max-width: 960px) {
-        height: initial;
-        aspect-ratio: 2 / 1;
+        @include product-image;
       }
     }
   }
@@ -378,10 +379,7 @@
     }
 
     img {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 3 / 2;
-      object-fit: cover;
+      @include product-image;
     }
   }
 }
