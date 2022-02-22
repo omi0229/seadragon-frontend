@@ -13,9 +13,10 @@
                   <h2 class="uk-modal-title uk-margin-top">會員註冊</h2>
               </div>
               <div>
-                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
+                  <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle uk-position-relative">
                       <label class="uk-text-small uk-width-1-1 uk-width-1-4@m" for="register_phone">行動電話 <span class="uk-text-bold uk-text-danger">*</span></label>
-                      <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入行動電話 ( 帳號 )" v-model="form.cellphone">
+                      <input type="text" id="register_phone" maxlength="10" class="uk-input uk-form-width-medium uk-form-small uk-width-1-1 uk-width-3-4@m" placeholder="請輸入行動電話 ( 帳號 )" @keyup.enter="authCellphoneMethod('enter')" @focusout="authCellphoneMethod('focusout')" v-model="form.cellphone">
+                      <div class="uk-text-small uk-text-danger uk-position-small uk-position-center-right" v-show="is_register"><span uk-icon="icon: warning; ratio: 0.8"></span>此號碼已有註冊記錄</div>
                   </div>
                   <div class="uk-margin uk-flex uk-flex-wrap uk-flex-middle">
                       <label class="uk-text-small uk-width-1-4" for="register_password">密碼 <span class="uk-text-bold uk-text-danger">*</span></label>
@@ -82,7 +83,7 @@
                   </div>
               </div>
               <div class="uk-text-right submit-button">
-                  <button class="uk-button uk-button-small uk-button-primary uk-padding uk-padding-remove-vertical" type="button" @click="register">註冊</button>
+                  <button class="uk-button uk-button-small uk-button-primary uk-padding uk-padding-remove-vertical" type="button" :disabled="is_register" @click="register">註冊</button>
               </div>
           </div>
 
@@ -123,7 +124,7 @@
 
 <script>
     import { filter, find } from 'lodash';
-    import { passwordRule, emailRule, randomNum } from '~/plugins/app.js';
+    import { passwordRule, emailRule, randomNum, notification } from '~/plugins/app.js';
     import twzipcode from 'twzipcode-data'
     import Captcha from '~/components/Captcha';
     import RegisterMenu from '~/components/RegisterMenu';
@@ -163,6 +164,7 @@
                 seconds: 120,
                 sms_code: '',
                 set_interval: null,
+                is_register: false,
                 origin_zipcode,
 
                 test_code: '',
@@ -198,6 +200,14 @@
             for (let i = 0; i < l; i++) {
               this.captcha.answers += randomNum(0, 9);
             }
+          },
+          authCellphoneMethod() {
+            return new Promise(resolve => {
+              this.$axios.get(process.env.API_URL + '/api/member/auth-register-cellphone/' + this.form.cellphone).then(res => {
+                this.is_register = res.data ? false : true;
+                resolve();
+              })
+            })
           },
           auth() {
             if (!this.form.cellphone) {
@@ -238,16 +248,17 @@
 
             return { 'status': true }
           },
-          register() {
+          async register() {
             UIkit.notification.closeAll();
 
-            if (!this.auth().status) {
-              UIkit.notification({
-                message: '<span uk-icon=\'icon: close;ratio: 1.5\'></span> ' + this.auth().message + '',
-                status: 'danger',
-                timeout: 1000
-              })
+            await this.authCellphoneMethod();
+            if (this.is_register) {
+              notification('此號碼已有註冊記錄', 'danger')
+              return false;
+            }
 
+            if (!this.auth().status) {
+              notification(this.auth().message, 'danger');
               return false;
             }
 

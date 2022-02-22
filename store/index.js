@@ -26,6 +26,9 @@ export const state = () => ({
 import Cookies from 'js-cookie';
 
 export const mutations = {
+  stateLoading(state) {
+    state.loading = true;
+  },
   enabledLoading(state) {
     document.body.style.overflowY = 'hidden';
     state.loading = true;
