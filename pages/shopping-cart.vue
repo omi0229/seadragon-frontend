@@ -93,9 +93,43 @@
                               </tr>
                           </tbody>
                       </table>
-                      <div class="uk-margin-top">
-                        共 <span class="uk-text-bold uk-text-danger">{{ shoppingCartProduct }}</span> 項商品，數量 <span class="uk-text-bold uk-text-danger">{{ shoppingCartCount }}</span> 個，本次線上購物訂單金額 <span class="uk-text-bold uk-text-danger">{{ shoppingCartPrice }}</span> 元
+                      <div class="uk-flex uk-flex-middle uk-flex-right uk-margin-small-top">
+                          <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">小計：</div>
+                          <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger">$ {{ shoppingCartPrice.toLocaleString() }}</div>
                       </div>
+                      <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
+                          <div class="uk-width-3-4 uk-width-5-6@m uk-text-right"><input class="uk-input uk-form-small discount" maxlength="13" placeholder="請輸入優惠代碼" v-model="discount_codes" @keyup.enter="discountMethod('enter')" @focusout="discountMethod('focusout')" /></div>
+                          <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> - $ {{ discount.status && shoppingCartPrice >= discount.info.full_amount ? discount.info.discount.toLocaleString() : 0}}</div>
+                      </div>
+                      <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
+                          <div class="uk-width-3-4 uk-width-5-6@m uk-text-right uk-flex uk-flex-middle uk-flex-right">
+                              <div>優惠劵：</div>
+                              <div>
+                                  <select class="uk-select uk-form-small discount" v-model="coupon_record_id">
+                                      <template v-if="coupon_list.length <= 0">
+                                          <option value="" disabled v-if="coupon_list.length <= 0">無優惠劵項目</option>
+                                      </template>
+                                      <template v-else>
+                                          <option value="">請選擇優惠劵</option>
+                                          <!-- v-for -->
+                                          <option :value="item.id" v-for="item in coupon_list">{{ item.coupon.title }}</option>
+                                      </template>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> - $ {{ couponDiscount }}</div>
+                      </div>
+                      <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
+                          <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">運費<span v-if="receiver.freight_name">({{receiver.freight_name}})</span>：</div>
+                          <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> $ {{ freight }}</div>
+                      </div>
+                      <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
+                          <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">本訂單需付款總金額：</div>
+                          <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger">$ {{ allTotal }}</div>
+                      </div>
+<!--                      <div class="uk-margin-top">-->
+<!--                        共 <span class="uk-text-bold uk-text-danger">{{ shoppingCartProduct }}</span> 項商品，數量 <span class="uk-text-bold uk-text-danger">{{ shoppingCartCount }}</span> 個，本次線上購物訂單金額 <span class="uk-text-bold uk-text-danger">{{ shoppingCartPrice }}</span> 元-->
+<!--                      </div>-->
                   </template>
                   <template v-else>
                       <div class="uk-text-center">
@@ -312,25 +346,15 @@
                       <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">小計：</div>
                       <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger">$ {{ shoppingCartPrice.toLocaleString() }}</div>
                   </div>
-                  <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
-                      <div class="uk-width-3-4 uk-width-5-6@m uk-text-right"><input class="uk-input uk-form-small discount" maxlength="13" placeholder="請輸入優惠代碼" v-model="discount_codes" @keyup.enter="discountMethod('enter')" @focusout="discountMethod('focusout')" /></div>
+                  <!-- v-if -->
+                  <div class="uk-flex uk-flex-middle uk-flex-right calculate-list" v-if="discount_codes && discount.status && shoppingCartPrice >= discount.info.full_amount">
+                      <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">優惠代碼({{ discount_codes }})：</div>
                       <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> - $ {{ discount.status && shoppingCartPrice >= discount.info.full_amount ? discount.info.discount.toLocaleString() : 0}}</div>
                   </div>
-                  <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
+                  <!-- v-if -->
+                  <div class="uk-flex uk-flex-middle uk-flex-right calculate-list" v-if="coupon_record_id && couponDiscount">
                       <div class="uk-width-3-4 uk-width-5-6@m uk-text-right uk-flex uk-flex-middle uk-flex-right">
-                          <div>優惠劵：</div>
-                          <div>
-                              <select class="uk-select uk-form-small discount" v-model="coupon_record_id">
-                                  <template v-if="coupon_list.length <= 0">
-                                      <option value="" disabled v-if="coupon_list.length <= 0">無優惠劵項目</option>
-                                  </template>
-                                  <template v-else>
-                                      <option value="">請選擇優惠劵</option>
-                                      <!-- v-for -->
-                                      <option :value="item.id" v-for="item in coupon_list">{{ item.coupon.title }}</option>
-                                  </template>
-                              </select>
-                          </div>
+                          <div>優惠劵({{ CouponTitle(coupon_record_id) }})：</div>
                       </div>
                       <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> - $ {{ couponDiscount }}</div>
                   </div>
@@ -450,6 +474,10 @@
     export default {
         layout: 'default',
         middleware: 'authenticated',
+        async asyncData({store}) {
+          store.commit('stateLoading');
+          return {};
+        },
         data() {
             let origin_zipcode = twzipcode();
             return {
@@ -512,6 +540,7 @@
                 ECPay: [],
                 freight_list: [],
                 coupon_list: [],
+                origin_coupon_list: [],
                 url: {
                     payment: '',
                 },
@@ -527,6 +556,31 @@
             this.receiver.city = new_data ? this.form.city : '';
             this.receiver.zipcode = new_data ? this.form.zipcode : '';
             this.receiver.address = new_data ? this.form.address : '';
+          },
+          'list': {
+            handler(new_data, old_data) {
+              this.coupon_list = filter(this.origin_coupon_list, v => {
+                if (v.coupon.product_specifications.length > 0) {
+                  let specifications_list = map(new_data, v => { return v.specifications_id })
+                  let filter_list = filter(v.coupon.product_specifications, s => {
+                    return specifications_list.includes(s.id);
+                  })
+
+                  if (this.shoppingCartPrice > v.coupon.full_amount && filter_list.length > 0) {
+                    return true;
+                  }
+                } else {
+                  if (this.shoppingCartPrice > v.coupon.full_amount) {
+                    return true;
+                  }
+                }
+              });
+
+              if (!find(this.coupon_list, {id: this.coupon_record_id})) {
+                this.coupon_record_id = '';
+              }
+            },
+            deep: true
           },
         },
         computed: {
@@ -575,6 +629,16 @@
 
             return info.coupon.discount;
           },
+          CouponTitle() {
+            return coupon_record_id => {
+              if (coupon_record_id) {
+                let info = find(this.coupon_list, {id: this.coupon_record_id});
+                return info.coupon.title;
+              }
+
+              return '';
+            }
+          },
           allTotal() {
             if (this.discount.status && this.shoppingCartPrice >= this.discount.info.full_amount) {
               return (this.shoppingCartDiscountPrice - this.couponDiscount + this.receiver.freight).toLocaleString();
@@ -598,6 +662,11 @@
           await this.getFreightList().then(res => {
             this.freight_list = res.data.data
           })
+
+          // 取得這次購物可使用的優惠劵清單
+          await this.getCouponUse(this.$store.state.member.id, null, null).then(res => {
+            this.coupon_list = this.origin_coupon_list = res.data.data;
+          });
 
           await this.getShoppingCart().then(res => {
             this.list = res.data.data;
@@ -707,18 +776,19 @@
                 let inventory_status = this.__inventorySum(res);
                 inventory_status ? this.step = 2 : notification('庫存不足', 'danger');
 
-                if (this.step === 2) {
+                // if (this.step === 2) {
 
-                  // 取得這次購物可使用的優惠劵清單
-                  await this.getCouponUse(this.$store.state.member.id, this.shoppingCartPrice, map(this.list, v => { return v.specifications_id })).then(res => {
-                    this.coupon_list = res.data.data;
-                    this.$store.commit('disabledLoading');
-                    UIkit.scroll().scrollTo('#header');
-                  });
+                  // // 取得這次購物可使用的優惠劵清單
+                  // await this.getCouponUse(this.$store.state.member.id, this.shoppingCartPrice, map(this.list, v => { return v.specifications_id })).then(res => {
+                  //   this.coupon_list = res.data.data;
+                  //   this.$store.commit('disabledLoading');
+                  //   UIkit.scroll().scrollTo('#header');
+                  // });
 
-                } else {
+                // } else {
                   this.$store.commit('disabledLoading');
-                }
+                  UIkit.scroll().scrollTo('#header');
+                // }
               })
             } else if (this.step === 2) {
               this.$store.commit('disabledLoading');
@@ -894,6 +964,10 @@
                           this.$store.commit('disabledLoading');
                       }
                   });
+              } else {
+                this.discount.info.title = '';
+                this.discount.info.full_amount = 0;
+                this.discount.info.discount = 0;
               }
           },
         },
@@ -936,13 +1010,7 @@ label {
 
   tr {
     img {
-      width: 100%;
-      height: 100px;
-      object-fit: cover;
-
-      @media (max-width: 960px) {
-        height: auto;
-      }
+      @include product-image;
     }
   }
 
