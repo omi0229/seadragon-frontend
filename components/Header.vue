@@ -122,7 +122,7 @@
                             </div>
                         </template>
                         <div class="item">
-                            <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-news; animation: uk-animation-fade">最新消息</button>
+                            <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-news; animation: uk-animation-fade" @click="menu('news')">最新消息</button>
                             <div id="toggle-news" class="uk-padding-small offcanvas-toggle" hidden>
                                 <!-- v-for -->
                                 <div v-for="item in $store.state.news_types_list">
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-cooking; animation: uk-animation-fade">烹飪教學</button>
+                            <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-cooking; animation: uk-animation-fade" @click="menu('cooking')">烹飪教學</button>
                             <div id="toggle-cooking" class="uk-padding-small offcanvas-toggle" hidden>
                                 <!-- v-for -->
                                 <div v-for="item in $store.state.cooking_types_list">
@@ -143,7 +143,7 @@
                             <a href="/about" class="uk-link-heading">關於海龍王</a>
                         </div>
                         <div class="item">
-                            <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-directory; animation: uk-animation-fade">線上購物</button>
+                            <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-directory; animation: uk-animation-fade" @click="menu('directory')">線上購物</button>
                             <div id="toggle-directory" class="uk-padding-small offcanvas-toggle" hidden>
                                 <!-- v-for -->
                                 <div v-for="item in $store.state.directory_list">
@@ -264,8 +264,9 @@
 </template>
 
 <script>
+  import moment from 'moment';
   import Cookies from 'js-cookie';
-  import { getCartCount, randomNum, notification, loginAuth } from '~/plugins/app.js';
+  import { getCartCount, randomNum, notification, loginAuth, getMenu } from '~/plugins/app.js';
   import Captcha from '~/components/Captcha';
 
   export default {
@@ -289,7 +290,7 @@
       this.refreshCode();
 
       if (!localStorage.getItem('cart_id')) {
-        this.$axios(process.env.API_URL + '/api/cart/get-cart-id').then(res => {
+        this.$axios.get(process.env.API_URL + '/api/cart/get-cart-id').then(res => {
           localStorage.setItem('cart_id', res.data);
         });
       }
@@ -423,6 +424,42 @@
 
         sessionStorage.setItem('keywords', this.keywords);
         location.href = '/search/' + this.keywords;
+      },
+      menu(type) {
+        let list = localStorage.getItem(type + '_list');
+
+        let time = localStorage.getItem(type + '_time');
+        let now, cache;
+        if (time) {
+          now = moment().valueOf();
+          cache = moment(Number(time)).add(15, 'minutes').valueOf();
+        }
+
+        if (!list || !time || (time && now > cache)) {
+          getMenu(type).then(res => {
+            this.setMenu(type, res.data, true);
+          })
+        } else {
+          this.setMenu(type, JSON.parse(list));
+        }
+      },
+      setMenu(type, data, memory = false) {
+        if (memory) {
+          localStorage.setItem(type + '_list', JSON.stringify(data));
+          localStorage.setItem(type + '_time', moment().valueOf());
+        }
+
+        switch (type) {
+          case 'news':
+            this.$store.dispatch('setNewsTypesList', data);
+            break;
+          case 'cooking':
+            this.$store.dispatch('setCookingTypesList', data);
+            break;
+          case 'directory':
+            this.$store.dispatch('setDirectoryList', data);
+            break;
+        }
       },
     }
   }

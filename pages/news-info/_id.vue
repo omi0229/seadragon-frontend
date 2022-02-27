@@ -27,6 +27,7 @@
     import moment from 'moment';
     import { init } from '~/plugins/app.js';
     import NewsMenu from '~/components/NewsMenu';
+    import { getMenu } from '~/plugins/app.js';
 
     export default {
         components: { NewsMenu },
@@ -40,11 +41,15 @@
                 },
             }
         },
-        asyncData({app, $axios, store, route, redirect}) {
+        async asyncData({app, $axios, store, route, redirect}) {
             let id = route.params.id;
             if (!id) {
                 redirect('/news');
             }
+
+            await getMenu('news').then(res => {
+                store.dispatch('setNewsTypesList', res.data);
+            })
 
             return $axios.get(process.env.API_URL + '/api/news-info/' + id).then(res => {
                 app.head.title = '最新消息：' + res.data.title;

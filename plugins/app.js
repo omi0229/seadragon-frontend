@@ -108,3 +108,12 @@ export const setOrderTotal = (freight, list, discount_record = null, coupon_reco
 
     return price.toLocaleString();
 }
+
+// 取得各類型menu
+export const getMenu = type => {
+  return new Promise(resolve => {
+    axios.get(process.env.API_URL + '/api/menu/' + type).then(res => {
+      resolve(res);
+    })
+  })
+}

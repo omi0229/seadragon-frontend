@@ -37,8 +37,8 @@
     import { head, find } from 'lodash';
     import moment from 'moment';
     import Pagination from '../../../components/Pagination';
-    import { init, domInit } from '~/plugins/app.js';
     import NewsMenu from '~/components/NewsMenu';
+    import { getMenu } from '~/plugins/app.js';
 
     export default {
         components: {Pagination, NewsMenu},
@@ -62,6 +62,10 @@
                 let news_type = head(store.state.news_types_list);
                 news_types_id = news_type ? news_type.id : '';
             }
+
+            await getMenu('news').then(res => {
+                store.dispatch('setNewsTypesList', res.data);
+            })
 
             let api = process.env.API_URL + '/api/news/' + news_types_id;
 

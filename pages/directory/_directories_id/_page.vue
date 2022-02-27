@@ -105,6 +105,7 @@
     import { head, find } from 'lodash';
     import Pagination from "../../../components/Pagination";
     import DirectoryMenu from '~/components/DirectoryMenu';
+    import { getMenu } from '~/plugins/app.js';
 
     export default {
         components: {Pagination, DirectoryMenu},
@@ -143,12 +144,16 @@
                 }
             }
         },
-        asyncData({$axios, store, route}) {
+        async asyncData({$axios, store, route}) {
             let directories_id = route.params.directories_id;
             if(!directories_id) {
                 let directory = head(store.state.directory_list);
                 directories_id = directory ? directory.id : '';
             }
+
+            await getMenu('directory').then(res => {
+                store.dispatch('setDirectoryList', res.data);
+            })
 
             let origin_api = process.env.API_URL + '/api/product/' + directories_id;
             let api = route.params.page ? origin_api + '/' + route.params.page : origin_api;

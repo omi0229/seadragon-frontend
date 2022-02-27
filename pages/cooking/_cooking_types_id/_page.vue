@@ -48,9 +48,9 @@
 <script>
     import { head, find } from 'lodash';
     import moment from 'moment';
-    import { init } from '~/plugins/app.js';
     import Pagination from '../../../components/Pagination';
     import CookingMenu from '~/components/CookingMenu';
+    import { getMenu } from '~/plugins/app.js';
 
     export default {
         components: {Pagination, CookingMenu},
@@ -68,12 +68,16 @@
                 page_item_count: 10,
             }
         },
-        asyncData({$axios, store, route}) {
+        async asyncData({$axios, store, route}) {
             let cooking_types_id = route.params.cooking_types_id;
             if(!cooking_types_id) {
                 let cooking_type = head(store.state.cooking_types_list);
                 cooking_types_id = cooking_type ? cooking_type.id : '';
             }
+
+            await getMenu('cooking').then(res => {
+                store.dispatch('setCookingTypesList', res.data);
+            })
 
             let api = process.env.API_URL + '/api/cooking/' + cooking_types_id;
 

@@ -119,12 +119,6 @@ export const actions = {
       commit('clearLoginMember');
     }
 
-    await axios.get(process.env.API_URL + '/api/menu').then(res => {
-      dispatch('setNewsTypesList', res.data.news_types_list);
-      dispatch('setCookingTypesList', res.data.cooking_types_list);
-      dispatch('setDirectoryList', res.data.directory_list);
-    });
-
     await axios.get(process.env.API_URL + '/api/config').then(res => {
         let config = {
           basic_title: '',

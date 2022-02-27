@@ -112,7 +112,7 @@
 "use strict";
     import { find } from 'lodash';
     import moment from 'moment';
-    import { init, getCartCount } from '~/plugins/app.js';
+    import { getCartCount, getMenu } from '~/plugins/app.js';
     import DirectoryMenu from '~/components/DirectoryMenu';
     import { Fancybox, Carousel, Panzoom } from "@fancyapps/ui";
     import "@fancyapps/ui/dist/fancybox.css";
@@ -131,11 +131,15 @@
                 relation_product: [],
             }
         },
-        asyncData({app, $axios, route, redirect}) {
+        async asyncData({app, $axios, store, route, redirect}) {
             let id = route.params.id;
             if (!id) {
                 redirect('/directory');
             }
+
+            await getMenu('directory').then(res => {
+                store.dispatch('setDirectoryList', res.data);
+            })
 
             return $axios.get(process.env.API_URL + '/api/product-info/' + id).then(async res => {
 
