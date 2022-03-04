@@ -7,7 +7,6 @@
               <li><a href="#">搜尋結果</a></li>
               <li><a href="#">烹飪教學</a></li>
           </ul>
-
           <div class="uk-flex uk-margin-auto uk-flex-wrap" v-if="result.cooking.list.length > 0">
                 <!-- v-for -->
                 <div id="cooking_list" class="uk-width-1-1 uk-width-1-3@m uk-margin-small-top" v-for="item in result.cooking.list">
@@ -36,7 +35,6 @@
                         </template>
                     </div>
                 </div>
-
                 <Pagination id="cooking_end" :all_count="result.cooking.all_count" :page_count="result.cooking.page_count" :page_item_count="result.cooking.page_item_count" @get-data="getCookingData"></Pagination>
           </div>
           <div class="uk-margin-auto not-find" v-else>
@@ -172,15 +170,6 @@ export default {
     flex-basis: 100%;
     margin-left: 0;
     margin-right: 0;
-  }
-
-  .not-find {
-    padding: 20px 0;
-    color: #c30d23;
-    font-size: 14pt;
-    font-weight: 600;
-    font-family: 'Noto Sans TC', '微軟正黑體', 'Microsoft JhengHei', sans-serif;
-    text-align: center;
   }
 
   .content {

@@ -144,7 +144,7 @@
                 }
             }
         },
-        async asyncData({$axios, store, route}) {
+        async asyncData({$axios, store, route, redirect}) {
             let directories_id = route.params.directories_id;
             if(!directories_id) {
                 let directory = head(store.state.directory_list);
@@ -154,6 +154,12 @@
             await getMenu('directory').then(res => {
                 store.dispatch('setDirectoryList', res.data);
             })
+
+            let type = find(store.state.directory_list, ['id', directories_id]);
+            if (!type) {
+                redirect('/');
+                return false;
+            }
 
             let origin_api = process.env.API_URL + '/api/product/' + directories_id;
             let api = route.params.page ? origin_api + '/' + route.params.page : origin_api;
@@ -180,7 +186,7 @@
             },
             directoriesView() {
                 let info = find(this.$store.state.directory_list, ['id', this.directories_id]);
-                return info.name;
+                return info ? info.name : '';
             },
         },
         mounted() {
@@ -193,8 +199,6 @@
                 this.info.id = type.id ? type.id : null;
                 this.info.name = type.name ? type.name : null;
                 this.$store.commit('disabledLoading');
-            } else {
-                location.href = '/';
             }
         },
         methods: {

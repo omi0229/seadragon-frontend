@@ -7,8 +7,8 @@
             <li><a href="/cooking">烹飪教學</a></li>
             <li><a :href="'/cooking/' + info.id">{{ info.name }}</a></li>
         </ul>
-
-        <div>
+        <!-- v-if -->
+        <div v-if="list.length > 0">
             <div class="uk-flex uk-flex-wrap">
                 <!-- v-for -->
                 <div class="uk-width-1-1 uk-width-1-3@m uk-margin-small-top" v-for="item in list">
@@ -38,8 +38,10 @@
                     </div>
                 </div>
             </div>
-
             <Pagination ref="pagination" :all_count="all_count" :page_count="page_count" :page_item_count="page_item_count" @get-data="getData"></Pagination>
+        </div>
+        <div class="uk-margin-auto not-find" v-else>
+            此分類目前無教學!!
         </div>
     </div>
     </div>
@@ -68,7 +70,7 @@
                 page_item_count: 10,
             }
         },
-        async asyncData({$axios, store, route}) {
+        async asyncData({$axios, store, route, redirect}) {
             let cooking_types_id = route.params.cooking_types_id;
             if(!cooking_types_id) {
                 let cooking_type = head(store.state.cooking_types_list);
@@ -79,18 +81,30 @@
                 store.dispatch('setCookingTypesList', res.data);
             })
 
+            let type = find(store.state.cooking_types_list, ['id', cooking_types_id]);
+            if (!type) {
+                redirect('/');
+                return false;
+            }
+
             let api = process.env.API_URL + '/api/cooking/' + cooking_types_id;
 
             api += route.params.page ? '/' + route.params.page : '';
 
             return $axios.get(api).then(res => {
-                return {
-                    cooking_types_id: cooking_types_id,
-                    list: res.data.list,
-                    all_count: res.data.all_count,
-                    page_count: res.data.page_count,
-                    page_item_count: Number(res.data.page_item_count),
-                };
+
+                if (!res.data) {
+                    redirect('/');
+                    return false;
+                } else {
+                  return {
+                      cooking_types_id: cooking_types_id,
+                      list: res.data.list,
+                      all_count: res.data.all_count,
+                      page_count: res.data.page_count,
+                      page_item_count: Number(res.data.page_item_count),
+                  };
+                }
             })
         },
         computed: {
