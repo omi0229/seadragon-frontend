@@ -432,7 +432,7 @@
         let now, cache;
         if (time) {
           now = moment().valueOf();
-          cache = moment(Number(time)).add(15, 'minutes').valueOf();
+          cache = moment(Number(time)).add(3, 'minutes').valueOf();
         }
 
         if (!list || !time || (time && now > cache)) {
