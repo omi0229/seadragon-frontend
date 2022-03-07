@@ -44,6 +44,7 @@
                               <th class="uk-text-center">付款狀態</th>
                               <th class="uk-text-center">處理狀態</th>
                               <th></th>
+                              <th></th>
                           </tr>
                           </thead>
                           <tbody>
@@ -56,6 +57,7 @@
                               <td class="uk-text-center uk-text-bold" :class="item.payment_status === 1 ? 'uk-text-primary' : 'uk-text-danger'">{{ paymentStatusFormat(item.payment_status) }}</td>
                               <td class="uk-text-center uk-text-bold" :class="orderStatusColor(item.order_status)">{{ orderStatusFormat(item.order_status) }}</td>
                               <td class="uk-text-center"> <button class="uk-button-primary" @click="orderContent(item.id)">內容</button> </td>
+                              <td class="uk-text-center"> <button class="uk-button-primary" @click="buyAgain(item.id)">再次購買</button> </td>
                           </tr>
                           </tbody>
                       </table>
@@ -75,7 +77,10 @@
                                       <div>訂單金額：{{ orderTotal(item.freight, item.order_products, item.discount_record, item.coupon_record) }}</div>
                                       <div>付款狀態：<span :class="item.payment_status === 1 ? 'uk-text-primary' : 'uk-text-danger'">{{ paymentStatusFormat(item.payment_status) }}</span></div>
                                       <div>處理狀態：<span :class="orderStatusColor(item.order_status)">{{ orderStatusFormat(item.order_status) }}</span></div>
-                                      <div class="uk-text-right"> <button class="uk-button-primary" @click="orderContent(item.id)">內容</button> </div>
+                                      <div class="uk-margin-top uk-text-right">
+                                          <button class="uk-button-primary" @click="buyAgain(item.id)">再次購買</button>
+                                          <button class="uk-button-primary" @click="orderContent(item.id)">內容</button>
+                                      </div>
                                   </div>
                               </li>
                           </ul>
@@ -97,7 +102,7 @@
 
 <script>
     import moment from 'moment';
-    import { loginAuth, notification, setOrderTotal } from '~/plugins/app.js';
+    import { loginAuth, notification, setOrderTotal, getCartCount } from '~/plugins/app.js';
     import AccountMenu from '~/components/AccountMenu';
 
     export default {
@@ -250,6 +255,15 @@
           },
           orderContent(order_id) {
               location.href = '/account/order/' + order_id;
+          },
+          buyAgain(order_id) {
+              let url = process.env.API_URL + '/api/cart/buy-again';
+              this.$axios.post(url, { order_id, cart_id: localStorage.getItem('cart_id'), }, this.config).then(res => {
+                  if (res.data.status) {
+                      getCartCount(this.$store, localStorage.getItem('cart_id'));
+                      UIkit.notification({message: '<span uk-icon=\'icon: check;ratio: 1.5\'></span> 購物車已更新！(已下架商品無法加入購物車)', status: 'success', timeout: 1000})
+                  }
+              });
           },
         },
     }
