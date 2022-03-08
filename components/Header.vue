@@ -286,6 +286,11 @@
         keywords: '',
       }
     },
+    watch: {
+      'keywords'(new_data, old_data) {
+        this.keywords = new_data.replace('/', '').replace('\\', '').trim();
+      },
+    },
     mounted() {
       this.refreshCode();
 
