@@ -88,7 +88,7 @@
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 配送方式 </div>
-                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> 宅配到府 </div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.delivery_method !== 0 ? '宅配到府' : '自取'}}</div>
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m"> 收件者 </div>
@@ -193,7 +193,7 @@
                               <div class="uk-width-5-6 uk-text-right">優惠劵折扣：</div>
                               <div class="uk-width-1-6 uk-text-right uk-text-danger">- $ {{ info.coupon_record.coupon.discount.toLocaleString() }}</div>
                           </div>
-                          <div class="uk-flex uk-flex-middle uk-flex-right">
+                          <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.delivery_method !== 0">
                               <div class="uk-width-5-6 uk-text-right">運費<span v-if="info.freight_name">({{ info.freight_name }})</span>：</div>
                               <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ info.freight.toLocaleString() }}</div>
                           </div>

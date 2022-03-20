@@ -36,6 +36,14 @@ body {
   cursor: pointer;
 }
 
+/* margin */
+$max: 10;
+@for $i from 1 through $max {
+  .mtp-#{$i} {
+    margin-top: $i * 1px;
+  }
+}
+
 /* font-size */
 .size-12 {
   font-size: 12px;

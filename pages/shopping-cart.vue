@@ -119,7 +119,18 @@
                           </div>
                           <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> - $ {{ couponDiscount }}</div>
                       </div>
-                      <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
+                      <div class="uk-flex uk-flex-right calculate-list">
+                          <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">配送方式：</div>
+                          <div class="uk-width-1-4 uk-width-1-6@m uk-text-right">
+                              <div>
+                                  <label class="delivery-method"><input class="uk-radio" type="radio" value="0" v-model="receiver.delivery_method"> 自取</label>
+                              </div>
+                              <div class="mtp-5">
+                                  <label class="delivery-method"><input class="uk-radio" type="radio" value="1" v-model="receiver.delivery_method"> 宅配到府</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="uk-flex uk-flex-middle uk-flex-right calculate-list" v-if="receiver.delivery_method !== '0'">
                           <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">運費<span v-if="receiver.freight_name">({{receiver.freight_name}})</span>：</div>
                           <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> $ {{ freight }}</div>
                       </div>
@@ -139,10 +150,10 @@
                   </template>
               </div>
               <div v-if="step === 2">
-                  <h4 class="uk-text-bold uk-margin-remove-bottom">配送方式</h4>
-                  <div class="uk-margin-small-top">
-                      <label><input class="uk-radio" type="radio" value="1" v-model="receiver.delivery_method"> 宅配到府</label>
-                  </div>
+<!--                  <h4 class="uk-text-bold uk-margin-remove-bottom">配送方式</h4>-->
+<!--                  <div class="uk-margin-small-top">-->
+<!--                      <label><input class="uk-radio" type="radio" value="1" v-model="receiver.delivery_method"> 宅配到府</label>-->
+<!--                  </div>-->
                   <h4 class="uk-text-bold uk-margin-remove-bottom">付款方式</h4>
                   <div class="uk-margin-small-top">
                       <label><input class="uk-radio" type="radio" value="1" v-model="receiver.payment_method"> 信用卡</label>
@@ -359,6 +370,12 @@
                       <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> - $ {{ couponDiscount }}</div>
                   </div>
                   <div class="uk-flex uk-flex-middle uk-flex-right calculate-list">
+                      <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">配送方式：</div>
+                      <div class="uk-width-1-4 uk-width-1-6@m uk-text-right">
+                          {{ receiver.delivery_method !== '0' ? '宅配到府' : '自取' }}
+                      </div>
+                  </div>
+                <div class="uk-flex uk-flex-middle uk-flex-right calculate-list" v-if="receiver.delivery_method !== '0'">
                       <div class="uk-width-3-4 uk-width-5-6@m uk-text-right">運費<span v-if="receiver.freight_name">({{receiver.freight_name}})</span>：</div>
                       <div class="uk-width-1-4 uk-width-1-6@m uk-text-right uk-text-danger"> $ {{ freight }}</div>
                   </div>
@@ -370,7 +387,9 @@
                   <div class="uk-card uk-card-default uk-padding uk-margin-small-top">
                       <div class="uk-flex uk-flex-wrap uk-flex-middle">
                           <div class="uk-width-1-1 uk-width-1-6@m form-margin"> 配送方式 </div>
-                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> 宅配到府 </div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold">
+                            {{ receiver.delivery_method !== '0' ? '宅配到府' : '自取' }}
+                          </div>
                       </div>
                       <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                           <div class="uk-width-1-1 uk-width-1-6@m form-margin"> 付款方式 </div>
@@ -582,6 +601,11 @@
             },
             deep: true
           },
+          'receiver.delivery_method'(new_data, old_data) {
+            if (new_data === '0') {
+              this.receiver.freight = 0;
+            }
+          },
         },
         computed: {
           shoppingCartProduct() {
@@ -606,14 +630,16 @@
             this.receiver.freight_id = null;
             this.receiver.freight_name = '';
 
-            this.freight_list.some(v => {
-              if (this.shoppingCartPrice >= v.start_total && this.shoppingCartPrice <= v.end_total) {
-                this.receiver.freight = v.freight;
-                this.receiver.freight_id = v.id;
-                this.receiver.freight_name = v.floor2_type;
-                return true;
-              }
-            })
+            if (this.receiver.delivery_method !== '0') {
+              this.freight_list.some(v => {
+                if (this.shoppingCartPrice >= v.start_total && this.shoppingCartPrice <= v.end_total) {
+                  this.receiver.freight = v.freight;
+                  this.receiver.freight_id = v.id;
+                  this.receiver.freight_name = v.floor2_type;
+                  return true;
+                }
+              })
+            }
 
             return this.receiver.freight;
           },
@@ -978,7 +1004,10 @@
 
 label {
   margin-bottom: 0;
-  min-width: 90px;
+
+  &:not(.delivery-method) {
+    min-width: 90px;
+  }
 }
 
 .container {
