@@ -243,7 +243,7 @@
                               <input class="uk-input uk-form-small" maxlength="200" placeholder="請輸入E-mail" v-model="receiver.email" />
                           </div>
                       </div>
-                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
+                      <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top" v-if="receiver.delivery_method !== '0'">
                           <label class="uk-width-1-1 uk-width-1-6@m form-margin">郵遞區號 <span class="uk-text-danger">*</span></label>
                           <div class="uk-flex uk-flex-wrap uk-flex-middle uk-width-1-1 uk-width-5-6@m">
                               <div class="uk-width-1-3 uk-width-1-4@m uk-padding-small uk-padding-remove-vertical uk-padding-remove-left">
@@ -266,9 +266,14 @@
                           </div>
                       </div>
                       <div class="uk-margin-top uk-flex uk-flex-wrap uk-flex-middle">
-                          <label class="uk-width-1-1 uk-width-1-6@m form-margin" for="register_address">地址 <span class="uk-text-danger">*</span></label>
+                          <label class="uk-width-1-1 uk-width-1-6@m form-margin" for="register_address">地址 <span class="uk-text-danger" v-if="receiver.delivery_method !== '0'">*</span></label>
                           <div class="uk-width-1-1 uk-width-5-6@m">
-                              <input type="text" id="register_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入通訊地址" v-model="receiver.address">
+                              <template v-if="receiver.delivery_method !== '0'">
+                                  <input type="text" id="register_address" maxlength="200" class="uk-input uk-form-width-medium uk-form-small uk-width-3-4" placeholder="請輸入通訊地址" v-model="receiver.address">
+                              </template>
+                              <template v-else>
+                                  {{ receiver.address }}
+                              </template>
                           </div>
                       </div>
                       <div class="uk-alert-danger" uk-alert>
@@ -414,7 +419,14 @@
                       </div>
                       <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                           <div class="uk-width-1-1 uk-width-1-6@m form-margin">寄送地址</div>
-                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ receiver.zipcode }} {{ receiver.country }}{{ receiver.city }}{{ receiver.address }}</div>
+                          <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold">
+                            <template v-if="receiver.delivery_method !== '0'">
+                                {{ receiver.zipcode }} {{ receiver.country }}{{ receiver.city }}{{ receiver.address }}
+                            </template>
+                            <template v-else>
+                                (自取){{ receiver.address }}
+                            </template>
+                          </div>
                       </div>
                       <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                           <div class="uk-width-1-1 uk-width-1-6@m form-margin">發票類型</div>
@@ -574,7 +586,10 @@
             this.selectCountry('receiver');
             this.receiver.city = new_data ? this.form.city : '';
             this.receiver.zipcode = new_data ? this.form.zipcode : '';
-            this.receiver.address = new_data ? this.form.address : '';
+
+            if (this.receiver.delivery_method !== '0') {
+              this.receiver.address = new_data ? this.form.address : '';
+            }
           },
           'list': {
             handler(new_data, old_data) {
@@ -604,6 +619,7 @@
           'receiver.delivery_method'(new_data, old_data) {
             if (new_data === '0') {
               this.receiver.freight = 0;
+              this.receiver.address = this.$store.state.config.basic_address;
             }
           },
         },
@@ -890,8 +906,11 @@
               }
             }
 
-            if (!(this.receiver.country && this.receiver.city && this.receiver.zipcode && this.receiver.address)) {
-              return {'status': false, 'message': '請輸入收件人完整地址'}
+            // 若是自取則不用驗證
+            if (this.receiver.delivery_method !== '0') {
+              if (!(this.receiver.country && this.receiver.city && this.receiver.zipcode && this.receiver.address)) {
+                return {'status': false, 'message': '請輸入收件人完整地址'}
+              }
             }
 
             return {'status': true}
@@ -921,6 +940,11 @@
 
             if (this.receiver.invoice_method === '1') {
               this.receiver.invoice_tax_id_number = this.receiver.invoice_name = '';
+            }
+
+            // 若為自取，則不帶入郵遞區號、縣市、區域，只帶入海龍王的地址
+            if (this.receiver.delivery_method === '0') {
+              this.receiver.zipcode = this.receiver.country = this.receiver.city = '';
             }
 
             let obj = {

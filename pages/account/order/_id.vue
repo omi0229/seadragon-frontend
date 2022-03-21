@@ -104,7 +104,7 @@
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m">寄送地址</div>
-                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.zipcode }} {{ info.country }}{{ info.city }}{{ info.address }}</div>
+                                <div class="uk-width-1-1 uk-width-5-6@m uk-text-bold"> {{ info.delivery_method === 0 ? '(自取)' : ''}} {{ info.zipcode }} {{ info.country }}{{ info.city }}{{ info.address }}</div>
                             </div>
                             <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-top">
                                 <div class="uk-width-1-1 uk-width-1-6@m">發票類型</div>
@@ -179,28 +179,28 @@
                                     </td>
                                 </tr>
                             </tbody>
-                          </table>
-                          <hr class="mobile">
-                          <div class="uk-flex uk-flex-middle uk-flex-right">
-                              <div class="uk-width-5-6 uk-text-right">小計：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(0, info.order_products).toLocaleString() }}</div>
-                          </div>
-                          <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.discount_record">
-                              <div class="uk-width-5-6 uk-text-right">優惠代碼折扣：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">- $ {{ info.discount_record.discount_codes.discount.toLocaleString() }}</div>
-                          </div>
-                          <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.coupon_record">
-                              <div class="uk-width-5-6 uk-text-right">優惠劵折扣：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">- $ {{ info.coupon_record.coupon.discount.toLocaleString() }}</div>
-                          </div>
-                          <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.delivery_method !== 0">
-                              <div class="uk-width-5-6 uk-text-right">運費<span v-if="info.freight_name">({{ info.freight_name }})</span>：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ info.freight.toLocaleString() }}</div>
-                          </div>
-                          <div class="uk-flex uk-flex-middle uk-flex-right">
-                              <div class="uk-width-5-6 uk-text-right">本訂單需付款總金額：</div>
-                              <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(info.freight, info.order_products, info.discount_record, info.coupon_record).toLocaleString() }}</div>
-                          </div>
+                        </table>
+                        <hr class="mobile">
+                        <div class="uk-flex uk-flex-middle uk-flex-right">
+                            <div class="uk-width-5-6 uk-text-right">小計：</div>
+                            <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(0, info.order_products).toLocaleString() }}</div>
+                        </div>
+                        <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.discount_record">
+                            <div class="uk-width-5-6 uk-text-right">優惠代碼折扣：</div>
+                            <div class="uk-width-1-6 uk-text-right uk-text-danger">- $ {{ info.discount_record.discount_codes.discount.toLocaleString() }}</div>
+                        </div>
+                        <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.coupon_record">
+                            <div class="uk-width-5-6 uk-text-right">優惠劵折扣：</div>
+                            <div class="uk-width-1-6 uk-text-right uk-text-danger">- $ {{ info.coupon_record.coupon.discount.toLocaleString() }}</div>
+                        </div>
+                        <div class="uk-flex uk-flex-middle uk-flex-right" v-if="info.delivery_method !== 0">
+                            <div class="uk-width-5-6 uk-text-right">運費<span v-if="info.freight_name">({{ info.freight_name }})</span>：</div>
+                            <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ info.freight.toLocaleString() }}</div>
+                        </div>
+                        <div class="uk-flex uk-flex-middle uk-flex-right">
+                            <div class="uk-width-5-6 uk-text-right">本訂單需付款總金額：</div>
+                            <div class="uk-width-1-6 uk-text-right uk-text-danger">$ {{ orderTotal(info.freight, info.order_products, info.discount_record, info.coupon_record).toLocaleString() }}</div>
+                        </div>
                     </li>
                 </ul>
             </div>
