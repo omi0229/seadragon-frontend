@@ -279,6 +279,7 @@
                       <div class="uk-alert-danger" uk-alert>
                           <p>1. 目前服務區域僅限台灣本島。</p>
                           <p>2. 商品的寄送「海龍王」有最終的決定權，請務必詳細填寫。</p>
+                          <p>3. 如選擇自取務必備註「來店取貨日期與時間」。</p>
                       </div>
                   </div>
                   <h4 class="uk-text-bold uk-margin-remove-bottom">發票資訊</h4>
