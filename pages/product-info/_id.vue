@@ -161,7 +161,13 @@
                     hid: 'description',
                     name: 'description',
                     content: res.data.product.keywords,
-                }];
+                },
+                  {property: 'og:title', content: res.data.product.title},
+                  {property: 'og:description', content: res.data.product.keywords},
+                  {property: 'og:site_name', content: res.data.product.title},
+                  {property: 'og:image', content: res.data.img || ''},
+                  {property: 'og:url', content: process.env.BASE_URL + route.fullPath},
+                  {property: 'og:locale', content: 'zh_TW'}];
 
                 let price = {
                     original: 0,
