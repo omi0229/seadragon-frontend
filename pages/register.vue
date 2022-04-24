@@ -107,7 +107,7 @@
             <div class="uk-modal-dialog">
                 <button class="uk-modal-close-default" type="button" uk-close></button>
                 <div class="uk-modal-body">
-                    <div class="uk-text-center uk-margin-top"><h3>請輸入簡訊驗證碼</h3>　(測試：{{ test_code }}) </div>
+                    <div class="uk-text-center uk-margin-top"><h3>請輸入簡訊驗證碼</h3></div>
                     <div class="uk-text-center uk-margin-top">
                         <input class="uk-input uk-form-small uk-form-width-small uk-text-center" maxlength="5" v-model="sms_code" />
                     </div>
@@ -166,8 +166,6 @@
                 set_interval: null,
                 is_register: false,
                 origin_zipcode,
-
-                test_code: '',
             }
         },
         async asyncData({$axios, store, route}) {
@@ -203,10 +201,15 @@
           },
           authCellphoneMethod() {
             return new Promise(resolve => {
-              this.$axios.get(process.env.API_URL + '/api/member/auth-register-cellphone/' + this.form.cellphone).then(res => {
-                this.is_register = res.data ? false : true;
+              if (this.form.cellphone) {
+                this.$axios.get(process.env.API_URL + '/api/member/auth-register-cellphone/' + this.form.cellphone).then(res => {
+                  this.is_register = res.data ? false : true;
+                  resolve();
+                })
+              } else {
+                this.is_register = false;
                 resolve();
-              })
+              }
             })
           },
           auth() {
@@ -251,14 +254,14 @@
           async register() {
             UIkit.notification.closeAll();
 
-            await this.authCellphoneMethod();
-            if (this.is_register) {
-              notification('此號碼已有註冊記錄', 'danger')
+            if (!this.auth().status) {
+              notification(this.auth().message, 'danger');
               return false;
             }
 
-            if (!this.auth().status) {
-              notification(this.auth().message, 'danger');
+            await this.authCellphoneMethod();
+            if (this.is_register) {
+              notification('此號碼已有註冊記錄', 'danger')
               return false;
             }
 
@@ -288,9 +291,6 @@
               if (!res.data.status && res.data.data) {
                 this.seconds = res.data.data;
               }
-
-              // test
-              this.test_code = res.data.message;
 
               this.set_interval = setInterval(() => {
                 this.seconds -= 1;
