@@ -1007,6 +1007,9 @@
                           this.discount.info.full_amount = res.data.data.full_amount;
                           this.discount.info.discount = res.data.data.discount;
                       } else {
+
+                          notification('無此優惠代碼', 'danger');
+
                           this.discount.info.title = '';
                           this.discount.info.full_amount = 0;
                           this.discount.info.discount = 0;
