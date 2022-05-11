@@ -153,7 +153,7 @@
         async asyncData({$axios, store, route}) {
             let list = [];
             await $axios.get(process.env.API_URL + '/api/banners/list').then(res => {
-                list = res.data;
+                list = res.data.data;
             });
 
             let carousel_list = [];
@@ -163,7 +163,7 @@
 
             let put_on_list = [];
             await $axios.get(process.env.API_URL + '/api/directory/list/all').then(res => {
-                put_on_list = res.data;
+                put_on_list = res.data.data;
             });
 
             return {
