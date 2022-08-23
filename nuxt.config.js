@@ -19,7 +19,8 @@ export default {
     ],
     script: [
       { src: '/plugins/uikit-3.7.4/js/uikit.min.js' },
-      { src: '/plugins/uikit-3.7.4/js/uikit-icons.min.js' }
+      { src: '/plugins/uikit-3.7.4/js/uikit-icons.min.js' },
+      { src: 'https://www.googletagmanager.com/gtag/js?id=G-DPSDE8NPMJ' },
     ],
     bodyAttrs: {
       style: 'overflow-y: hidden;'
