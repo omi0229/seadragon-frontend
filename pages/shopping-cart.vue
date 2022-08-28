@@ -576,6 +576,10 @@
                 url: {
                     payment: '',
                 },
+                page_read_finish: false,
+                timer: {
+                  change_count: null,
+                }
             }
         },
         watch: {
@@ -594,6 +598,21 @@
           },
           'list': {
             handler(new_data, old_data) {
+              if (this.page_read_finish) {
+                if (!this.timer.change_count) {
+                  this.timer.change_count = setInterval(() => {
+                    let data = {
+                      'cart_id': localStorage.getItem('cart_id'),
+                      'list': new_data,
+                    };
+                    // 更新購物車數量
+                    this.$axios.post(process.env.API_URL + '/api/cart/refresh-cart', data);
+                    clearInterval(this.timer.change_count);
+                    setTimeout(() => this.timer.change_count = null, 1)
+                  }, 1000)
+                }
+              }
+
               this.coupon_list = filter(this.origin_coupon_list, v => {
                 if (v.coupon.product_specifications.length > 0) {
                   let specifications_list = map(new_data, v => { return v.specifications_id })
@@ -615,7 +634,7 @@
                 this.coupon_record_id = '';
               }
             },
-            deep: true
+            deep: true,
           },
           'receiver.delivery_method'(new_data, old_data) {
             if (new_data === '0') {
@@ -714,6 +733,7 @@
           await this.getShoppingCart().then(res => {
             this.list = res.data.data;
             this.$store.commit('disabledLoading');
+            setTimeout(() => this.page_read_finish = true, 1);
           })
         },
         methods: {
