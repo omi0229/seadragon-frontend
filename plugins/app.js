@@ -1,5 +1,13 @@
 import axios from 'axios';
 
+// Google Analyist
+window.dataLayer = window.dataLayer || [];
+const gtag = () => {
+  dataLayer.push(arguments);
+}
+gtag('js', new Date());
+gtag('config', 'G-DPSDE8NPMJ');
+
 export const getCartCount = (store, cart_id) => {
     axios.post(process.env.API_URL + '/api/cart/get-cart-count', {cart_id: cart_id}).then(res => {
         store.commit('setCartCount', res.data);
