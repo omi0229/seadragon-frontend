@@ -19,15 +19,17 @@
                 <div class="description" v-html="item.description"></div>
             </div>
         </div>
+
+        <!-- Google Analyist -->
+        <Ga />
     </div>
 </template>
 
 <script>
     import { find } from 'lodash';
     import moment from 'moment';
-    import { init } from '~/plugins/app.js';
     import NewsMenu from '~/components/NewsMenu';
-    import { getMenu } from '~/plugins/app.js';
+    import { getMenu } from '~/plugins/app';
 
     export default {
         components: { NewsMenu },

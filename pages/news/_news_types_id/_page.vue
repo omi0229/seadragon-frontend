@@ -34,15 +34,18 @@
                 此分類目前無最新消息!!
             </div>
          </div>
+
+        <!-- Google Analyist -->
+        <Ga />
     </div>
 </template>
 
 <script>
     import { head, find } from 'lodash';
     import moment from 'moment';
-    import Pagination from '../../../components/Pagination';
+    import Pagination from '~/components/Pagination';
     import NewsMenu from '~/components/NewsMenu';
-    import { getMenu } from '~/plugins/app.js';
+    import { getMenu } from '~/plugins/app';
 
     export default {
         components: {Pagination, NewsMenu},

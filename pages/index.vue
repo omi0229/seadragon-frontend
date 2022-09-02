@@ -121,13 +121,15 @@
             </div>
         </div>
 
+        <!-- Google Analyist -->
+        <Ga />
     </div>
 
 </template>
 
 <script>
     import { find } from 'lodash';
-    import { loginAuth, modalMessage, notification } from '~/plugins/app.js';
+    import { loginAuth, modalMessage, notification } from '~/plugins/app';
     import Pagination from '~/components/Pagination';
 
     export default {

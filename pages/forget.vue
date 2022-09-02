@@ -64,11 +64,14 @@
                 </div>
             </div>
         </div>
+
+        <!-- Google Analyist -->
+        <Ga />
     </div>
 </template>
 
 <script>
-    import { init, randomNum, notification} from '~/plugins/app.js';
+    import { randomNum, notification} from '~/plugins/app';
     import Captcha from '~/components/Captcha';
     import RegisterMenu from '~/components/RegisterMenu';
 

@@ -119,12 +119,15 @@
                 </div>
             </div>
         </div>
+
+        <!-- Google Analyist -->
+        <Ga />
     </div>
 </template>
 
 <script>
     import { filter, find } from 'lodash';
-    import { passwordRule, emailRule, randomNum, notification } from '~/plugins/app.js';
+    import { passwordRule, emailRule, randomNum, notification } from '~/plugins/app';
     import twzipcode from 'twzipcode-data'
     import Captcha from '~/components/Captcha';
     import RegisterMenu from '~/components/RegisterMenu';

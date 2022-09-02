@@ -10,6 +10,9 @@
           <div class="uk-flex uk-flex-column uk-margin-auto" v-html="content"></div>
 
         </div>
+
+        <!-- Google Analyist -->
+        <Ga />
     </div>
 </template>
 

@@ -106,13 +106,15 @@
             </div>
         </div>
 
+        <!-- Google Analyist -->
+        <Ga />
     </div>
 </template>
 
 <script>
     import moment from 'moment';
     import { find } from 'lodash';
-    import { loginAuth, notification } from '~/plugins/app.js';
+    import { loginAuth, notification } from '~/plugins/app';
     import AccountMenu from '~/components/AccountMenu';
 
     export default {
