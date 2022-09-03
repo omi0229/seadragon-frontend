@@ -494,15 +494,13 @@
             </form>
         </div>
 
-        <!-- Google Analyist -->
-        <Ga />
     </div>
 </template>
 
 <script>
     import Cookies from 'js-cookie';
     import { find, filter, map } from 'lodash';
-    import { notification, getCartCount} from '~/plugins/app';
+    import { notification, getCartCount} from '~/plugins/app.js';
     import twzipcode from 'twzipcode-data'
 
     export default {

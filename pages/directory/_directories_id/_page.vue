@@ -98,9 +98,6 @@
             </div>
             <Pagination ref="pagination" :all_count="all_count" :page_count="page_count" :page_item_count="page_item_count" @get-data="getData"></Pagination>
         </div>
-
-        <!-- Google Analyist -->
-        <Ga />
     </div>
 </template>
 
@@ -108,7 +105,7 @@
     import { head, find } from 'lodash';
     import Pagination from "../../../components/Pagination";
     import DirectoryMenu from '~/components/DirectoryMenu';
-    import { getMenu } from '~/plugins/app';
+    import { getMenu } from '~/plugins/app.js';
 
     export default {
         components: {Pagination, DirectoryMenu},

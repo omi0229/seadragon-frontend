@@ -93,9 +93,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Google Analyist -->
-        <Ga />
     </div>
 </template>
 

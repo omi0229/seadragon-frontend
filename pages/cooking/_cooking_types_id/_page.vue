@@ -2,51 +2,48 @@
     <div class="uk-flex">
         <CookingMenu></CookingMenu>
         <div class="container">
-            <ul class="uk-breadcrumb">
-                <li><a href="/">Home</a></li>
-                <li><a href="/cooking">烹飪教學</a></li>
-                <li><a :href="'/cooking/' + info.id">{{ info.name }}</a></li>
-            </ul>
-            <!-- v-if -->
-            <div v-if="list.length > 0">
-                <div class="uk-flex uk-flex-wrap">
-                    <!-- v-for -->
-                    <div class="uk-width-1-1 uk-width-1-3@m uk-margin-small-top" v-for="item in list">
-                        <div class="uk-card uk-card-body item-img">
-                            <template v-if="item.target === 1">
-                                <a :href="'https://www.youtube.com/watch?v=' + item.youtube_id" target="_blank" class="uk-text-decoration-none">
-                                    <img :src="'https://img.youtube.com/vi/' + item.youtube_id + '/hqdefault.jpg'" />
-                                </a>
-                                <div class="uk-margin-small uk-text-emphasis uk-text-large">
-                                    <a :href="'https://www.youtube.com/watch?v=' + item.youtube_id" target="_blank" class="uk-link-heading uk-text-decoration-none">{{item.title}}</a>
+        <ul class="uk-breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/cooking">烹飪教學</a></li>
+            <li><a :href="'/cooking/' + info.id">{{ info.name }}</a></li>
+        </ul>
+        <!-- v-if -->
+        <div v-if="list.length > 0">
+            <div class="uk-flex uk-flex-wrap">
+                <!-- v-for -->
+                <div class="uk-width-1-1 uk-width-1-3@m uk-margin-small-top" v-for="item in list">
+                    <div class="uk-card uk-card-body item-img">
+                        <template v-if="item.target === 1">
+                            <a :href="'https://www.youtube.com/watch?v=' + item.youtube_id" target="_blank" class="uk-text-decoration-none">
+                                <img :src="'https://img.youtube.com/vi/' + item.youtube_id + '/hqdefault.jpg'" />
+                            </a>
+                            <div class="uk-margin-small uk-text-emphasis uk-text-large">
+                                <a :href="'https://www.youtube.com/watch?v=' + item.youtube_id" target="_blank" class="uk-link-heading uk-text-decoration-none">{{item.title}}</a>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <a :href="'#modal-media-youtube-' + item.youtube_id" class="uk-text-decoration-none" uk-toggle>
+                                <img :src="'https://img.youtube.com/vi/' + item.youtube_id + '/hqdefault.jpg'" />
+                            </a>
+                            <div class="uk-margin-small-top uk-text-emphasis uk-text-large">
+                                <a :href="'#modal-media-youtube-' + item.youtube_id" class="uk-link-heading uk-text-decoration-none" uk-toggle>{{item.title}}</a>
+                            </div>
+                            <div :id="'modal-media-youtube-' + item.youtube_id" class="uk-flex-top uk-modal" uk-modal>
+                                <div class="uk-modal-dialog uk-width-auto uk-margin-auto-vertical">
+                                    <button class="uk-modal-close-outside" type="button" uk-close></button>
+                                    <iframe :src="item.youtube_url" uk-video uk-responsive></iframe>
                                 </div>
-                            </template>
-                            <template v-else>
-                                <a :href="'#modal-media-youtube-' + item.youtube_id" class="uk-text-decoration-none" uk-toggle>
-                                    <img :src="'https://img.youtube.com/vi/' + item.youtube_id + '/hqdefault.jpg'" />
-                                </a>
-                                <div class="uk-margin-small-top uk-text-emphasis uk-text-large">
-                                    <a :href="'#modal-media-youtube-' + item.youtube_id" class="uk-link-heading uk-text-decoration-none" uk-toggle>{{item.title}}</a>
-                                </div>
-                                <div :id="'modal-media-youtube-' + item.youtube_id" class="uk-flex-top uk-modal" uk-modal>
-                                    <div class="uk-modal-dialog uk-width-auto uk-margin-auto-vertical">
-                                        <button class="uk-modal-close-outside" type="button" uk-close></button>
-                                        <iframe :src="item.youtube_url" uk-video uk-responsive></iframe>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
+                            </div>
+                        </template>
                     </div>
                 </div>
-                <Pagination ref="pagination" :all_count="all_count" :page_count="page_count" :page_item_count="page_item_count" @get-data="getData"></Pagination>
             </div>
-            <div class="uk-margin-auto not-find" v-else>
-                此分類目前無教學!!
-            </div>
+            <Pagination ref="pagination" :all_count="all_count" :page_count="page_count" :page_item_count="page_item_count" @get-data="getData"></Pagination>
         </div>
-
-        <!-- Google Analyist -->
-        <Ga />
+        <div class="uk-margin-auto not-find" v-else>
+            此分類目前無教學!!
+        </div>
+    </div>
     </div>
 </template>
 
@@ -55,7 +52,7 @@
     import moment from 'moment';
     import Pagination from '../../../components/Pagination';
     import CookingMenu from '~/components/CookingMenu';
-    import { getMenu } from '~/plugins/app';
+    import { getMenu } from '~/plugins/app.js';
 
     export default {
         components: {Pagination, CookingMenu},

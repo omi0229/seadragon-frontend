@@ -1,3 +1,4 @@
+<script src="../../static/plugins/flatpickr/dist/l10n/zh-tw.js"></script>
 <template>
     <div class="uk-flex">
         <link rel="stylesheet" href="/plugins/flatpickr/dist/flatpickr.min.css">
@@ -96,15 +97,12 @@
           </div>
 
         </div>
-
-        <!-- Google Analyist -->
-        <Ga />
     </div>
 </template>
 
 <script>
     import moment from 'moment';
-    import { loginAuth, notification, setOrderTotal, getCartCount } from '~/plugins/app';
+    import { loginAuth, notification, setOrderTotal, getCartCount } from '~/plugins/app.js';
     import AccountMenu from '~/components/AccountMenu';
 
     export default {

@@ -226,14 +226,12 @@
             </form>
         </div>
 
-        <!-- Google Analyist -->
-        <Ga />
     </div>
 </template>
 
 <script>
     import moment from 'moment';
-    import { loginAuth, setOrderTotal, notification } from '~/plugins/app';
+    import { loginAuth, setOrderTotal, notification } from '~/plugins/app.js';
     import AccountMenu from '~/components/AccountMenu';
 
     export default {

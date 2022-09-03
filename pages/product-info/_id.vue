@@ -105,9 +105,6 @@
                 </template>
             </div>
         </div>
-
-        <!-- Google Analyist -->
-        <Ga />
     </div>
 </template>
 
@@ -115,7 +112,7 @@
 "use strict";
     import { find } from 'lodash';
     import moment from 'moment';
-    import { getCartCount, getMenu } from '~/plugins/app';
+    import { getCartCount, getMenu } from '~/plugins/app.js';
     import DirectoryMenu from '~/components/DirectoryMenu';
     import { Fancybox, Carousel, Panzoom } from "@fancyapps/ui";
     import "@fancyapps/ui/dist/fancybox.css";

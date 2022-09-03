@@ -65,14 +65,11 @@
                 </div>
             </div>
         </div>
-
-        <!-- Google Analyist -->
-        <Ga />
     </div>
 </template>
 
 <script>
-    import { loginAuth, passwordRule, randomNum, notification } from '~/plugins/app';
+    import { loginAuth, passwordRule, randomNum, notification } from '~/plugins/app.js';
     import Captcha from '~/components/Captcha';
     import AccountMenu from '~/components/AccountMenu';
 
