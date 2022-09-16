@@ -15,11 +15,11 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: '/plugins/uikit-3.7.4/css/uikit.min.css' },
+      { rel: 'stylesheet', href: '/plugins/uikit-3.15.7/css/uikit.min.css' },
     ],
     script: [
-      { src: '/plugins/uikit-3.7.4/js/uikit.min.js' },
-      { src: '/plugins/uikit-3.7.4/js/uikit-icons.min.js' },
+      { src: '/plugins/uikit-3.15.7/js/uikit.min.js' },
+      { src: '/plugins/uikit-3.15.7/js/uikit-icons.min.js' },
       { src: 'https://www.googletagmanager.com/gtag/js?id=G-DPSDE8NPMJ' },
     ],
     bodyAttrs: {
@@ -29,7 +29,6 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-      '~/static/plugins/uikit-3.7.4/css/uikit.min.css',
       '~/assets/scss/app.scss'
   ],
 
