@@ -1,0 +1,7 @@
+// 產品圖片固定size
+@mixin product-image {
+  height: initial;
+  aspect-ratio: 625 / 417;
+  width: 100%;
+  object-fit: cover;
+}

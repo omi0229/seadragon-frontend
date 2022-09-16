@@ -83,6 +83,6 @@ export default {
   // },
 
   styleResources: {
-    scss: ['~assets/scss/*.scss']
+    scss: ['~assets/resource/*.scss']
   },
 }
