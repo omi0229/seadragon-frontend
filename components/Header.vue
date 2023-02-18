@@ -131,6 +131,15 @@
                             </div>
                         </div>
                         <div class="item">
+                            <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-directory; animation: uk-animation-fade" @click="menu('directory')">線上購物</button>
+                            <div id="toggle-directory" class="uk-padding-small offcanvas-toggle">
+                                <!-- v-for -->
+                                <div v-for="item in $store.state.directory_list">
+                                    <a :href="'/directory/' + item.id" class="uk-link-heading">{{ item.name }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
                             <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-cooking; animation: uk-animation-fade" @click="menu('cooking')">烹飪教學</button>
                             <div id="toggle-cooking" class="uk-padding-small offcanvas-toggle" hidden>
                                 <!-- v-for -->
@@ -141,15 +150,6 @@
                         </div>
                         <div class="item">
                             <a href="/about" class="uk-link-heading">關於海龍王</a>
-                        </div>
-                        <div class="item">
-                            <button class="uk-button uk-button-text arrow" type="button" uk-toggle="target: #toggle-directory; animation: uk-animation-fade" @click="menu('directory')">線上購物</button>
-                            <div id="toggle-directory" class="uk-padding-small offcanvas-toggle" hidden>
-                                <!-- v-for -->
-                                <div v-for="item in $store.state.directory_list">
-                                    <a :href="'/directory/' + item.id" class="uk-link-heading">{{ item.name }}</a>
-                                </div>
-                            </div>
                         </div>
                         <div class="item">
                             <a href="/shopping-explanation" class="uk-link-heading">購物說明</a>
@@ -305,6 +305,8 @@
       if (sessionStorage.getItem('keywords')) {
         this.keywords = sessionStorage.getItem('keywords');
       }
+
+      this.menu('directory');
     },
     methods: {
       generalLogin() {
