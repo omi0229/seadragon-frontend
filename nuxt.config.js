@@ -53,6 +53,13 @@ export default {
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
     ['@nuxtjs/dotenv', { filename: process.env.BASE ? `.env.${process.env.BASE}` : '.env' }],
+    ['nuxt-facebook-pixel-module', {
+      /* module options */
+      track: 'PageView',
+      pixelId: process.env.PIXEL_ID,
+      autoPageView: true,
+      disabled: false
+    }],
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
